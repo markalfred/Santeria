@@ -21,10 +21,10 @@ MagicSublime is meant to be used alongside SVN. With SVN, you can download your 
 - Install Sublime SVN from http://wbond.net/sublime_packages/svn
 
 - Once installed, Checkout your application via the `SVN: Checkout` menu item.
-	 To access:
-	 1. Press `Ctrl + Shift + P`
-	 2. Select `SVN: Checkout`
-	 3. Example Repository URL: `https://vcfs01.meditech.com/svn/CS-NPR/5.6.5/Source/ADM/`
+    To access:
+    1. Press `Ctrl + Shift + P`
+    2. Select `SVN: Checkout`
+    3. Example Repository URL: `https://vcfs01.meditech.com/svn/CS-NPR/5.6.5/Source/ADM/`
 
 - Install MagicSublime
 
