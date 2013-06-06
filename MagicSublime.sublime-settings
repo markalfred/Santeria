@@ -1,0 +1,4 @@
+{
+	// This stores the last macro call on which a jump was performed.  This is kept so that we can jump back to it if we want.
+	"last_macro": 20
+}

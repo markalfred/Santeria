@@ -1,0 +1,15 @@
+{
+	"cmd": ["magic", "c:\\fs\\magic.mas", "$file"],
+	"selector": "source.fs",
+
+    "variants": [
+
+        { "cmd": ["magic", "${file/\\.fs/\\.mps/}"],
+          "name": "Run"
+        },
+
+        { "cmd": ["magic", "c:\\fs\\format.mas", "$file"],
+     		 "name": "Format"
+     	  }
+    ]
+}

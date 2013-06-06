@@ -1,0 +1,4 @@
+[
+	{ "keys": ["f1"], "command": "magic_doc", "context":[ { "key": "selector", "operator": "equal", "operand": "source.npr" } ] },
+	{ "keys": ["ctrl+f1"], "command": "test" , "context":[ { "key": "selector", "operator": "equal", "operand": "source.npr" } ] }
+]

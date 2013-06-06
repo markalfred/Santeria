@@ -1,0 +1,114 @@
+the ELE data is pulled from
+
+
+could convert this to xml...
+
+also,  %NPR.SEG.view
+
+&IA[APP]
+&IF[DPM]
+&IE[DPM,segment]
+&IEE[DPM,element]
+
+
+
+
+<dpm name="EDM.ACCESS">
+	<act>Y</act>
+	<letters>HEDA</letters>
+	<segments>
+		<segment name="main">
+			<act>Y</act>
+			<subscripts>
+				<subscript name="mnemonic"/>
+			</subscripts>
+			<elements>
+				<element name="mnemonic">
+					<pointer/>
+					<type>FREE</type>
+					<offset/>
+					<physical>heda</physical>
+					<local>heda</local>
+				</element>
+				<element name="active">
+					<pointer/>
+					<type>YN</type>
+					<offset>|0</offset>
+					<physical>&amp;(HE)HEDA[heda]|0</physical>
+					<local/>
+				</element>
+			</elements>
+		</segment>
+	</segments>
+</dpm>
+
+
+or i could have
+<dpm>
+	<segments>
+	</segments>
+	<elements>
+	</elements>
+</dpm>
+
+
+
+
+
+cus1 improg 56
+RXM.DRUG.zcus.dictionary.validation.M.compile:
+
+
+
+
+
+
+Syntax         @Next(element.name[,segment.name])
+Description    Produces code that gets the next value for ...
+Code           "_%(NPR)MACRO..translate.M..nexting(^S)_"
+
+
+
+---- Doc for @EDM.PAT.status.event
+
+"rulers": [15]
+
+
+Element        EDM.PAT.status.event
+Local          hedse
+Physical       *(HE)HEAA[aa]|3
+Segments       edm.data
+               events.x
+               status.event.counts.x
+
+Pointer        EDM.EVENTS
+Data Type      URN
+Length         10
+
+Attributes:
+   CTF...
+
+Technical Doc...
+
+
+
+
+
+---- Doc for @EDM.PAT.edm.data
+
+"rulers": [30,40]
+
+ Segment:   EDM.PAT.edm.data
+Physical:   *(HE)HEAA[aa]
+Children:
+   edm.data.departure                   *(HE)HEAA[aa]DEP
+   edm.data.edit.history                *(HE)HEAA[aa]EH[heEDq]
+
+Element                       Local     Physical
+
+current.location              hedlo     *(HE)HEAA[aa]|0
+priority                      hedpi     *(HE)HEAA[aa]|1
+complaint                     hedc      *(HE)HEAA[aa]|2
+status.event                  hedse     *(HE)HEAA[aa]|3
+
+

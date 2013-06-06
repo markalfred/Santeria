@@ -1,0 +1,71 @@
+{ "name": "NPR",
+  "scopeName": "source.npr",
+  "fileTypes": ["magic", "mg", "npr"],
+  "foldingStartMarker": "\\A#?[A-Z.]*\\n",
+  "foldingStopMarker": "\\n\\n",
+  "patterns": [
+  	{  "name": "comment.line.semicolon",
+  	   "match": "\\A[\\s]*(~~)?;.*"
+  	},
+    {  "name": "string.quoted.double",
+       "match": "\"[^\"]*\""
+    },
+    {  "name": "string.quoted.single",
+       "match": "`[^']*'"
+    },
+    {  "name": "keyword.control.if",
+       "match": "(IF)(?:\\{)"
+    },
+    {  "name": "keyword.control.do",
+       "match": "(DO)(?:\\{)"
+    },
+    {  "name": "support.function.npr.macro",
+       "match": "@([A-Z][a-z]|[A-Z][A-Z]+[.]|[.])[a-z0-9.]+"
+    },
+    {  "name": "support.function.magic",
+       "match": "[A-Z]\\("
+    },
+    {  "name": "storage.temp.data.def",
+       "match": "(@t|c)\\.[A-Z.]*[a-z]+[a-z.'\\d]*"
+    },
+    {  "name": "support.constant.data.def",
+       "match": "@[A-Z.]*[a-z]+[a-z.'\\d]*"
+    },
+    {  "name": "entity.name.function.macro.call",
+       "match": "@[A-Z.]+"
+    },
+    {  "name": "entity.name.section.macro.title",
+       "match": "\\A(~~)?#?[A-Z0-9.]+\\n"
+    },
+    {  "name": "entity.function.program.call",
+       "match": "%[A-Z.]+[a-z0-9.]+[MRS]?[a-z0-9.]*"
+    },
+    {  "name": "variable.other.local.data.def",
+       "match": "[A-Z.]*[a-z]+[a-z.]*"
+    },
+    {  "name": "variable.other.local",
+       "match": "[A-Z][A-Z\\d.]*"
+    },
+    {  "name": "constant.numeric",
+       "match": "[\\d]\\.*"
+    },
+    {  "match": "(?:[ -~])?(/([A-Z.]*[a-z.]*))",
+       "captures": {
+          "1": { "name": "storage.slash.value" }
+       }
+    },
+    {  "name": "keyword.control.brace",
+       "match": "\\{|\\}"
+    },
+    {  "name": "support.function.paren",
+       "match": "\\(|\\)"
+    },
+    {  "name": "comment.block.zrepl",
+       "match": "\\A[\\s]*(~~)"
+    },
+    {  "name": "keyword.operator",
+       "match": "\\^|\\_|\\&|\\!|\\=|\\+|\\-|\\/|\\\\|\\*|\\%([0-9]+[A-Z]|[0-9]+)?|\\$([0-9]+[A-Z]|[0-9]+)?|\\#([0-9]+[A-Z]|[0-9]+)?|\\:([0-9]+[A-Z]|[0-9]+)?|\\'|\\<|\\>|\\|[0-9]*"
+    }
+  ],
+  "uuid": "e003597e-b7d6-4e85-9bb6-4e50461c29b4"
+}

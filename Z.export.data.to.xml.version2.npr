@@ -1,0 +1,225 @@
+;// A = DPM
+;
+;// /INDENT = number of spaces to indent a line
+;
+;  indexes aren't handled well.
+;  should include "physical" on a segment level as well
+;
+;
+@INIT,
+IF{@Memory.store.file(/MH,/PATH) /PATH_" cannot be opened/edited!"^ERR;
+   @COMPILE,
+   @SAVE},
+ERR;
+
+INIT
+0^/INDENT,
+A^NPR.DPM.dpm.code^NPR.SEG.ele.dpm,
+A#"0."^APP^NPR.APPL.mnemonic,
+A#"1."^DPM,
+"C:\Data Definitions"^ROOT,
+ROOT@Directory.create,
+ROOT_"\"_APP@Directory.create,
+ROOT_"\"_APP_"\"_DPM_".xml"^/PATH,
+""^ROOT^APP^DPM,
+@Memory.allocate("")^/MH
+
+COMPILE
+@DPM
+
+SAVE
+IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
+@Memory.free(/MH)
+
+; #####################
+; ##### Utilities #####
+; #####################
+
+#OPEN
+;//Opens a tag
+;  @OPEN(tag, list of {attribute,value} pairs, no-pad)
+;  @OPEN("dpm",{{"name",DPM},{"active","Y"}}, 1)
+;  If C arguemnt (no-pad) is non-nil, the tag will not
+;  include any indents before it.
+IF{C;" ":/INDENT@OUT},
+@Add(2,/INDENT),
+"<"_A^Z,
+DO{U(B)^X Z_" "_X|0_"="_D(34)_X|1_D(34)^Z},
+Z_">"@OUT;
+
+#CLOSE
+;//Closes a tag
+;  @CLOSE(tag, no-pad)
+;  If B arguemnt (no-pad) is non-nil, the tag will not
+;  include any indents before it.
+@Sub(2,/INDENT),
+IF{B;" ":/INDENT@OUT},
+"</"_A_">"@OUT;
+
+#INSERT
+;//Inserts a value into the output file.
+A@OUT;
+
+OUT
+^@Memory.write(/MH)
+
+EOL
+D(13,10)@OUT
+
+#FIX
+;//The ampersand (&) is an escape character in XML, so we need
+;  to replace it with '&amp;'. Any items that might contain
+;  ampersands should be sent with a @FIX(item) call.
+IF{L(A,"&")=L(A);
+   L(A)^X,
+   DO{X-1^X'<0 IF{A#X="&" (A$X)_"&amp;"_(A%X)^A}}},
+A;
+
+; #####################
+; #### DPM Section ####
+; #####################
+
+DPM
+@DPM.OPEN,
+@DPM.ACTIVE,
+@DPM.LETTERS,
+@DPM.SEGMENTS,
+@DPM.CLOSE
+
+DPM.OPEN
+@OPEN("dpm",{{"name",NPR.DPM.dpm.code}}),
+@EOL
+
+DPM.ACTIVE
+@OPEN("act"),
+@INSERT(@NPR.DPM.active),
+@CLOSE("act",1),
+@EOL
+
+DPM.LETTERS
+@OPEN("letters"),
+@INSERT(@NPR.DPM.letters),
+@CLOSE("letters",1),
+@EOL
+
+DPM.SEGMENTS
+@OPEN("segments"),
+@EOL,
+DO{@Next(NPR.SEG.name) @SEGMENT},
+@CLOSE("segments"),
+@EOL
+
+DPM.CLOSE
+@CLOSE("dpm"),
+@EOL
+
+; #####################
+; ## Segment Section ##
+; #####################
+
+SEGMENT
+@SEGMENT.OPEN,
+@SEGMENT.ACTIVE,
+@SEGMENT.PHYSICAL,
+@SEGMENT.VALUE,
+@SEGMENT.SUBSCRIPTS,
+@SEGMENT.ELEMENTS,
+@SEGMENT.CLOSE
+
+SEGMENT.OPEN
+@OPEN("segment",{{"name",NPR.SEG.name}}),
+@EOL
+
+SEGMENT.ACTIVE
+@OPEN("act"),
+@INSERT(@NPR.SEG.active),
+@CLOSE("act",1),
+@EOL
+
+SEGMENT.PHYSICAL
+@OPEN("physical"),
+; Might be better to make this @NPR.SEG.phy.base:
+@INSERT(@FIX(@NPR.SEG.phy.file)),
+@CLOSE("physical",1),
+@EOL
+
+SEGMENT.VALUE
+; For Indexes
+@OPEN("value"),
+@INSERT(@FIX(@NPR.SEG.phy.val.ele)),
+@CLOSE("value",1),
+@EOL
+
+SEGMENT.SUBSCRIPTS
+@OPEN("subscripts"),
+@EOL,
+DO{@Next(NPR.SEG.sub.urn) @SUBSCRIPT},
+@CLOSE("subscripts"),
+@EOL
+
+SEGMENT.ELEMENTS
+@OPEN("elements"),
+@EOL,
+DO{@Next.get(NPR.SEG.sort.element,NPR.SEG.ele.name) @ELEMENT},
+@CLOSE("elements"),
+@EOL
+
+SEGMENT.CLOSE
+@CLOSE("segment"),
+@EOL
+
+SUBSCRIPT
+@OPEN("subscript",{{"name",@NPR.SEG.sub.element}}),
+@CLOSE("subscript",1),
+@EOL
+
+; #####################
+; ## Element Section ##
+; #####################
+
+ELEMENT
+@ELEMENT.OPEN,
+@ELEMENT.POINTER,
+@ELEMENT.TYPE,
+@ELEMENT.OFFSET,
+@ELEMENT.PHYSICAL,
+@ELEMENT.LOCAL,
+@ELEMENT.CLOSE
+
+ELEMENT.OPEN
+@OPEN("element",{{"name",NPR.SEG.ele.name}}),
+@EOL
+
+ELEMENT.POINTER
+@OPEN("pointer"),
+@INSERT(@NPR.SEG.ele.pointer),
+@CLOSE("pointer",1),
+@EOL
+
+ELEMENT.TYPE
+@OPEN("type"),
+@INSERT(@NPR.SEG.ele.data.type),
+@CLOSE("type",1),
+@EOL
+
+ELEMENT.OFFSET
+@OPEN("offset"),
+@INSERT(@NPR.SEG.ele.offset),
+@CLOSE("offset",1),
+@EOL
+
+ELEMENT.PHYSICAL
+@OPEN("physical"),
+@INSERT(@FIX(@NPR.SEG.ele.phy.address)),
+@CLOSE("physical",1),
+@EOL
+
+ELEMENT.LOCAL
+@OPEN("local"),
+@INSERT(@NPR.SEG.ele.local),
+@CLOSE("local",1),
+@EOL
+
+ELEMENT.CLOSE
+@CLOSE("element"),
+@EOL

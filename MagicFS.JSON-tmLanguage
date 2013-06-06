@@ -1,0 +1,55 @@
+{ "name": "MagicFS",
+  "scopeName": "source.fs",
+  "fileTypes": ["fs"],
+  "patterns": [
+  	{  "name": "comment.line.semicolon",
+  	   "match": "\\A[\\s]*;.*"
+  	},
+  	{  "name": "comment.line.double.slash",
+  	   "match": "//.*"
+  	},
+    {  "name": "string.quoted.double",
+       "match": "\"[^\"]*\""
+    },
+    {  "name": "string.quoted.single",
+       "match": "`[^']*'"
+    },
+    {  "name": "keyword.control.if",
+       "match": "@?IF(?:\\{)"
+    },
+    {  "name": "keyword.control.do",
+       "match": "@?DO(?:\\{)"
+    },
+    {  "name": "entity.name.section.member.title",
+       "match": "\\A:.*"
+    },
+    {  "name": "support.function.intrinsic",
+       "match": "@[A-Z][A-z]"
+    },
+    {  "name": "support.class.extrinsic",
+       "match": "@[a-z][A-z]"
+    },
+    {  "name": "support.function.list.manipulation",
+       "match": "@[A-z][0-9]+"
+    },
+    {  "name": "support.type.code.member",
+       "match": "@[0-9]+"
+    },
+    {  "name": "variable.other.local",
+       "match": "[A-Z]"
+    },
+    {  "name": "variable.parameter.global",
+       "match": "[a-z]"
+    },
+    {  "name": "constant.numeric",
+       "match": "[\\d]\\.*"
+    },
+    {  "name": "keyword.control.brackets",
+       "match": "@?(\\{|\\}|\\[|\\]|\\(|\\))"
+    },
+    {  "name": "keyword.operator",
+       "match": "@?(\\^|\\_|\\&|\\!|\\=|\\+|\\-|\\/|\\\\|\\*|\\%|\\$|\\#|\\'|\\<|\\>|\\|[0-9]*|\\~)"
+    }
+  ],
+  "uuid": "9ac84646-8faf-4939-bd4e-4297c01e210a"
+}
