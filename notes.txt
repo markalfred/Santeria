@@ -67,6 +67,11 @@ Syntax         @Next(element.name[,segment.name])
 Description    Produces code that gets the next value for ...
 Code           "_%(NPR)MACRO..translate.M..nexting(^S)_"
 
+Notes
+  If [segment.name] is specified, use it; else use @main.
+
+  Example: @Next(@MIS.USER.abs.tape.svc)   +&amp;(G)GU[gu]A[gsc]^gsc
+
 
 
 ---- Doc for @EDM.PAT.status.event

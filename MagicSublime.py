@@ -54,7 +54,7 @@ def macroTitle(cursor):
         jump = V.find('@' + item + '[^.]', 0)
         # Find a macro call (@) with a non-period char following it
         if jump is None:
-            sublime.status_message("@" + item + " not found")
+            sublime.status_message("@%s not found") % item
         else:
             jump = V.find(item, jump.begin())
 
@@ -88,7 +88,7 @@ def macroCall(cursor):
         sublime.save_settings('MagicSublime.sublime-settings')
         # If successful, save the macro call position
     except(AttributeError):
-        sublime.status_message("@" + item + " not found")
+        sublime.status_message("@%s not found" % item)
 
 
 def local(cursor):
@@ -126,7 +126,7 @@ def nprMacro(cursor):
     </macrodb>"""
 
     def findMacroInXML(root, item):
-        """Search elements under _root_ for one with the name _item_."""
+        """Search elements under root for one with the name item."""
         for macro in root:
             try:
                 name = macro.find('name').text
@@ -134,9 +134,6 @@ def nprMacro(cursor):
                     return macro
             except(NameError, AttributeError):
                 print('Warning: Unexpected values in XML file.')
-        else:
-            sublime.status_message("@" + item + " not found")
-            return None
 
     def generateDoc(root):
         """Grab all elements under root and make into pretty documentation."""
@@ -147,8 +144,23 @@ def nprMacro(cursor):
         code = root.find('code').text
         comment = root.find('cmt').text
 
+        # Syntax will contain the name and more. Use if it exists, else name
+        if syntax is None:
+            syntax = '@' + name
+
         if syntax is not None:
-            pass
+            msg = msg + "Syntax         %s\n" % syntax  # content at col 16
+        if description is not None:
+            msg = msg + "Description    %s\n" % description
+        if code is not None:
+            msg = msg + "Code           %s\n" % code
+        if comment is not None:
+            msg = msg + "Notes\n"
+            comment = comment.splitlines()
+            for line in comment:
+                msg = msg + "  %s\n" % line.rstrip()
+
+        return msg
 
     item = V.substr(V.word(cursor))
     filepath = (sublime.packages_path() +
@@ -159,7 +171,7 @@ def nprMacro(cursor):
         doc = generateDoc(macro)
         MS.show_output(doc, 'Packages/Text/Plain text.tmLanguage')
     else:
-        sublime.status_message("@" + item + " not found")
+        sublime.status_message("@%s not found" % item)
         return None
 
 
