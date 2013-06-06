@@ -38,7 +38,10 @@ functions = {
 def macroTitle(cursor):
     """Jump to an equivalent macro call.
 
-    When the user invokes the Magic command from a macro call, its position is saved in the settings file. If the user jumped to this macro title from that saved macro call, jump back to that call. If they didn't jump to this title from a call, jump to the first macro call in the procedure."""
+    When the user invokes the Magic command from a macro call, its position is
+    saved in the settings file. If the user jumped to this macro title from
+    that saved macro call, jump back to that call. If they didn't jump to this
+    title from a call, jump to the first macro call in the procedure."""
 
     item = V.substr(V.word(cursor))    # The item on which Magic was invoked
     settings = sublime.load_settings('MagicSublime.sublime-settings')
@@ -64,7 +67,10 @@ def macroTitle(cursor):
 def macroCall(cursor):
     """Jump to the macro definition.
 
-    When the user invokes the Magic command from a macro call, its position is saved in the settings file (see: macroTitle). This allows it to be quickly jumped-back-to once the macro has been reviewed. The macro definition is then found and its header highlighted."""
+    When the user invokes the Magic command from a macro call, its position is
+    saved in the settings file (see: macroTitle). This allows it to be quickly
+    jumped-back-to once the macro has been reviewed. The macro definition is
+    then found and its header highlighted."""
 
     item = V.substr(V.word(cursor))
     settings = sublime.load_settings('MagicSublime.sublime-settings')
@@ -88,16 +94,21 @@ def macroCall(cursor):
 def local(cursor):
     """Show top-of-procedure documentation associated with a local variable.
 
-    If there is documentation for the variable in the procedure header, it will be displayed in the footer window frame."""
+    If there is documentation for the variable in the procedure header, it
+    will be displayed in the footer window frame."""
     pass
 
 
 def dataDef(cursor):
     """Show the ELE documentation for a given data element or segment.
 
-    The source of the documentation is the XML file in lib/Data Definitions/_app_/_dpm_.xml. This file is generated via the Z.zcus.export.data.to.xml procedure which can be found in the CUS2/IMPPROG56 directory.
+    The source of the documentation is the XML file in
+    lib/Data Definitions/_app_/_dpm_.xml.
+    This file is generated via the Z.zcus.export.data.to.xml procedure which
+    can be found in the CUS2/IMPPROG56 directory.
 
-    This documentation should be searchable, so that any element or segment in it can lead to more documentation."""
+    This documentation should be searchable, so that any element or segment
+    in it can lead to more documentation."""
     pass
 
 
@@ -105,6 +116,7 @@ def nprMacro(cursor):
     """Show NPR Macro documentation.
 
     The source of the documentation is the XML file in lib/npr_macros.xml.
+
     Its format:
     <macrodb>
         <macro>
@@ -127,7 +139,7 @@ def nprMacro(cursor):
             return None
 
     def generateDoc(root):
-        """Grab all elements under _root_ and make into pretty documentation."""
+        """Grab all elements under root and make into pretty documentation."""
         msg = ""
         name = root.find('name').text
         syntax = root.find('stx').text
@@ -136,7 +148,7 @@ def nprMacro(cursor):
         comment = root.find('cmt').text
 
         if syntax is not None:
-            msg =
+            pass
 
     item = V.substr(V.word(cursor))
     filepath = (sublime.packages_path() +
@@ -152,9 +164,10 @@ def nprMacro(cursor):
 
 
 def procedure(cursor):
-    """Open the selected procedure in a new tab / Show documentation for procedure
+    """Open the selected procedure in a new tab / Show documentation for
+    procedure.
 
-    Not sure which yet."""
+    ...Not sure which yet."""
 
 
 class MagicCommand(sublime_plugin.TextCommand):
@@ -162,7 +175,8 @@ class MagicCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         """Dispatch of the MagicSublime master hotkey.
 
-        This takes the scope, according to the NPR syntax definition, and performs the action specified in the global maps above."""
+        This takes the scope, according to the NPR syntax definition, and
+        performs the action specified in the global maps above."""
 
         global V        # The current view, used by nearly all functions
 
