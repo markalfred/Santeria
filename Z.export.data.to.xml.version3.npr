@@ -57,24 +57,12 @@ D(13,10)@OUT
 
 #FIX
 ;//The ampersand (&) is an escape character in XML, so we need
-;  to replace it with '&amp;'.
-;//If item has any brackets, they need to be replaced.
-;;;;//If an item has a hard line break (D(13,10)), replace it with
-;;;;   a newline. Otherwise, combine lines.
-; ALSO &apos; and &quot;
+;  to replace it with '&amp;'. Any items that might contain
+;  ampersands should be sent with a @FIX(item) call.
 IF{L(A,"&")=L(A);
    L(A)^X,
    DO{X-1^X'<0 IF{A#X="&" (A$X)_"&amp;"_(A%X)^A}}},
-IF{L(A,"<")=L(A);
-   L(A)^X,
-   DO{X-1^X'<0 IF{A#X="<" (A$X)_"&lt;"_(A%X)^A}}},
-IF{L(A,">")=L(A);
-   L(A)^X,
-   DO{X-1^X'<0 IF{A#X=">" (A$X)_"&gt;"_(A%X)^A}}},
-;IF{L(A,D(13,10))=L(A);
-;   L(A)^X,
-;   DO{X-1^X'<0 IF{A#X=D(13) (A$X)_"\n"_(A%(X+1))^A}}},
-A:0X;
+A;
 
 ; #####################
 ; ## Compile Section ##
@@ -204,9 +192,9 @@ ELEMENT
 @ELEMENT.POINTER,
 @ELEMENT.TYPE,
 @ELEMENT.LENGTH,
-@ELEMENT.ATTRIBUTES,
-@ELEMENT.DESCRIPTION,
-@ELEMENT.DOCUMENTATION,
+;@ELEMENT.ATTRIBUTES,
+;@ELEMENT.DESCRIPTION,
+;@ELEMENT.TECHNICAL.DOC,
 @ELEMENT.CLOSE
 
 ELEMENT.OPEN
@@ -263,23 +251,20 @@ ELEMENT.LENGTH
 
 ELEMENT.ATTRIBUTES
 @OPEN("attributes"),
-DO{@Next(NPR.SEG.ele.attribute.index) @FIX(NPR.SEG.ele.attribute.index)_"="_@FIX(@NPR.SEG.ele.attribute)^Z,
-                                      @INSERT(Z),""^Z,@EOL},
-@CLOSE("attributes",IF{@First(NPR.SEG.ele.attribute.index)_.=.}),
+@INSERT(),
+@CLOSE("attributes",1),
 @EOL
 
 ELEMENT.DESCRIPTION
 @OPEN("description"),
-DO{@Next(NPR.SEG.description.index) @INSERT(@FIX(@NPR.SEG.text)),
-                                    @EOL},
-@CLOSE("description",IF{@First(NPR.SEG.description.index)_.=.}),
+@INSERT(),
+@CLOSE("description",1),
 @EOL
 
 ELEMENT.DOCUMENTATION
 @OPEN("documentation"),
-DO{@Next(NPR.SEG.ele.tech.doc.index) @INSERT(@FIX(@NPR.SEG.ele.tech.doc.text)),
-                                     @EOL},
-@CLOSE("documentation",IF{@First(NPR.SEG.ele.tech.doc.index)_.=.}),
+@INSERT(),
+@CLOSE("documentation",1),
 @EOL
 
 ELEMENT.CLOSE

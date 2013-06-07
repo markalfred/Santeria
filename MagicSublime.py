@@ -15,27 +15,6 @@ import sublime_plugin
 #   settings = a pointer to the MagicSublime settings file
 
 
-# Global maps
-scope = {
-    'entity.name.section.macro.title': 'Macro Title',
-    'entity.name.function.macro.call': 'Macro Call',
-    'variable.other.local': 'Local Variable',
-    'storage.temp.data.def': 'Data Definition',
-    'support.constant.data.def': 'Data Definition',
-    'support.function.npr.macro': 'NPR Macro',
-    'entity.function.program.call': 'Procedure'
-}
-
-functions = {
-    # 'Macro Title': macroTitle,
-    # 'Macro Call': macroCall,
-    # 'Local Variable': local,
-    # 'Data Definition': dataDef,
-    # 'NPR Macro': nprMacro,
-    # 'Procedure': procedure
-}
-
-
 def findInXML(root, item):
     """Search elements under root for one with the name item."""
     for i in root:
@@ -127,68 +106,95 @@ def dataDef(cursor):
 
         If the selected item doesn't include the DPM, the DPM is the same as
         that of the procedure. This can be pulled from the filepath,
-        ie. '/EDM/PAT/depart.npr' should return 'EDM.PAT'
+        ie. '/EDM/PAT/depart/depart.npr' should return 'EDM.PAT'
 
         The only exception to this is the 'Z' DPM, which is the only one that
         doesn't have two parts (...I think)"""
         dpm = re.sub('[a-z]*', '', item).rstrip('.')  # Better way to do this?
-        if dpm is '':
-            f = str(V.file_name()).split('/')  # \ for Windows?
-            if f[len(f) - 2] == 'Z':
+        if dpm == '':
+            if sublime.platform() == 'windows':
+                d = '\\'
+            else:
+                d = '/'
+            f = str(V.file_name()).split(d)
+            if f[len(f) - 3] == 'Z':
                 dpm = 'Z'
             else:
-                dpm = f[len(f) - 3] + '.' + f[len(f) - 2]
+                dpm = f[len(f) - 4] + '.' + f[len(f) - 3]
         return dpm
 
     def generateEleDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        msg = ""
-        element = dpm + '.' + root.find('name').text
-        local = root.find('local').text
-        physical = root.find('').text
-        pointer = root.find('pointer').text
-        dataType = root.find('type').text
-        length = root.find('length').text
+        msg = element = local = physical = pointer = dataType = length = ""
+        attributes = description = documentation = ""
 
-        if element is not None:
-            msg = msg + "Element        %s\n" % element  # content at col 16
-        if local is not None:
-            msg = msg + "Local          %s\n" % local
-        if physical is not None:
-            msg = msg + "Physical       %s\n" % physical
+        try:
+            element = dpm + '.' + root.find('name').text
+            local = root.find('local').text
+            physical = root.find('physical').text
+            segment = root.find('segment').text
+            pointer = root.find('pointer').text
+            dataType = root.find('type').text
+            length = root.find('length').text
+            attributes = root.find('attributes').text
+            description = root.find('description').text
+            documentation = root.find('documentation').text
+
+        except(AttributeError):
+            print('Warning: Missing values in XML file.')
+
+        msg = msg + "Element        %s\n" % element
+        msg = msg + "Local          %s\n" % local
+        msg = msg + "Physical       %s\n" % physical
+        msg = msg + "Segment        %s\n" % segment
         msg = msg + '\n'
-        if pointer is not None:
-            msg = msg + "Pointer        %s\n" % pointer
-        if dataType is not None:
-            msg = msg + "Data Type      %s\n" % dataType
-        if length is not None:
-            msg = msg + "Length         %s\n" % length
-        return msg
+        msg = msg + "Pointer        %s\n" % pointer
+        msg = msg + "Data Type      %s\n" % dataType
+        msg = msg + "Length         %s\n" % length
+
+        msg = msg + "\nAttributes"
+        attributes = attributes.splitlines()
+        for line in attributes:
+            msg = msg + "\n  %s" % line.rstrip()
+
+        msg = msg + "\n\nDescription"
+        description = description.splitlines()
+        for line in description:
+            msg = msg + "\n  %s" % line.rstrip()
+
+        msg = msg + "\n\nTechnical Documentation"
+        documentation = documentation.splitlines()
+        for line in documentation:
+            msg = msg + "\n  %s" % line.rstrip()
+
+        return msg.rstrip()
 
     def generateSegDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        pass  # --generate doc for data segment
+        msg = "Segment        %s" % root.find('name').text
+        return msg
 
     item = V.substr(V.word(cursor))
     dpm = getDpm(item)
+    app = dpm.split('.')[0]
     item = item.lstrip(dpm)  # If the item contained the DPM, remove it.
     filepath = (sublime.packages_path() +
-                '/MagicSublime/lib/Data Definitions' +
-                dpm + '.xml')
-    root = ET.parse(filepath).getroot()
+                '/MagicSublime/lib/Data Definitions/' +
+                app + '/' + dpm + '.xml')
+    segments = ET.parse(filepath).getroot()
 
     # Try first to find a segment with the name item
-    seg = findInXML(root, item)
+    seg = findInXML(segments, item)
     if seg is not None:
         msg = generateSegDoc(seg)
     else:
-        for segment in root:
-            elements = segment.find('elements')
-            for element in elements:
-                ele = findInXML(element, item)
-                if ele is not None:
-                    msg = generateEleDoc(ele)
-                    break
+        for s in segments:
+            elements = s.find('elements')
+            ele = findInXML(elements, item)
+            if ele is not None:
+                msg = generateEleDoc(ele)
+                break
+
     if msg is not None:
         MS.show_output(msg, 'Packages/Text/Plain text.tmLanguage')
     else:
@@ -232,7 +238,7 @@ def nprMacro(cursor):
             comment = comment.splitlines()
             for line in comment:
                 msg = msg + "  %s\n" % line.rstrip()
-        return msg
+        return msg.rstrip()
 
     item = V.substr(V.word(cursor))
     filepath = (sublime.packages_path() +
@@ -251,6 +257,18 @@ def procedure(cursor):
     procedure.
 
     ...Not sure which yet."""
+
+
+# Global maps
+functions = {
+    'entity.name.section.macro.title': macroTitle,
+    'entity.name.function.macro.call': macroCall,
+    # 'variable.other.local': local,
+    'storage.temp.data.def': dataDef,
+    'support.constant.data.def': dataDef,
+    'support.function.npr.macro': nprMacro,
+    # 'entity.function.program.call': procedure
+}
 
 
 class MagicCommand(sublime_plugin.TextCommand):
