@@ -117,3 +117,8 @@ complaint                     hedc      *(HE)HEAA[aa]|2
 status.event                  hedse     *(HE)HEAA[aa]|3
 
 
+
+
+
+
+need to change layout of xml file: don't use attributes, tags only.

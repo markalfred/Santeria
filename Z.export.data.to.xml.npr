@@ -12,9 +12,8 @@ ERR;
 
 INIT
 0^/INDENT,
-A^NPR.DPM.dpm.code^NPR.SEG.ele.dpm,
+A^DPM^NPR.DPM.dpm.code^NPR.SEG.ele.dpm,
 A#"0."^APP^NPR.APPL.mnemonic,
-A#"1."^DPM,
 "C:\Data Definitions"^ROOT,
 ROOT@Directory.create,
 ROOT_"\"_APP@Directory.create,
@@ -35,15 +34,9 @@ IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
 
 #OPEN
 ;//Opens a tag
-;  @OPEN(tag, list of {attribute,value} pairs, no-pad)
-;  @OPEN("dpm",{{"name",DPM},{"active","Y"}}, 1)
-;  If C arguemnt (no-pad) is non-nil, the tag will not
-;  include any indents before it.
-IF{C;" ":/INDENT@OUT},
+;  @OPEN(tag)
 @Add(2,/INDENT),
-"<"_A^Z,
-DO{U(B)^X Z_" "_X|0_"="_D(34)_X|1_D(34)^Z},
-Z_">"@OUT;
+"<"_A_">"@OUT;
 
 #CLOSE
 ;//Closes a tag
@@ -79,13 +72,20 @@ A;
 
 DPM
 @DPM.OPEN,
+@DPM.NAME,
 @DPM.ACTIVE,
 @DPM.LETTERS,
 @DPM.SEGMENTS,
 @DPM.CLOSE
 
 DPM.OPEN
-@OPEN("dpm",{{"name",NPR.DPM.dpm.code}}),
+@OPEN("dpm"),
+@EOL
+
+DPM.NAME
+@OPEN("name"),
+@INSERT(NPR.DPM.dpm.code),
+@CLOSE("name",1),
 @EOL
 
 DPM.ACTIVE
@@ -117,6 +117,7 @@ DPM.CLOSE
 
 SEGMENT
 @SEGMENT.OPEN,
+@SEGMENT.NAME,
 @SEGMENT.ACTIVE,
 @SEGMENT.PHYSICAL,
 @SEGMENT.VALUE,
@@ -125,8 +126,13 @@ SEGMENT
 @SEGMENT.CLOSE
 
 SEGMENT.OPEN
-@OPEN("segment",{{"name",NPR.SEG.name}}),
+@OPEN("segment"),
 @EOL
+
+SEGMENT.NAME
+@OPEN("name"),
+@INSERT(NPR.SEG.name),
+@CLOSE("name",1)
 
 SEGMENT.ACTIVE
 @OPEN("act"),
@@ -166,8 +172,17 @@ SEGMENT.CLOSE
 @CLOSE("segment"),
 @EOL
 
-SUBSCRIPT
-@OPEN("subscript",{{"name",@NPR.SEG.sub.element}}),
+; #####################
+; # Subscript Section #
+; #####################
+
+SUBSCRIPT.OPEN
+@OPEN("subscript"),
+
+SUBSCRIPT.NAME
+@INSERT(@NPR.SEG.sub.element),
+
+SUBSCRIPT.CLOSE
 @CLOSE("subscript",1),
 @EOL
 
@@ -177,6 +192,7 @@ SUBSCRIPT
 
 ELEMENT
 @ELEMENT.OPEN,
+@ELEMENT.NAME,
 @ELEMENT.POINTER,
 @ELEMENT.TYPE,
 @ELEMENT.OFFSET,
@@ -185,8 +201,14 @@ ELEMENT
 @ELEMENT.CLOSE
 
 ELEMENT.OPEN
-@OPEN("element",{{"name",NPR.SEG.ele.name}}),
+@OPEN("element"),
 @EOL
+
+ELEMENT.NAME
+@OPEN("name"),
+@INSERT(NPR.SEG.ele.name),
+@CLOSE("name",1)
+
 
 ELEMENT.POINTER
 @OPEN("pointer"),

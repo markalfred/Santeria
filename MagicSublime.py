@@ -1,5 +1,6 @@
 from magicsubl import ms as MS
 import xml.etree.ElementTree as ET
+import re
 import sublime
 import sublime_plugin
 
@@ -33,6 +34,17 @@ functions = {
     # 'NPR Macro': nprMacro,
     # 'Procedure': procedure
 }
+
+
+def findInXML(root, item):
+    """Search elements under root for one with the name item."""
+    for i in root:
+        try:
+            name = i.find('name').text
+            if name == item:
+                return i
+        except(NameError, AttributeError):
+            print('Warning: Unexpected values in XML file.')
 
 
 def macroTitle(cursor):
@@ -102,20 +114,91 @@ def local(cursor):
 def dataDef(cursor):
     """Show the ELE documentation for a given data element or segment.
 
-    The source of the documentation is the XML file in
-    lib/Data Definitions/_app_/_dpm_.xml.
+    The source of the documentation is
+    MagicSublime/lib/Data Definitions/[app]/[dpm].xml.
     This file is generated via the Z.zcus.export.data.to.xml procedure which
     can be found in the CUS2/IMPPROG56 directory.
 
     This documentation should be searchable, so that any element or segment
     in it can lead to more documentation."""
-    pass
+
+    def getDpm(item):
+        """Pull the DPM from the item, or infer it from the file path.
+
+        If the selected item doesn't include the DPM, the DPM is the same as
+        that of the procedure. This can be pulled from the filepath,
+        ie. '/EDM/PAT/depart.npr' should return 'EDM.PAT'
+
+        The only exception to this is the 'Z' DPM, which is the only one that
+        doesn't have two parts (...I think)"""
+        dpm = re.sub('[a-z]*', '', item).rstrip('.')  # Better way to do this?
+        if dpm is '':
+            f = str(V.file_name()).split('/')  # \ for Windows?
+            if f[len(f) - 2] == 'Z':
+                dpm = 'Z'
+            else:
+                dpm = f[len(f) - 3] + '.' + f[len(f) - 2]
+        return dpm
+
+    def generateEleDoc(root):
+        """Grab all elements under root and make into pretty documentation."""
+        msg = ""
+        element = dpm + '.' + root.find('name').text
+        local = root.find('local').text
+        physical = root.find('').text
+        pointer = root.find('pointer').text
+        dataType = root.find('type').text
+        length = root.find('length').text
+
+        if element is not None:
+            msg = msg + "Element        %s\n" % element  # content at col 16
+        if local is not None:
+            msg = msg + "Local          %s\n" % local
+        if physical is not None:
+            msg = msg + "Physical       %s\n" % physical
+        msg = msg + '\n'
+        if pointer is not None:
+            msg = msg + "Pointer        %s\n" % pointer
+        if dataType is not None:
+            msg = msg + "Data Type      %s\n" % dataType
+        if length is not None:
+            msg = msg + "Length         %s\n" % length
+        return msg
+
+    def generateSegDoc(root):
+        """Grab all elements under root and make into pretty documentation."""
+        pass  # --generate doc for data segment
+
+    item = V.substr(V.word(cursor))
+    dpm = getDpm(item)
+    item = item.lstrip(dpm)  # If the item contained the DPM, remove it.
+    filepath = (sublime.packages_path() +
+                '/MagicSublime/lib/Data Definitions' +
+                dpm + '.xml')
+    root = ET.parse(filepath).getroot()
+
+    # Try first to find a segment with the name item
+    seg = findInXML(root, item)
+    if seg is not None:
+        msg = generateSegDoc(seg)
+    else:
+        for segment in root:
+            elements = segment.find('elements')
+            for element in elements:
+                ele = findInXML(element, item)
+                if ele is not None:
+                    msg = generateEleDoc(ele)
+                    break
+    if msg is not None:
+        MS.show_output(msg, 'Packages/Text/Plain text.tmLanguage')
+    else:
+        sublime.status_message("%s not found" % item)
 
 
 def nprMacro(cursor):
     """Show NPR Macro documentation.
 
-    The source of the documentation is the XML file in lib/npr_macros.xml.
+    The source of the documentation is MagicSublime/lib/npr_macros.xml.
 
     Its format:
     <macrodb>
@@ -125,17 +208,7 @@ def nprMacro(cursor):
         </macro>
     </macrodb>"""
 
-    def findMacroInXML(root, item):
-        """Search elements under root for one with the name item."""
-        for macro in root:
-            try:
-                name = macro.find('name').text
-                if name == item:
-                    return macro
-            except(NameError, AttributeError):
-                print('Warning: Unexpected values in XML file.')
-
-    def generateDoc(root):
+    def generateNprDoc(root):
         """Grab all elements under root and make into pretty documentation."""
         msg = ""
         name = root.find('name').text
@@ -159,20 +232,18 @@ def nprMacro(cursor):
             comment = comment.splitlines()
             for line in comment:
                 msg = msg + "  %s\n" % line.rstrip()
-
         return msg
 
     item = V.substr(V.word(cursor))
     filepath = (sublime.packages_path() +
                 '/MagicSublime/lib/npr_macros.xml')
-    macrodb = ET.parse(filepath).getroot()
-    macro = findMacroInXML(macrodb, item)
+    root = ET.parse(filepath).getroot()
+    macro = findInXML(root, item)
     if macro is not None:
-        doc = generateDoc(macro)
-        MS.show_output(doc, 'Packages/Text/Plain text.tmLanguage')
+        msg = generateNprDoc(macro)
+        MS.show_output(msg, 'Packages/Text/Plain text.tmLanguage')
     else:
         sublime.status_message("@%s not found" % item)
-        return None
 
 
 def procedure(cursor):
