@@ -103,9 +103,10 @@ Technical Doc...
 
 "rulers": [30,40]
 
- Segment:   EDM.PAT.edm.data
-Physical:   *(HE)HEAA[aa]
-Children:
+
+Segment        EDM.PAT.edm.data
+Physical       *(HE)HEAA[aa]
+Children
    edm.data.departure                   *(HE)HEAA[aa]DEP
    edm.data.edit.history                *(HE)HEAA[aa]EH[heEDq]
 

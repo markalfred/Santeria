@@ -125,8 +125,8 @@ def dataDef(cursor):
 
     def generateEleDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        msg = element = local = physical = pointer = dataType = length = ""
-        attributes = description = documentation = ""
+        # Define a bunch of variables upfront to avoid errors/lots of checks.
+        msg = attributes = description = documentation = ""
 
         try:
             element = dpm + '.' + root.find('name').text
@@ -136,42 +136,62 @@ def dataDef(cursor):
             pointer = root.find('pointer').text
             dataType = root.find('type').text
             length = root.find('length').text
-            attributes = root.find('attributes').text
-            description = root.find('description').text
-            documentation = root.find('documentation').text
-
+            for i in root.findall('attributes'):
+                attributes += '\n  %s' % i.text
+            for i in root.findall('description'):
+                description += '\n  %s' % i.text
+            for i in root.findall('documentation'):
+                documentation += '\n  %s' % i.text
         except(AttributeError):
             print('Warning: Missing values in XML file.')
 
-        msg = msg + "Element        %s\n" % element
-        msg = msg + "Local          %s\n" % local
-        msg = msg + "Physical       %s\n" % physical
-        msg = msg + "Segment        %s\n" % segment
-        msg = msg + '\n'
-        msg = msg + "Pointer        %s\n" % pointer
-        msg = msg + "Data Type      %s\n" % dataType
-        msg = msg + "Length         %s\n" % length
-
-        msg = msg + "\nAttributes"
-        attributes = attributes.splitlines()
-        for line in attributes:
-            msg = msg + "\n  %s" % line.rstrip()
-
-        msg = msg + "\n\nDescription"
-        description = description.splitlines()
-        for line in description:
-            msg = msg + "\n  %s" % line.rstrip()
-
-        msg = msg + "\n\nTechnical Documentation"
-        documentation = documentation.splitlines()
-        for line in documentation:
-            msg = msg + "\n  %s" % line.rstrip()
+        msg += "Element        %s\n" % element
+        msg += "Local          %s\n" % local
+        msg += "Physical       %s\n" % physical
+        msg += "Segment        %s\n" % segment
+        msg += '\n'
+        msg += "Pointer        %s\n" % pointer
+        msg += "Data Type      %s\n" % dataType
+        msg += "Length         %s\n" % length
+        msg += '\n'
+        msg += "Attributes %s\n" % attributes
+        msg += "Description %s\n" % description
+        msg += "Technical Documentation %s" % documentation
 
         return msg.rstrip()
 
     def generateSegDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        msg = "Segment        %s" % root.find('name').text
+        msg = segment = physical = children = elements = ""
+
+        try:
+            segment = dpm + '.' + root.find('name').text
+            physical = root.find('physical').text
+
+            for i in root.findall('child'):
+                children += '\n  %s' % i.text
+            for i in root.find('elements').findall('element'):
+                elementName = str(i.find('name').text)
+                elementLocal = str(i.find('local').text)
+                elementPhysical = str(i.find('physical').text)
+                elements += ('\n' +
+                             elementName +
+                             ' ' * (30 - len(elementName)) +
+                             elementLocal +
+                             ' ' * (10 - len(elementLocal)) +
+                             elementPhysical)
+
+        except(AttributeError):
+            print('Warning: Missing values in XML file.')
+
+        msg += "Segment        %s\n" % segment
+        msg += "Physical       %s\n" % physical
+        msg += "Children %s\n" % children
+        msg += '\n'
+        msg += "Element                       Local     Physical"
+        msg += '\n'
+        msg += str(elements)
+
         return msg
 
     item = V.substr(V.word(cursor))
@@ -181,7 +201,11 @@ def dataDef(cursor):
     filepath = (sublime.packages_path() +
                 '/MagicSublime/lib/Data Definitions/' +
                 app + '/' + dpm + '.xml')
-    segments = ET.parse(filepath).getroot()
+    try:
+        segments = ET.parse(filepath).getroot()
+    except(IOError):
+        sublime.status_message('"%s" definitions not found!!' % dpm)
+        raise
 
     # Try first to find a segment with the name item
     seg = findInXML(segments, item)
@@ -216,28 +240,29 @@ def nprMacro(cursor):
 
     def generateNprDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        msg = ""
-        name = root.find('name').text
-        syntax = root.find('stx').text
-        description = root.find('dsc').text
-        code = root.find('code').text
-        comment = root.find('cmt').text
+        msg = name = syntax = description = code = comment = ""
 
+        try:
+            name = root.find('name').text
+            syntax = root.find('stx').text
+            description = root.find('dsc').text
+            code = root.find('code').text
+            comment = root.find('cmt').text
+        except(AttributeError):
+            print('Warning: Missing values in XML file.')
+
+        print(syntax, name)
         # Syntax will contain the name and more. Use if it exists, else name
         if syntax is None:
-            syntax = '@' + name
+            syntax = '@%s' % name
 
-        if syntax is not None:
-            msg = msg + "Syntax         %s\n" % syntax  # content at col 16
-        if description is not None:
-            msg = msg + "Description    %s\n" % description
-        if code is not None:
-            msg = msg + "Code           %s\n" % code
-        if comment is not None:
-            msg = msg + "Notes\n"
-            comment = comment.splitlines()
-            for line in comment:
-                msg = msg + "  %s\n" % line.rstrip()
+        msg += "Syntax         %s\n" % syntax  # content at col 16
+        msg += "Description    %s\n" % description
+        msg += "Code           %s\n" % code
+        msg += "Notes\n"
+        comment = comment.splitlines()
+        for line in comment:
+            msg += "  %s\n" % line.rstrip()
         return msg.rstrip()
 
     item = V.substr(V.word(cursor))
@@ -266,6 +291,7 @@ functions = {
     # 'variable.other.local': local,
     'storage.temp.data.def': dataDef,
     'support.constant.data.def': dataDef,
+    'variable.other.local.data.def': dataDef,
     'support.function.npr.macro': nprMacro,
     # 'entity.function.program.call': procedure
 }
