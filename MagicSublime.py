@@ -125,7 +125,6 @@ def dataDef(cursor):
 
     def generateEleDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        # Define a bunch of variables upfront to avoid errors/lots of checks.
         msg = attributes = description = documentation = ""
 
         try:
@@ -148,8 +147,8 @@ def dataDef(cursor):
         msg += "Element        %s\n" % element
         msg += "Local          %s\n" % local
         msg += "Physical       %s\n" % physical
-        msg += "Segment        %s\n" % segment
         msg += '\n'
+        msg += "Segment        %s\n" % segment
         msg += "Pointer        %s\n" % pointer
         msg += "Data Type      %s\n" % dataType
         msg += "Length         %s\n" % length
