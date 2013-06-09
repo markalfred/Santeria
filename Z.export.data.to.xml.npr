@@ -2,7 +2,8 @@
 ;
 ;// /INDENT = number of spaces to indent a line
 ;
-;
+; might want to handle empty tags differently. <local/> will save on file
+; size over <local></local>.
 ;
 @INIT,
 IF{@Memory.store.file(/MH,/PATH) /PATH_" cannot be opened/edited!"^ERR;
@@ -30,24 +31,22 @@ IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
 ; #####################
 
 #OPEN
-;//Opens a tag
-;  @OPEN(tag)
+;//Opens a tag.
 " ":/INDENT@OUT,
 @Add(2,/INDENT),
-"<"_A_">"@OUT;
+"<"_A_">"@OUT,
+@EOL;
 
 #CLOSE
-;//Closes a tag
-;  @CLOSE(tag, no-pad)
-;  If B arguemnt (no-pad) is non-nil, the tag will not
-;  include any indents before it.
+;//Closes a tag.
 @Sub(2,/INDENT),
-IF{B;" ":/INDENT@OUT},
-"</"_A_">"@OUT;
+"</"_A_">"@OUT,
+@EOL;
 
-#INSERT
-;//Inserts a value into the output file.
-A@OUT;
+#TAG
+;//Opens a tag A, inserts its value B, and closes the tag.
+;  @TAG(name,@NPR.ELE.name)
+"<"_A_IF{B ">"_B_"</"_A_">";"/>"}_@EOL;
 
 OUT
 ^@Memory.write(/MH)
@@ -56,25 +55,12 @@ EOL
 D(13,10)@OUT
 
 #FIX
-;//The ampersand (&) is an escape character in XML, so we need
-;  to replace it with '&amp;'.
-;//If item has any brackets, they need to be replaced.
-;;;;//If an item has a hard line break (D(13,10)), replace it with
-;;;;   a newline. Otherwise, combine lines.
-; ALSO &apos; and &quot;
-IF{L(A,"&")=L(A);
-   L(A)^X,
-   DO{X-1^X'<0 IF{A#X="&" (A$X)_"&amp;"_(A%X)^A}}},
-IF{L(A,"<")=L(A);
-   L(A)^X,
-   DO{X-1^X'<0 IF{A#X="<" (A$X)_"&lt;"_(A%X)^A}}},
-IF{L(A,">")=L(A);
-   L(A)^X,
-   DO{X-1^X'<0 IF{A#X=">" (A$X)_"&gt;"_(A%X)^A}}},
-;IF{L(A,D(13,10))=L(A);
-;   L(A)^X,
-;   DO{X-1^X'<0 IF{A#X=D(13) (A$X)_"\n"_(A%(X+1))^A}}},
-A:0X;
+D(34)_"'<>&"^CHARS,
+`&quot;,&apos;,&lt;,&gt;,&ampl;'^ESCAPE,
+L(A)^X,
+DO{X-1^X'<0 IF{L(CHARS,A#X)^Y=L(CHARS);
+               (A$X)_(ESCAPE|Y)_(A%X)^A}},
+A;
 
 ; #####################
 ; ## Compile Section ##
@@ -82,206 +68,53 @@ A:0X;
 
 COMPILE
 @OPEN("segments"),
-@EOL,
 DO{@Next(NPR.SEG.name) @SEGMENT},
-@CLOSE("segments"),
-@EOL
+@CLOSE("segments")
 
 ; #####################
 ; ## Segment Section ##
 ; #####################
 
 SEGMENT
-@SEGMENT.OPEN,
-@SEGMENT.NAME,
-@SEGMENT.PHYSICAL,
-@SEGMENT.VALUE,
+@OPEN("segment"),
+@TAG("name",NPR.SEG.name),
+@TAG("physical",@FIX(@NPR.SEG.phy.base)),
+@TAG("value",@FIX(@NPR.SEG.phy.val.ele)),
 @SEGMENT.CHILDREN,
 @SEGMENT.SUBSCRIPTS,
 @SEGMENT.ELEMENTS,
-@SEGMENT.CLOSE
-
-SEGMENT.OPEN
-@OPEN("segment"),
-@EOL
-
-SEGMENT.NAME
-@OPEN("name"),
-@INSERT(NPR.SEG.name),
-@CLOSE("name",1),
-@EOL
-
-SEGMENT.PHYSICAL
-@OPEN("physical"),
-@INSERT(@FIX(@NPR.SEG.phy.base)),
-@CLOSE("physical",1),
-@EOL
-
-SEGMENT.VALUE
-; For Indexes
-@OPEN("value"),
-@INSERT(@FIX(@NPR.SEG.phy.val.ele)),
-@CLOSE("value",1),
-@EOL
-
-;
+@CLOSE("segment")
 
 SEGMENT.CHILDREN
 @OPEN("children"),
-@EOL,
-DO{@Next(NPR.SEG.child.segment) @CHILD},
-@CLOSE("children"),
-@EOL
+DO{@Next(NPR.SEG.child.segment) @TAG("child",NPR.SEG.child.segment)},
+@CLOSE("children")
 
 SEGMENT.SUBSCRIPTS
 @OPEN("subscripts"),
-@EOL,
-DO{@Next(NPR.SEG.sub.urn) @SUBSCRIPT},
-@CLOSE("subscripts"),
-@EOL
+DO{@Next(NPR.SEG.sub.urn) @TAG("subscript",@NPR.SEG.sub.element)},
+@CLOSE("subscripts")
 
 SEGMENT.ELEMENTS
 @OPEN("elements"),
-@EOL,
 DO{@Next.get(NPR.SEG.sort.element,NPR.SEG.ele.name) @ELEMENT},
-@CLOSE("elements"),
-@EOL
-
-;
-
-SEGMENT.CLOSE
-@CLOSE("segment"),
-@EOL
-
-; #####################
-; ### Child Section ###
-; #####################
-
-CHILD
-@CHILD.OPEN,
-@CHILD.NAME,
-@CHILD.CLOSE
-
-CHILD.OPEN
-@OPEN("child")
-
-CHILD.NAME
-@INSERT(NPR.SEG.child.segment)
-
-CHILD.CLOSE
-@CLOSE("child",1),
-@EOL
-
-; #####################
-; # Subscript Section #
-; #####################
-
-SUBSCRIPT
-@SUBSCRIPT.OPEN,
-@SUBSCRIPT.NAME,
-@SUBSCRIPT.CLOSE
-
-SUBSCRIPT.OPEN
-@OPEN("subscript")
-
-SUBSCRIPT.NAME
-@INSERT(@NPR.SEG.sub.element)
-
-SUBSCRIPT.CLOSE
-@CLOSE("subscript",1),
-@EOL
+@CLOSE("elements")
 
 ; #####################
 ; ## Element Section ##
 ; #####################
 
 ELEMENT
-@ELEMENT.OPEN,
-@ELEMENT.NAME,
-@ELEMENT.LOCAL,
-@ELEMENT.PHYSICAL,
-@ELEMENT.SEGMENT,
-@ELEMENT.POINTER,
-@ELEMENT.TYPE,
-@ELEMENT.LENGTH,
-@ELEMENT.ATTRIBUTES,
-@ELEMENT.DESCRIPTION,
-@ELEMENT.DOCUMENTATION,
-@ELEMENT.CLOSE
-
-ELEMENT.OPEN
 @OPEN("element"),
-@EOL
-
-ELEMENT.NAME
-@OPEN("name"),
-@INSERT(NPR.SEG.ele.name),
-@CLOSE("name",1),
-@EOL
-
-ELEMENT.LOCAL
-@OPEN("local"),
-@INSERT(@NPR.SEG.ele.local),
-@CLOSE("local",1),
-@EOL
-
-ELEMENT.PHYSICAL
-@OPEN("physical"),
-@INSERT(@FIX(@NPR.SEG.ele.phy.address)),
-@CLOSE("physical",1),
-@EOL
-
-ELEMENT.SEGMENT
-@OPEN("segment"),
-@INSERT(@NPR.SEG.ele.seg),
-@CLOSE("segment",1),
-@EOL
-
-ELEMENT.POINTER
-@OPEN("pointer"),
-@INSERT(@NPR.SEG.ele.pointer),
-@CLOSE("pointer",1),
-@EOL
-
-ELEMENT.TYPE
-@OPEN("type"),
-@INSERT(@NPR.SEG.ele.data.type),
-@CLOSE("type",1),
-@EOL
-
-ELEMENT.OFFSET
-@OPEN("offset"),
-@INSERT(@NPR.SEG.ele.offset),
-@CLOSE("offset",1),
-@EOL
-
-ELEMENT.LENGTH
-@OPEN("length"),
-@INSERT(@NPR.SEG.ele.length),
-@CLOSE("length",1),
-@EOL
-
-ELEMENT.ATTRIBUTES
-@OPEN("attributes"),
-DO{@Next(NPR.SEG.ele.attribute.index) @FIX(NPR.SEG.ele.attribute.index)_"="_@FIX(@NPR.SEG.ele.attribute)^Z,
-                                      @INSERT(Z),""^Z,@EOL},
-@CLOSE("attributes",IF{@First(NPR.SEG.ele.attribute.index)_.=.}),
-@EOL
-
-ELEMENT.DESCRIPTION
-@OPEN("description"),
-DO{@Next(NPR.SEG.description.index) @INSERT(@FIX(@NPR.SEG.text)),
-                                    @EOL},
-@CLOSE("description",IF{@First(NPR.SEG.description.index)_.=.}),
-@EOL
-
-ELEMENT.DOCUMENTATION
-@OPEN("documentation"),
-DO{@Next(NPR.SEG.ele.tech.doc.index) @INSERT(@FIX(@NPR.SEG.ele.tech.doc.text)),
-                                     @EOL},
-@CLOSE("documentation",IF{@First(NPR.SEG.ele.tech.doc.index)_.=.}),
-@EOL
-
-ELEMENT.CLOSE
-@CLOSE("element"),
-@EOL
+@TAG("name",NPR.SEG.ele.name),
+@TAG("local",@NPR.SEG.ele.local),
+@TAG("physical",@FIX(@NPR.SEG.ele.phy.address)),
+@TAG("segment",@NPR.SEG.ele.seg),
+@TAG("pointer",@NPR.SEG.ele.pointer),
+@TAG("type",@NPR.SEG.ele.data.type),
+@TAG("offset",@NPR.SEG.ele.offset),
+@TAG("length",@NPR.SEG.ele.length),
+DO{@Next(NPR.SEG.ele.attribute.index) @TAG("attribute",@FIX(NPR.SEG.ele.attribute.index_"="_@NPR.SEG.ele.attribute))},
+DO{@Next(NPR.SEG.description.index) @TAG("description",@FIX(@NPR.SEG.text))},
+DO{@Next(NPR.SEG.ele.tech.doc.index) @TAG("documentation",@FIX(@NPR.SEG.ele.tech.doc.text))},
+@CLOSE("element")
