@@ -183,7 +183,7 @@ account, the two patient files are merged, and the temp file is deleted.  If the
 merge program (%EDM.PAT.merge.edm.data) is unable to delete the temp patient
 from the Wait List (because it is locked by another job), a bkg transaction will
 be set up with this piece set.
- 
+
 Thus, this will only exist for a "D" (Delete) type transaction for which the
 patient file no longer exists.
         </documentation>
@@ -468,11 +468,11 @@ PRE1=@.new@Tr.l2u^@.new^@.new.ext^G
 PRE09=@.new@Tr.l2u^@.new^@.new.ext
         </attributes>
         <description></description>
-        <documentation>This can be set in one of two ways:    
-  
-1) The user can manually change this value via the 'Update Status Event' rtn.  
-2) In the Status Event Dictionary, if a status event is associated with a     
-function, and the user performs that function, then the patient's status     
+        <documentation>This can be set in one of two ways:
+
+1) The user can manually change this value via the 'Update Status Event' rtn.
+2) In the Status Event Dictionary, if a status event is associated with a
+function, and the user performs that function, then the patient's status
 event is automatically updated to that status event.
         </documentation>
       </element>
@@ -487,9 +487,9 @@ event is automatically updated to that status event.
         <attributes>CTF=pt wait number=Patient's wait list number
         </attributes>
         <description></description>
-        <documentation>This is used to place all "waiting" patients into an ordered list.  Ideally, 
-patients should be "seen" by a doctor in the order of this list. This number is 
-assigned by the user during Reception.  Or, this value is calcualted 
+        <documentation>This is used to place all "waiting" patients into an ordered list.  Ideally,
+patients should be "seen" by a doctor in the order of this list. This number is
+assigned by the user during Reception.  Or, this value is calcualted
 automatically if the background job is filing a new patient.
         </documentation>
       </element>
@@ -504,9 +504,9 @@ automatically if the background job is filing a new patient.
         <attributes>CTF=pt repeat visit=Repeat Visit
         </attributes>
         <description></description>
-        <documentation>This program is setup by EDM.PAT.repeat.visit.check.  When a patient 
-registration is detected by the bkg job, the bkg job will call that program. 
-That program will then try to mark that patient as "Y" if the patient has prior 
+        <documentation>This program is setup by EDM.PAT.repeat.visit.check.  When a patient
+registration is detected by the bkg job, the bkg job will call that program.
+That program will then try to mark that patient as "Y" if the patient has prior
 ER visits in a specified timeframe. "Y" prior visits found
         </documentation>
       </element>
@@ -548,8 +548,8 @@ PRE09=@.new@Tr.l2u^@.new^@.new.ext
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The lowest status of all Physician Documentation Reports.  
-  
+        <documentation>The lowest status of all Physician Documentation Reports.
+
 These statuses are defined in MIS.PD.STATUS.statuses.
         </documentation>
       </element>
@@ -564,8 +564,8 @@ These statuses are defined in MIS.PD.STATUS.statuses.
         <attributes>CTF=pt severity=Patient's Severity
         </attributes>
         <description></description>
-        <documentation>Patient's are given a severity of 9 upon completion of the reception routine.  
-This can be changed to any value between 1-9 by clicking on the keywords "pt 
+        <documentation>Patient's are given a severity of 9 upon completion of the reception routine.
+This can be changed to any value between 1-9 by clicking on the keywords "pt
 severity", "pt priority", and "pt priority name".
         </documentation>
       </element>
@@ -579,10 +579,10 @@ severity", "pt priority", and "pt priority name".
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the patient's ADM status (e.g, REG ER).  We need a way to detect when 
-the patient's status is changed (e.g., from PRE ER to REG ER).  When CEN 
-transactions are picked up from the ADM xfer queue, we compare this value with 
-the value which is placed on the xfer queue, and if different, appropriate 
+        <documentation>This is the patient's ADM status (e.g, REG ER).  We need a way to detect when
+the patient's status is changed (e.g., from PRE ER to REG ER).  When CEN
+transactions are picked up from the ADM xfer queue, we compare this value with
+the value which is placed on the xfer queue, and if different, appropriate
 action is taken.
         </documentation>
       </element>
@@ -596,8 +596,8 @@ action is taken.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Equals "Y" if the patient is an observation patient, else equals nil.  
-  
+        <documentation>Equals "Y" if the patient is an observation patient, else equals nil.
+
 See tech doc for data def @EDM.PAT.adm.status for explanation.
         </documentation>
       </element>
@@ -624,7 +624,7 @@ See tech doc for data def @EDM.PAT.adm.status for explanation.
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the bill date (@bill.txn.date) for the the acuity based care level  
+        <documentation>This is the bill date (@bill.txn.date) for the the acuity based care level
 charge.
         </documentation>
       </element>
@@ -638,7 +638,7 @@ charge.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the billing sequence number (@bill.txn.q) for the the acuity based care  
+        <documentation>This is the billing sequence number (@bill.txn.q) for the the acuity based care
 level charge.
         </documentation>
       </element>
@@ -652,17 +652,17 @@ level charge.
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the date for which the patient appears on the daily log.  
-  
-- It will usually be the arrival date if the patient was entered as a PRE ER  
-patient first (either through Reception or ADM's PRE ER routine)  
-  
-- It will usually be the service date if the patient was immediately registered.  
-  
-- The daily log is not updated however, so if a patient's arrival or service 
-date was edited, the log date would not necessarily be equal to either of them. 
-(it would still reflect the original value)  
-* This is an important consideration - if the log date was edited, it could be  
+        <documentation>This is the date for which the patient appears on the daily log.
+
+- It will usually be the arrival date if the patient was entered as a PRE ER
+patient first (either through Reception or ADM's PRE ER routine)
+
+- It will usually be the service date if the patient was immediately registered.
+
+- The daily log is not updated however, so if a patient's arrival or service
+date was edited, the log date would not necessarily be equal to either of them.
+(it would still reflect the original value)
+* This is an important consideration - if the log date was edited, it could be
 backdated so that the acuity calculation would be missed by the midnight run.
         </documentation>
       </element>
@@ -677,13 +677,13 @@ backdated so that the acuity calculation would be missed by the midnight run.
         <attributes>CH=ADM,SVC
         </attributes>
         <description></description>
-        <documentation>For accounts that have gone from ER to ADM IN or REG SDC, this element 
-represents which date/time is being used as the date/time the account left the 
-ER.  
-  
-Set to "ADM" for ER to ADM IN accts and use ADM.PAT.admit.date + admit.time.  
-Set to "SVC" for ER to REG SDC accts and use ADM.PAT.service.date + service.time  
-Will have no value ("") for ER accts.  
+        <documentation>For accounts that have gone from ER to ADM IN or REG SDC, this element
+represents which date/time is being used as the date/time the account left the
+ER.
+
+Set to "ADM" for ER to ADM IN accts and use ADM.PAT.admit.date + admit.time.
+Set to "SVC" for ER to REG SDC accts and use ADM.PAT.service.date + service.time
+Will have no value ("") for ER accts.
         </documentation>
       </element>
       <element>
@@ -720,8 +720,8 @@ Will have no value ("") for ER accts.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Set to "Y" if this patient is a transfer from ADM, i.e. a /A lookup was  
-performed in the reception routine.
+        <documentation>Set to "Y" if this patient is a transfer from ADM, i.e. a /A lookup was</documentation>
+        <documentation>performed in the reception routine.
         </documentation>
       </element>
       <element>
@@ -773,8 +773,8 @@ performed in the reception routine.
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The date the record was locked last.  This date will be set when the record is  
-locked by the file maintenance job, and deleted if the record is ever unlocked  
+        <documentation>The date the record was locked last.  This date will be set when the record is
+locked by the file maintenance job, and deleted if the record is ever unlocked
 manually.  This date is used as the 'date' subscript on @locked.date.x
         </documentation>
       </element>
@@ -789,7 +789,7 @@ manually.  This date is used as the 'date' subscript on @locked.date.x
         <attributes>VAL=/ADM.DFT.PT.ID
         </attributes>
         <description></description>
-        <documentation>Used for DFTC attributes on patient ID screens.  Also, when this is set, program 
+        <documentation>Used for DFTC attributes on patient ID screens.  Also, when this is set, program
 %ADM.PAT.id will not ask for confirmation when ID'ing patient's by acct number.
         </documentation>
       </element>
@@ -829,8 +829,8 @@ manually.  This date is used as the 'date' subscript on @locked.date.x
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is used to define the @EDM.PAT.delete.acct.x segment.  This is the 
-firstsubscript of that index.  It is the date on which the patient was filed to 
+        <documentation>This is used to define the @EDM.PAT.delete.acct.x segment.  This is the
+firstsubscript of that index.  It is the date on which the patient was filed to
 the delete.acct.x index.
         </documentation>
       </element>
@@ -844,9 +844,9 @@ the delete.acct.x index.
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is used to define the @EDM.PAT.daily.log.x data segment.  This is the first 
-subscript of that index.  This is the date that a patient first arrived into the 
-ED.  This is arrived at by taking the lesser of the Service Date and the Triage 
+        <documentation>This is used to define the @EDM.PAT.daily.log.x data segment.  This is the first
+subscript of that index.  This is the date that a patient first arrived into the
+ED.  This is arrived at by taking the lesser of the Service Date and the Triage
 Date.
         </documentation>
       </element>
@@ -860,9 +860,9 @@ Date.
         <length>4</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is used to define the @EDM.PAT.daily.log.x data segment.  This is a 
-subscript of that index.  This is the time that a patient first arrived into the 
-ED.  This is arrived at by taking the lesser of the Service Time and the Triage 
+        <documentation>This is used to define the @EDM.PAT.daily.log.x data segment.  This is a
+subscript of that index.  This is the time that a patient first arrived into the
+ED.  This is arrived at by taking the lesser of the Service Time and the Triage
 Time.
         </documentation>
       </element>
@@ -878,11 +878,11 @@ Time.
 VAL=@EDM.PRI.name[@EDM.PAT.priority]
         </attributes>
         <description></description>
-        <documentation>This has been added so that the field will be available as a Data Field.The CTF 
-and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield 
-into the Data field dictionary with the proper Magic code defined.It is similar 
-to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the 
-definitions are in MIS.  This way the field is available in such places as OA 
+        <documentation>This has been added so that the field will be available as a Data Field.The CTF
+and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield
+into the Data field dictionary with the proper Magic code defined.It is similar
+to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the
+definitions are in MIS.  This way the field is available in such places as OA
 messages
         </documentation>
       </element>
@@ -898,11 +898,11 @@ messages
 VAL=@EDM.COMPLAINT.name[@EDM.PAT.complaint]
         </attributes>
         <description></description>
-        <documentation>This has been added so that the field will be available as a Data Field.The CTF 
-and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield 
-into the Data field dictionary with the proper Magic code defined.It is similar 
-to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the 
-definitions are in MIS.  This way the field is available in such places as OA 
+        <documentation>This has been added so that the field will be available as a Data Field.The CTF
+and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield
+into the Data field dictionary with the proper Magic code defined.It is similar
+to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the
+definitions are in MIS.  This way the field is available in such places as OA
 messages
         </documentation>
       </element>
@@ -918,11 +918,11 @@ messages
 VAL=@UNV.USER.name[@EDM.PAT.nurse]
         </attributes>
         <description></description>
-        <documentation>This has been added so that the field will be available as a Data Field.The CTF 
-and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield 
-into the Data field dictionary with the proper Magic code defined.It is similar 
-to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the 
-definitions are in MIS.  This way the field is available in such places as OA 
+        <documentation>This has been added so that the field will be available as a Data Field.The CTF
+and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield
+into the Data field dictionary with the proper Magic code defined.It is similar
+to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the
+definitions are in MIS.  This way the field is available in such places as OA
 messages
         </documentation>
       </element>
@@ -938,11 +938,11 @@ messages
 VAL=@UNV.USER.name[@EDM.PAT.practitioner]
         </attributes>
         <description></description>
-        <documentation>This has been added so that the field will be available as a Data Field.The CTF 
-and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield 
-into the Data field dictionary with the proper Magic code defined.It is similar 
-to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the 
-definitions are in MIS.  This way the field is available in such places as OA 
+        <documentation>This has been added so that the field will be available as a Data Field.The CTF
+and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield
+into the Data field dictionary with the proper Magic code defined.It is similar
+to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the
+definitions are in MIS.  This way the field is available in such places as OA
 messages
         </documentation>
       </element>
@@ -958,11 +958,11 @@ messages
 VAL=@EDM.RTA.name[@EDM.PAT.room]
         </attributes>
         <description></description>
-        <documentation>This has been added so that the field will be available as a Data Field.The CTF 
-and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield 
-into the Data field dictionary with the proper Magic code defined.It is similar 
-to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the 
-definitions are in MIS.  This way the field is available in such places as OA 
+        <documentation>This has been added so that the field will be available as a Data Field.The CTF
+and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield
+into the Data field dictionary with the proper Magic code defined.It is similar
+to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the
+definitions are in MIS.  This way the field is available in such places as OA
 messages
         </documentation>
       </element>
@@ -978,11 +978,11 @@ messages
 VAL=@EDM.EVENTS.name[@EDM.PAT.status.event]
         </attributes>
         <description></description>
-        <documentation>This has been added so that the field will be available as a Data Field.The CTF 
-and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield 
-into the Data field dictionary with the proper Magic code defined.It is similar 
-to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the 
-definitions are in MIS.  This way the field is available in such places as OA 
+        <documentation>This has been added so that the field will be available as a Data Field.The CTF
+and VAL are provided so that the MIS.DATA.DICT.init.edm will build thisfield
+into the Data field dictionary with the proper Magic code defined.It is similar
+to how the Magic Code is defined in EDM's Keyword dictionaryexcept that the
+definitions are in MIS.  This way the field is available in such places as OA
 messages
         </documentation>
       </element>
@@ -1252,7 +1252,7 @@ PRE09=IF{"Y"=@EDM.PARAM.use.upper.case @.new@Tr.l2u^@.new^@.new.ext}
         <description></description>
         <documentation>This is a CDS (if any) which was filled out when using the Admission Request
 routine. The results are stored in:
- 
+
 EDM.PAT.edm.data.adm.rqst.cds.rs   (scalars)
 EDM.PAT.edm.data.adm.rqst.cds.rsm  (multiples)
         </documentation>
@@ -1535,7 +1535,7 @@ Billing date - when the activity being billed for was entered into the system.
         <attributes>CH=C,I
         </attributes>
         <description></description>
-        <documentation>Intervention  
+        <documentation>Intervention
 Care Level
         </documentation>
       </element>
@@ -1549,14 +1549,14 @@ Care Level
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Indicates more specifically the basis for an intervention-based charge.   
-F - Flat Rate  
-E - Elapsed Time  
-Q - Quantity   
-R - Query Response  
-  
-Possible values for Care-Level Charges.  
-S  - System generated (acuity based)  
+        <documentation>Indicates more specifically the basis for an intervention-based charge.
+F - Flat Rate
+E - Elapsed Time
+Q - Quantity
+R - Query Response
+
+Possible values for Care-Level Charges.
+S  - System generated (acuity based)
 "" - User entered
         </documentation>
       </element>
@@ -1604,7 +1604,7 @@ original debit txn has already gone to B/AR then the offsetting credit must also
 be sent.
 If the original debit txn has not already gone to B/AR, however, then
 this flag can be sent so that it will never go. An offsetting credit txn should
-also be created with the same flag set. 
+also be created with the same flag set.
 This way EDM has a complete audit of all debits and credits but the midnight run
 and B/AR module does not have to work through unneccesary offetting txns.
         </documentation>
@@ -1803,7 +1803,7 @@ VAL=IF{+@edm.data.call.mngmnt.sum[urn,call.q,""] "*"}
         <attributes>VAL=80
         </attributes>
         <description></description>
-        <documentation>Width of the text editor region when entering a call summary in the Call 
+        <documentation>Width of the text editor region when entering a call summary in the Call
 Management routine.
         </documentation>
       </element>
@@ -2857,7 +2857,7 @@ instructions at least once. This way the system will know to look at the patient
 file for filed instructions as opposed to looking at the complaint dictionary
 for suggested instructions when determining whether or not a checkmark should
 appear.
- 
+
 This is necessary because the user may have unselected certain instructions
 which would delete them from the patient file. (In other words there is no other
 way to differentiate between when a user has not yet chosen which instructions
@@ -2880,7 +2880,7 @@ departure forms at least once. This way the system will know to look at the
 patient file for filed departure forms as opposed to looking at the complaint
 dictionary for suggested departure forms when determining whether or not a
 checkmark should appear.
- 
+
 This is necessary because the user may have unselected certain forms which would
 delete them from the patient file. (In other words there is no other way to
 differentiate between when a user has not yet chosen which forms should print,
@@ -2921,7 +2921,7 @@ and when a user has deliberately specified that no forms should print)
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the DATE the Departure Packet was FIRST printed.  This field is only  
+        <documentation>This is the DATE the Departure Packet was FIRST printed.  This field is only
 used in non-PIC EDM db's.
         </documentation>
       </element>
@@ -2935,7 +2935,7 @@ used in non-PIC EDM db's.
         <length>4</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the TIME the Departure Packet was FIRST printed.  This field is only  
+        <documentation>This is the TIME the Departure Packet was FIRST printed.  This field is only
 used in non-PIC EDM db's.
         </documentation>
       </element>
@@ -2949,7 +2949,7 @@ used in non-PIC EDM db's.
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the date the departure info was last filed.  It is strictly a display 
+        <documentation>This is the date the departure info was last filed.  It is strictly a display
 field in the UI Depart table.
         </documentation>
       </element>
@@ -2963,7 +2963,7 @@ field in the UI Depart table.
         <length>4</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the time the departure info was last filed.  It is strictly a display 
+        <documentation>This is the time the departure info was last filed.  It is strictly a display
 field in the UI Depart table.
         </documentation>
       </element>
@@ -2977,7 +2977,7 @@ field in the UI Depart table.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Set to "Y" if the patient's family doctor has defaulted in either from the 
+        <documentation>Set to "Y" if the patient's family doctor has defaulted in either from the
 depart routine or PCM.
         </documentation>
       </element>
@@ -3004,10 +3004,10 @@ depart routine or PCM.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Flag set to save Display Checked button status.  
-  
-N = don't display checked  
-Y = display checked  
+        <documentation>Flag set to save Display Checked button status.
+
+N = don't display checked
+Y = display checked
         </documentation>
       </element>
     </elements>
@@ -3163,10 +3163,10 @@ Y = display checked
         <attributes>CH=R,A
         </attributes>
         <description></description>
-        <documentation>R = Report   
-A = Addendum   
-  
-Once a report has been signed, users may only enter addenda.  Once a particular  
+        <documentation>R = Report
+A = Addendum
+
+Once a report has been signed, users may only enter addenda.  Once a particular
 addendum is signed, a new addendum must be created for further reporting.
         </documentation>
       </element>
@@ -3181,10 +3181,10 @@ addendum is signed, a new addendum must be created for further reporting.
         <attributes>CH=INC,DRF,SGN,CAN,DEL
         </attributes>
         <description></description>
-        <documentation>  INC = Incomplete  
-  DRF = Draft  
-  SGN = Signed  
-  CAN = Cancelled (Only Signed documents can be cancelled)  
+        <documentation>  INC = Incomplete
+  DRF = Draft
+  SGN = Signed
+  CAN = Cancelled (Only Signed documents can be cancelled)
   DEL = Deleted   (Only Incomplete &amp; Draft docs can be deleted)
         </documentation>
       </element>
@@ -3249,11 +3249,11 @@ addendum is signed, a new addendum must be created for further reporting.
         <attributes>CH=NEW,EDIT,MIS EDIT,DEL,CAN,UNC
         </attributes>
         <description></description>
-        <documentation>     NEW = New  
-    EDIT = Edit  
-MIS EDIT = Edited from MIS Sign routine  
-     DEL = Delete  
-     CAN = Cancel  
+        <documentation>     NEW = New
+    EDIT = Edit
+MIS EDIT = Edited from MIS Sign routine
+     DEL = Delete
+     CAN = Cancel
      UNC = Uncancel
         </documentation>
       </element>
@@ -3341,7 +3341,7 @@ MIS EDIT = Edited from MIS Sign routine
         <length>9</length>
         <attributes></attributes>
         <description></description>
-        <documentation>S(0)  
+        <documentation>S(0)
         </documentation>
       </element>
     </elements>
@@ -3366,9 +3366,9 @@ MIS EDIT = Edited from MIS Sign routine
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the signature which will be attached to the document.  This may not 
-necessarily be the ER Physician.  If another provider is set up as an alternate 
-provider, and they sign for the ER Physician, then that provider's signature 
+        <documentation>This is the signature which will be attached to the document.  This may not
+necessarily be the ER Physician.  If another provider is set up as an alternate
+provider, and they sign for the ER Physician, then that provider's signature
 will be attached to the document (i.e., not the ER Physician).
         </documentation>
       </element>
@@ -3382,7 +3382,7 @@ will be attached to the document (i.e., not the ER Physician).
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This will be different than the @doc.sign.by value only if a doctor signs for 
+        <documentation>This will be different than the @doc.sign.by value only if a doctor signs for
 another doctor (they must be set up as an alternate in order to do so).
         </documentation>
       </element>
@@ -3396,20 +3396,20 @@ another doctor (they must be set up as an alternate in order to do so).
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the user who was signed on when a signature was attached.  Users can be 
-given priveleges to attach a provider's signature to a document.  If a 
-non-provider (e.g., unit clerk) attaches a provider's signature to a document 
-(e.g., via MIS Sign Documents routine), then that document is not considerred as 
-"electronically signed."  Only when a provider attaches his signature can a 
-document be considerred electronically signed.  We are currently not subject to 
-any HIPPA regulations regarding electronic signature, as those regulations apply 
-to EDI Transactions only (Electronic Data Interchange).  However, MEDITECH 
-guarantees non-repudiation for electronic signature.  If a "user" attaches a 
-provider's signature, I don't believe that guarantees non-repudiation.  Thus,if 
-this user is not equal to the @doc.sign.by value, then the @doc.sign.by 
-signature can *NOT* be considerred "electronic."  
-  
-Typically, unit clerks will mark documents as signed in the MIS Sign Documents 
+        <documentation>This is the user who was signed on when a signature was attached.  Users can be
+given priveleges to attach a provider's signature to a document.  If a
+non-provider (e.g., unit clerk) attaches a provider's signature to a document
+(e.g., via MIS Sign Documents routine), then that document is not considerred as
+"electronically signed."  Only when a provider attaches his signature can a
+document be considerred electronically signed.  We are currently not subject to
+any HIPPA regulations regarding electronic signature, as those regulations apply
+to EDI Transactions only (Electronic Data Interchange).  However, MEDITECH
+guarantees non-repudiation for electronic signature.  If a "user" attaches a
+provider's signature, I don't believe that guarantees non-repudiation.  Thus,if
+this user is not equal to the @doc.sign.by value, then the @doc.sign.by
+signature can *NOT* be considerred "electronic."
+
+Typically, unit clerks will mark documents as signed in the MIS Sign Documents
 routine after a physician has physically signed a hard-copy of the document.
         </documentation>
       </element>
@@ -3510,7 +3510,7 @@ routine after a physician has physically signed a hard-copy of the document.
         <attributes>CH=ADD,DEL
         </attributes>
         <description></description>
-        <documentation>ADD = Add  
+        <documentation>ADD = Add
 DEL = Delete
         </documentation>
       </element>
@@ -3561,7 +3561,7 @@ DEL = Delete
         <length>88</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The length of this data def should be the same as the value of 
+        <documentation>The length of this data def should be the same as the value of
 @EDM.U.patient.report.width.
         </documentation>
       </element>
@@ -3626,9 +3626,9 @@ DEL = Delete
         <attributes>CH=EC,EP,ES,EI
         </attributes>
         <description></description>
-        <documentation>EC = Edit Chief Complaint  
-EP = Edit Priority  
-ES = Edit Severity  
+        <documentation>EC = Edit Chief Complaint
+EP = Edit Priority
+ES = Edit Severity
 EI = Edit Impression
         </documentation>
       </element>
@@ -3814,11 +3814,11 @@ EI = Edit Impression
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This subscripts helps to distinguish multiple occurrences in a repeatable label. 
- The value of this subscript is as follows:  
-  
-          MIS.ASSMNT.label.q_._occurrence#  
-  
+        <documentation>This subscripts helps to distinguish multiple occurrences in a repeatable label.
+ The value of this subscript is as follows:
+
+          MIS.ASSMNT.label.q_._occurrence#
+
 For non-repeatable labels, the 'occurrence#' is always zero.
         </documentation>
       </element>
@@ -3943,7 +3943,7 @@ For non-repeatable labels, the 'occurrence#' is always zero.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This flag is set to "Y" if the bkg job detects an order that was placed for this 
+        <documentation>This flag is set to "Y" if the bkg job detects an order that was placed for this
 treatment.
         </documentation>
       </element>
@@ -3970,10 +3970,10 @@ treatment.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Added with dts 305.  
-This element tracks the number of times a given treatment has been ordered (by 
-virtue of having an attached OE order in the Assessment dictionary.)  This 
-counter will only ever be incremented; it never decrements, even if the 
+        <documentation>Added with dts 305.
+This element tracks the number of times a given treatment has been ordered (by
+virtue of having an attached OE order in the Assessment dictionary.)  This
+counter will only ever be incremented; it never decrements, even if the
 treatment order is cancelled.
         </documentation>
       </element>
@@ -3987,9 +3987,9 @@ treatment order is cancelled.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Added on dts 305  
-This counter tracks the number of times a treatment with an associated order (in 
-the Assessment dictionary) has been cancelled.  This counter only increases, it 
+        <documentation>Added on dts 305
+This counter tracks the number of times a treatment with an associated order (in
+the Assessment dictionary) has been cancelled.  This counter only increases, it
 will never decrease.
         </documentation>
       </element>
@@ -4004,7 +4004,7 @@ will never decrease.
         <attributes>VAL=/HEPCS
         </attributes>
         <description></description>
-        <documentation>This temp structure is used by program %EDM.PAT.triage.build.pcs.file to build 
+        <documentation>This temp structure is used by program %EDM.PAT.triage.build.pcs.file to build
 the "PCS" entry for the HUB-PCS queue.
         </documentation>
       </element>
@@ -4034,9 +4034,9 @@ the "PCS" entry for the HUB-PCS queue.
         <length>15</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the actual assessment for the collection of queries below this segment.  
-  
-For non-group assessments, this is the same as @ta.assmnt.  
+        <documentation>This is the actual assessment for the collection of queries below this segment.
+
+For non-group assessments, this is the same as @ta.assmnt.
 For group assessments, this would be a sub-assessment under @ta.assmnt.
         </documentation>
       </element>
@@ -4092,26 +4092,26 @@ For group assessments, this would be a sub-assessment under @ta.assmnt.
         <documentation>This subscript is used to differentiate between multiple documentations
 on the same date and time, but it also carries with it larger implications for
 edits and undos.
- 
+
 Original documentations will always have a positive integer value.
 This number is sequential.
- 
+
 So the first documentation on 12/31/00 at 1200 will be subscripted as follows:
 [20001231,1200,1]
- 
+
 The next documentation for that time (practically speaking this would be rare)
 would be
 [20001231,1200,2]
- 
+
 Because we keep both the old and new information for edits we simply setup a
 different counter for the new values. This is where we start to use decimals.
-The first edit of the [20001231,1200,2] documentation would be stored in 
+The first edit of the [20001231,1200,2] documentation would be stored in
 [20001231,1200,2.01]
 Edits are also sequential, The left side of the decimal is always the same as
 the documentation that was edited, and the right side increments by .01..
-So now, if we want to edit the [20001231,1200,2.01] we would put it in 
+So now, if we want to edit the [20001231,1200,2.01] we would put it in
 [20001231,1200,2.02]
- 
+
 Lastly, to Undo a documentation we would setup yet another node..
 Again, we would use a decimal, but we would skip to the end and use .99
 So, sticking with the above example, if we then wanted to Undo
@@ -4226,12 +4226,12 @@ we would get [20001231,1200,2.99]
         <length>36</length>
         <attributes></attributes>
         <description></description>
-        <documentation>GUID is a mnemonic for "Guaranteed Unique Identifier".  EMR and PCS use GUIDs to 
-keep track of documentations.  Every transaction will consist of 2 GUIDs:  a 
-documentation guid and an occurrence guid.  The doc guid is generated once when 
-a new documentation is filed, and is copied forward to each edit and undo.  An 
-occ guid is generated every time any action is performed (e.g., document, edit, 
-or undo).  Occ guids are never copied forward - a new one is generated every 
+        <documentation>GUID is a mnemonic for "Guaranteed Unique Identifier".  EMR and PCS use GUIDs to
+keep track of documentations.  Every transaction will consist of 2 GUIDs:  a
+documentation guid and an occurrence guid.  The doc guid is generated once when
+a new documentation is filed, and is copied forward to each edit and undo.  An
+occ guid is generated every time any action is performed (e.g., document, edit,
+or undo).  Occ guids are never copied forward - a new one is generated every
 time.
         </documentation>
       </element>
@@ -4245,12 +4245,12 @@ time.
         <length>36</length>
         <attributes></attributes>
         <description></description>
-        <documentation>GUID is a mnemonic for "Guaranteed Unique Identifier".  EMR and PCS use GUIDs to 
-keep track of documentations.  Every transaction will consist of 2 GUIDs:  a 
-documentation guid and an occurrence guid.  The doc guid is generated once when 
-a new documentation is filed, and is copied forward to each edit and undo.  An 
-occ guid is generated every time any action is performed (e.g., document, edit, 
-or undo).  Occ guids are never copied forward - a new one is generated every 
+        <documentation>GUID is a mnemonic for "Guaranteed Unique Identifier".  EMR and PCS use GUIDs to
+keep track of documentations.  Every transaction will consist of 2 GUIDs:  a
+documentation guid and an occurrence guid.  The doc guid is generated once when
+a new documentation is filed, and is copied forward to each edit and undo.  An
+occ guid is generated every time any action is performed (e.g., document, edit,
+or undo).  Occ guids are never copied forward - a new one is generated every
 time.
         </documentation>
       </element>
@@ -4264,11 +4264,11 @@ time.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Added by CS EDM Request #662. This urn is provided by MRI in order to separate 
-repeatable documentations with the same date, time and ctr in the MRI CCDQR. 
-Documentations made prior to this DTS will not have this urn stored.  
-Additionally this will not be stored on assessments attached to NUR 
-interventions. In those cases the urn will be stored and managed in NUR.  
+        <documentation>Added by CS EDM Request #662. This urn is provided by MRI in order to separate
+repeatable documentations with the same date, time and ctr in the MRI CCDQR.
+Documentations made prior to this DTS will not have this urn stored.
+Additionally this will not be stored on assessments attached to NUR
+interventions. In those cases the urn will be stored and managed in NUR.
         </documentation>
       </element>
     </elements>
@@ -4735,7 +4735,7 @@ Patient Notes routine.
         <length>79</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The length of this data def should be the same as the value of 
+        <documentation>The length of this data def should be the same as the value of
 @EDM.U.patient.note.width.
         </documentation>
       </element>
@@ -4774,7 +4774,7 @@ Patient Notes routine.
         <length>79</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The length of this data def should be the same as the value of 
+        <documentation>The length of this data def should be the same as the value of
 @EDM.U.patient.report.width.
         </documentation>
       </element>
@@ -5144,9 +5144,9 @@ Patient Notes routine.
         <attributes>CH=CNC,UNV,VER,TRN,LOG,IPR,TKN,CMP,RES
         </attributes>
         <description></description>
-        <documentation>Equivalent to the expanded value of @OE.ORD.status.  
-  
-     TRN = Order on interface queue  
+        <documentation>Equivalent to the expanded value of @OE.ORD.status.
+
+     TRN = Order on interface queue
      LOG = Picked up by interfacing module
         </documentation>
       </element>
@@ -5522,7 +5522,7 @@ Patient Notes routine.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Used for indexing the test urn to see if the result is new. Stored as a value in 
+        <documentation>Used for indexing the test urn to see if the result is new. Stored as a value in
 @EDM.PAT.new.results.x.
         </documentation>
       </element>
@@ -5536,8 +5536,8 @@ Patient Notes routine.
         <length>30</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Used for indexing the test urn to see if the result is new. Stored as a 
-subscript in @EDM.PAT.new.results.x.Used for indexing the test urn to see if the 
+        <documentation>Used for indexing the test urn to see if the result is new. Stored as a
+subscript in @EDM.PAT.new.results.x.Used for indexing the test urn to see if the
 result is new.
         </documentation>
       </element>
@@ -5691,8 +5691,8 @@ Integrated Function.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Will be the user's menomonic when the status event is changed unless the call to  
-EDM.PAT.update.status.event is done by a bkg job.  In this case it will be  
+        <documentation>Will be the user's menomonic when the status event is changed unless the call to
+EDM.PAT.update.status.event is done by a bkg job.  In this case it will be
 EDMBKGJOB.
         </documentation>
       </element>
@@ -5754,10 +5754,10 @@ PRE09=IF{"Y"=@EDM.PARAM.use.upper.case @.new@Tr.l2u^@.new^@.new.ext}
         <length>15</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Right now we only have one practitioner type and so we don't bother to record 
-it. This spot is being reserved in case we want to include different types. For 
-example, Med Student, Physician Assistant, Intern etc can all be Practitioners.  
-If we do record these separately then we will want to store the type on the 
+        <documentation>Right now we only have one practitioner type and so we don't bother to record
+it. This spot is being reserved in case we want to include different types. For
+example, Med Student, Physician Assistant, Intern etc can all be Practitioners.
+If we do record these separately then we will want to store the type on the
 patient (so that it stays static even if the doctor's type changes later..)
         </documentation>
       </element>
@@ -5771,11 +5771,11 @@ patient (so that it stays static even if the doctor's type changes later..)
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Changes in C/S EDM DTS 556: This field has been renamed from @physician to 
-@adm.physician. It will only get updated by the EDM background job when 
-processing census transactions from ADM. EDM will use the newly created 
-@physician field (|4) when users assign staff to the patient.  
-This will prevent us from incorrectly overwriting staff updates that are queued 
+        <documentation>Changes in C/S EDM DTS 556: This field has been renamed from @physician to
+@adm.physician. It will only get updated by the EDM background job when
+processing census transactions from ADM. EDM will use the newly created
+@physician field (|4) when users assign staff to the patient.
+This will prevent us from incorrectly overwriting staff updates that are queued
 by EDM with unwanted data that is being filed simultaneously in ADM.
         </documentation>
       </element>
@@ -5794,15 +5794,15 @@ ID.TITLE="Physician"
 PRE09=IF{"Y"=@EDM.PARAM.use.upper.case @.new@Tr.l2u^@.new^@.new.ext}
         </attributes>
         <description></description>
-        <documentation>Introduced by C/S EDM DTS 556 (see also @adm.physician) This is the The ER 
-Physician field as recorded in EDM signup routines. This will be the first field 
-EDM looks at when looking for an assigned physician. This may be updated prior 
-to the ADM value being updated if the ADM patient data was locked at the time of 
-staff signup. The ADM value will be synchronized with this once the queued 
-transaction  accompanying the signup is processed in the background. In the 
-meantime EDM will not accept physician edits that originated in ADM, as stated 
-in DTS 556. This may not have a value if the patient census data was last filed 
-prior to this DTS. In that case the system should look at @adm.physician. (See 
+        <documentation>Introduced by C/S EDM DTS 556 (see also @adm.physician) This is the The ER
+Physician field as recorded in EDM signup routines. This will be the first field
+EDM looks at when looking for an assigned physician. This may be updated prior
+to the ADM value being updated if the ADM patient data was locked at the time of
+staff signup. The ADM value will be synchronized with this once the queued
+transaction  accompanying the signup is processed in the background. In the
+meantime EDM will not accept physician edits that originated in ADM, as stated
+in DTS 556. This may not have a value if the patient census data was last filed
+prior to this DTS. In that case the system should look at @adm.physician. (See
 element @edm.adm.physician).
         </documentation>
       </element>
@@ -5944,12 +5944,12 @@ start time remains unchanged.
         <attributes>CH=ORD,CMT
         </attributes>
         <description></description>
-        <documentation>ORD = Overdue order Indicator  
-The purpose of this particular indicator is to alert users when a patient has 
-one or more orders which are currently overdue. (i.e. the order is still not 
-back, and the time frame defined in the OE procedure dictionary has been 
-exceeded)  
-  
+        <documentation>ORD = Overdue order Indicator
+The purpose of this particular indicator is to alert users when a patient has
+one or more orders which are currently overdue. (i.e. the order is still not
+back, and the time frame defined in the OE procedure dictionary has been
+exceeded)
+
 CMT = Comment (General Task) Indicator
         </documentation>
       </element>
@@ -5963,11 +5963,11 @@ CMT = Comment (General Task) Indicator
         <length>75</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the text which will appear on the tracker when the keyword sts.ind.ORD 
-is used. The first portion of the text will indicate the number of orders which 
-are currently overdue.  
-  
-ORD type indicators are only 10 chars long, however the CMT indicator requires 
+        <documentation>This is the text which will appear on the tracker when the keyword sts.ind.ORD
+is used. The first portion of the text will indicate the number of orders which
+are currently overdue.
+
+ORD type indicators are only 10 chars long, however the CMT indicator requires
 75 chars of free text.
         </documentation>
       </element>
@@ -6070,14 +6070,14 @@ ORD type indicators are only 10 chars long, however the CMT indicator requires
         <attributes>CH=L,N
         </attributes>
         <description></description>
-        <documentation>This will be set if we ever launched the Historical Med page.  If this is set, 
-we don't bother attempting to link to RXM, nor do we loop thru RXM to build the 
-Med table, as all of this has already been done the first time that we launched 
-the Historical Med page.  
-  
-This also indicates whether or not we were able to successfully link to RXM:  
-  
-    L = Linked to RXM  
+        <documentation>This will be set if we ever launched the Historical Med page.  If this is set,
+we don't bother attempting to link to RXM, nor do we loop thru RXM to build the
+Med table, as all of this has already been done the first time that we launched
+the Historical Med page.
+
+This also indicates whether or not we were able to successfully link to RXM:
+
+    L = Linked to RXM
     N = Not linked to RXM
         </documentation>
       </element>
@@ -6103,7 +6103,7 @@ This also indicates whether or not we were able to successfully link to RXM:
         <attributes>VAL="HX.MED"
         </attributes>
         <description></description>
-        <documentation>This is the table app id (NPR.Z.UI.tmp.tdef.app.id) for the medication table 
+        <documentation>This is the table app id (NPR.Z.UI.tmp.tdef.app.id) for the medication table
 which is displayed in the Historical Meds function.
         </documentation>
       </element>
@@ -6118,7 +6118,7 @@ which is displayed in the Historical Meds function.
         <attributes>VAL="ADD"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Add" button located in the 
+        <documentation>This is the button application identifier for the "Add" button located in the
 footer.
         </documentation>
       </element>
@@ -6133,7 +6133,7 @@ footer.
         <attributes>VAL="DIS"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Discontinue" button located 
+        <documentation>This is the button application identifier for the "Discontinue" button located
 in the footer.
         </documentation>
       </element>
@@ -6148,7 +6148,7 @@ in the footer.
         <attributes>VAL="UNDO"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Undo" button located in the 
+        <documentation>This is the button application identifier for the "Undo" button located in the
 footer.
         </documentation>
       </element>
@@ -6163,7 +6163,7 @@ footer.
         <attributes>VAL="EDIT"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Change" button located in the 
+        <documentation>This is the button application identifier for the "Change" button located in the
 footer.
         </documentation>
       </element>
@@ -6178,7 +6178,7 @@ footer.
         <attributes>VAL="VIEW"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "View Details" button located 
+        <documentation>This is the button application identifier for the "View Details" button located
 in the footer.
         </documentation>
       </element>
@@ -6205,9 +6205,9 @@ in the footer.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>If this is a new med (thus no urn has been established yet in RXM), this value 
-will be as follows:  "NEW"_q  
-  
+        <documentation>If this is a new med (thus no urn has been established yet in RXM), this value
+will be as follows:  "NEW"_q
+
 where 'q' is an integer counter.
         </documentation>
       </element>
@@ -6233,8 +6233,8 @@ where 'q' is an integer counter.
         <length></length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is set to "Y" if this drug exists in the RXM Drug Dictionary.  Therefore, 
-if the user has entered a free text med which does not exist in the RXM Drug 
+        <documentation>This is set to "Y" if this drug exists in the RXM Drug Dictionary.  Therefore,
+if the user has entered a free text med which does not exist in the RXM Drug
 Dictinary, this will be "N" or nil.
         </documentation>
       </element>
@@ -6321,9 +6321,9 @@ Dictinary, this will be "N" or nil.
         <attributes>CH=NEW,EDIT,DC,CAN
         </attributes>
         <description></description>
-        <documentation>NEW = New Medication  
-EDIT = Edit to existing medication  
-DC = Discontinue an existing medication  
+        <documentation>NEW = New Medication
+EDIT = Edit to existing medication
+DC = Discontinue an existing medication
 CAN = Cancel an existing medication
         </documentation>
       </element>
@@ -6422,7 +6422,7 @@ CAN = Cancel an existing medication
         <attributes>VAL="DOC"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Document" button which is 
+        <documentation>This is the button application identifier for the "Document" button which is
 located in the footer.
         </documentation>
       </element>
@@ -6437,7 +6437,7 @@ located in the footer.
         <attributes>VAL="DOCS"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Document Spreadsheet" button 
+        <documentation>This is the button application identifier for the "Document Spreadsheet" button
 which is located in the footer.
         </documentation>
       </element>
@@ -6452,7 +6452,7 @@ which is located in the footer.
         <attributes>VAL="EDIT"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Edit" button which is located 
+        <documentation>This is the button application identifier for the "Edit" button which is located
 in the footer.
         </documentation>
       </element>
@@ -6467,7 +6467,7 @@ in the footer.
         <attributes>VAL="UNDO"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Undo" button which is located 
+        <documentation>This is the button application identifier for the "Undo" button which is located
 in the footer.
         </documentation>
       </element>
@@ -6482,7 +6482,7 @@ in the footer.
         <attributes>VAL="ADD"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Add" button which is located 
+        <documentation>This is the button application identifier for the "Add" button which is located
 in the footer.
         </documentation>
       </element>
@@ -6497,7 +6497,7 @@ in the footer.
         <attributes>VAL="VW"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "View" button which is located 
+        <documentation>This is the button application identifier for the "View" button which is located
 in the footer.
         </documentation>
       </element>
@@ -6512,9 +6512,9 @@ in the footer.
         <attributes>VAL=(@EDM.UI.main.body.width-23)
         </attributes>
         <description></description>
-        <documentation>This is the pixel width of the table which displays in the body of the 
-Interventions function.  We subtract 23 pixels from the body width because that 
-is the pixel width of the vertical scrollbar which can appear for a table with 
+        <documentation>This is the pixel width of the table which displays in the body of the
+Interventions function.  We subtract 23 pixels from the body width because that
+is the pixel width of the vertical scrollbar which can appear for a table with
 many rows.
         </documentation>
       </element>
@@ -6543,8 +6543,8 @@ many rows.
         <attributes>VAL="INTERVENTIONS-"_ta.intervention
         </attributes>
         <description></description>
-        <documentation>This is the table app id for the "more info" tables which display the individual 
-documentations for each intervention.  This value is assigned to 
+        <documentation>This is the table app id for the "more info" tables which display the individual
+documentations for each intervention.  This value is assigned to
 @NPR.Z.UI.tmp.tdata.row.mi.
         </documentation>
       </element>
@@ -6609,7 +6609,7 @@ documentations for each intervention.  This value is assigned to
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the user who is documenting.  This may not necessarily be the sign on 
+        <documentation>This is the user who is documenting.  This may not necessarily be the sign on
 user.
         </documentation>
       </element>
@@ -6623,7 +6623,7 @@ user.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the assessment which is currently being documented, or the assessment 
+        <documentation>This is the assessment which is currently being documented, or the assessment
 which was last documented and the user is filing or cancelling.
         </documentation>
       </element>
@@ -6638,10 +6638,10 @@ which was last documented and the user is filing or cancelling.
         <attributes>CH=N,E,V
         </attributes>
         <description></description>
-        <documentation>These are the different actions which a user can perform on an intervention:  
-  
-  N = New documentation  
-  E = Edit documentation  
+        <documentation>These are the different actions which a user can perform on an intervention:
+
+  N = New documentation
+  E = Edit documentation
   V = View documentation
         </documentation>
       </element>
@@ -6655,9 +6655,9 @@ which was last documented and the user is filing or cancelling.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>If we are documenting in a multi-page environment, this is set to "Y".  If an 
-Assessment is a "triage" assessment (@EDM.ASSESSMENT.triage="Y"), then we will 
-document that intervention in a multi-page environment, where users can document 
+        <documentation>If we are documenting in a multi-page environment, this is set to "Y".  If an
+Assessment is a "triage" assessment (@EDM.ASSESSMENT.triage="Y"), then we will
+document that intervention in a multi-page environment, where users can document
 patient allergies among other things.
         </documentation>
       </element>
@@ -6671,8 +6671,8 @@ patient allergies among other things.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>If we are documenting in a multi-page environment and the user has made allergy 
-changes, this flag is set to "Y".  This flag is an indication that we must file 
+        <documentation>If we are documenting in a multi-page environment and the user has made allergy
+changes, this flag is set to "Y".  This flag is an indication that we must file
 allergies when the user finally presses Save.
         </documentation>
       </element>
@@ -6686,9 +6686,9 @@ allergies when the user finally presses Save.
         <length>30</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Before branching to the mpg driver (while documenting a triage assessment), we 
-need to save the value of /aa, because the MPG driver will nil out the value of 
-/aa due to the fact that "aa" is the value of @NPR.Z.UI.mpg.record.urn.  See 
+        <documentation>Before branching to the mpg driver (while documenting a triage assessment), we
+need to save the value of /aa, because the MPG driver will nil out the value of
+/aa due to the fact that "aa" is the value of @NPR.Z.UI.mpg.record.urn.  See
 program %NPR.Z.UI.mpg.driver.M.exit.
         </documentation>
       </element>
@@ -6726,11 +6726,11 @@ program %NPR.Z.UI.mpg.driver.M.exit.
         <length>15</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the MIS Assessment which is associated to the documentation.  
-This segment is used primarily for documenting, in which case the MIS Assessment 
-is defined in the EDM Assessment dictionary, however, this particular element is 
-also used when viewing or editing a previously filed assessment.  In that case, 
-the MIS Assessment is defined as part of the documentation on the patient file.  
+        <documentation>This is the MIS Assessment which is associated to the documentation.
+This segment is used primarily for documenting, in which case the MIS Assessment
+is defined in the EDM Assessment dictionary, however, this particular element is
+also used when viewing or editing a previously filed assessment.  In that case,
+the MIS Assessment is defined as part of the documentation on the patient file.
         </documentation>
       </element>
     </elements>
@@ -6755,8 +6755,8 @@ the MIS Assessment is defined as part of the documentation on the patient file.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Note that the row app id (@NPR.Z.UI.tmp.tdata.row.app.id) for Assessments and 
-Treatments is EDM.ASSESSMENT.mnemonic, therefore the row app id will give the 
+        <documentation>Note that the row app id (@NPR.Z.UI.tmp.tdata.row.app.id) for Assessments and
+Treatments is EDM.ASSESSMENT.mnemonic, therefore the row app id will give the
 necessary access variable for this array.
         </documentation>
       </element>
@@ -6783,8 +6783,8 @@ necessary access variable for this array.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the value of @NPR.Z.UI.tmp.tdata.row.mi.showing.  This is used while 
-building the main table.  If we ever need to refresh the table, we want to 
+        <documentation>This is the value of @NPR.Z.UI.tmp.tdata.row.mi.showing.  This is used while
+building the main table.  If we ever need to refresh the table, we want to
 preserve any "more info" rows which may have been expanded.
         </documentation>
       </element>
@@ -6828,7 +6828,7 @@ preserve any "more info" rows which may have been expanded.
         <attributes>VAL="EEPREER"
         </attributes>
         <description></description>
-        <documentation>This is the questionnaire used when Pre-registering an ER patient in ADM.  This 
+        <documentation>This is the questionnaire used when Pre-registering an ER patient in ADM.  This
 is needed by ADM to access certain values while performing an MPI search.
         </documentation>
       </element>
@@ -6857,7 +6857,7 @@ is needed by ADM to access certain values while performing an MPI search.
         <attributes>VAL="EDREGEREDM"
         </attributes>
         <description></description>
-        <documentation>This is the ADM questionnaire used when performing a Registration Edit on an ER 
+        <documentation>This is the ADM questionnaire used when performing a Registration Edit on an ER
 patient.
         </documentation>
       </element>
@@ -6899,7 +6899,7 @@ patient.
         <attributes>VAL="ENADMINOB"
         </attributes>
         <description></description>
-        <documentation>This is the ADM questionnaire used when entering an inpatient patient (for 
+        <documentation>This is the ADM questionnaire used when entering an inpatient patient (for
 Observation)
         </documentation>
       </element>
@@ -6914,7 +6914,7 @@ Observation)
         <attributes>VAL=%.z.view.report[S("J")]
         </attributes>
         <description></description>
-        <documentation>This exact file name is required for program %Z.view.report.pci.  See that 
+        <documentation>This exact file name is required for program %Z.view.report.pci.  See that
 program for details.
         </documentation>
       </element>
@@ -6942,9 +6942,9 @@ program for details.
         <attributes>VAL=/HEDATA
         </attributes>
         <description></description>
-        <documentation>This is used by the Complete EDM Record (%EDM.PAT.print.patient.record).  This 
-is a multiple array which indicates what kind of data has been filed on a 
-patient's record.  For example, if any notes have been filed, we would set up 
+        <documentation>This is used by the Complete EDM Record (%EDM.PAT.print.patient.record).  This
+is a multiple array which indicates what kind of data has been filed on a
+patient's record.  For example, if any notes have been filed, we would set up
 /HEDATA["NOTES"], which is subsequenty used in a line check.
         </documentation>
       </element>
@@ -7225,7 +7225,7 @@ patient's record.  For example, if any notes have been filed, we would set up
         <length>15</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the MIS Assessment mnemonic of the assessment which is currently 
+        <documentation>This is the MIS Assessment mnemonic of the assessment which is currently
 displayed in the body region.
         </documentation>
       </element>
@@ -7239,7 +7239,7 @@ displayed in the body region.
         <length>5</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This specifies the value of @NPR.Z.UI.tmp.tdef.top.  If not specified by calling 
+        <documentation>This specifies the value of @NPR.Z.UI.tmp.tdef.top.  If not specified by calling
 application, then "M" will be used.
         </documentation>
       </element>
@@ -7279,8 +7279,8 @@ application, then "M" will be used.
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Documentation counter (this will only exist when "E"diting or "V"iewing an 
-existing documentation).  See tech doc for @EDM.PAT.ta.ctr for an explanation of 
+        <documentation>Documentation counter (this will only exist when "E"diting or "V"iewing an
+existing documentation).  See tech doc for @EDM.PAT.ta.ctr for an explanation of
 this urn.
         </documentation>
       </element>
@@ -7295,10 +7295,10 @@ this urn.
         <attributes>CH=N,E,V
         </attributes>
         <description></description>
-        <documentation>These are the different actions which a user can perform:  
-  
- N = New Documentation  
- E = Edit Documentation  
+        <documentation>These are the different actions which a user can perform:
+
+ N = New Documentation
+ E = Edit Documentation
  V = View Documentation
         </documentation>
       </element>
@@ -7312,9 +7312,9 @@ this urn.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>When the calling application sets up the special footer buttons, they are 
-initially inactive.  As soon as the user makes a single change to any 
-assessment, we will update the special footer buttons to active.  This flag is 
+        <documentation>When the calling application sets up the special footer buttons, they are
+initially inactive.  As soon as the user makes a single change to any
+assessment, we will update the special footer buttons to active.  This flag is
 set to "Y" once the special footer buttons become active.
         </documentation>
       </element>
@@ -7328,10 +7328,10 @@ set to "Y" once the special footer buttons become active.
         <length>4</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This value tracks the number of changes made to the spreadsheet as a whole. As 
-soon as a single valid change is made we should light up the save button. This 
-number will increment if a new value is inserted, or an existing occurrence is 
-DC'd. It can decrement if a user out all new values on the spreadsheet. If the 
+        <documentation>This value tracks the number of changes made to the spreadsheet as a whole. As
+soon as a single valid change is made we should light up the save button. This
+number will increment if a new value is inserted, or an existing occurrence is
+DC'd. It can decrement if a user out all new values on the spreadsheet. If the
 number of changes is greater than 0, the save button will be lit.
         </documentation>
       </element>
@@ -7345,10 +7345,10 @@ number of changes is greater than 0, the save button will be lit.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Indicates we are entering the multi-page sequence with the spreadsheet. When 
-this value = "Y" we will trigger the new column when arriving on the spreadsheet 
-page. The program will set this to nil after the initial entry to prevent asking 
-for a new column if the user navigates back to the spreadsheet from a different 
+        <documentation>Indicates we are entering the multi-page sequence with the spreadsheet. When
+this value = "Y" we will trigger the new column when arriving on the spreadsheet
+page. The program will set this to nil after the initial entry to prevent asking
+for a new column if the user navigates back to the spreadsheet from a different
 page.
         </documentation>
       </element>
@@ -7363,7 +7363,7 @@ page.
         <attributes>VAL="ASSMNT-"_MIS.ASSMNT.code
         </attributes>
         <description></description>
-        <documentation>This is the value of @NPR.Z.UI.tmp.tdef.app.id which is used for Assessment 
+        <documentation>This is the value of @NPR.Z.UI.tmp.tdef.app.id which is used for Assessment
 documentation tables.
         </documentation>
       </element>
@@ -7378,7 +7378,7 @@ documentation tables.
         <attributes>VAL="DOC.SS"
         </attributes>
         <description></description>
-        <documentation>This is the value of @NPR.Z.UI.tmp.tdef.app.id which is used for the Assessment 
+        <documentation>This is the value of @NPR.Z.UI.tmp.tdef.app.id which is used for the Assessment
 spreadsheet table.
         </documentation>
       </element>
@@ -7393,7 +7393,7 @@ spreadsheet table.
         <attributes>VAL="DOC.SS.QRY"
         </attributes>
         <description></description>
-        <documentation>This is the value of @NPR.Z.UI.tmp.tdef.app.id which is used for the individual 
+        <documentation>This is the value of @NPR.Z.UI.tmp.tdef.app.id which is used for the individual
 query process screens on the spreadsheet.
         </documentation>
       </element>
@@ -7434,9 +7434,9 @@ query process screens on the spreadsheet.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This keeps track of the number of new responses on a particular assessment.  
-When entering a new documentation (i.e., not an "edit"), the value stored here 
-is used to determine whether or not a user can use the "Recall" function.  If 
+        <documentation>This keeps track of the number of new responses on a particular assessment.
+When entering a new documentation (i.e., not an "edit"), the value stored here
+is used to determine whether or not a user can use the "Recall" function.  If
 this number is greater than zero, then recall is not allowed.
         </documentation>
       </element>
@@ -7450,8 +7450,8 @@ this number is greater than zero, then recall is not allowed.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Once the user either inserts or discontinues an occurrence, this value is set to 
-"Y".  This is used in determining whether or not the recall button should be 
+        <documentation>Once the user either inserts or discontinues an occurrence, this value is set to
+"Y".  This is used in determining whether or not the recall button should be
 active or not.
         </documentation>
       </element>
@@ -7505,8 +7505,8 @@ active or not.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the total number of occurrences for this particular repeatable label.  
-Note that this value will only exist for repeatable labels, as there are no 
+        <documentation>This is the total number of occurrences for this particular repeatable label.
+Note that this value will only exist for repeatable labels, as there are no
 occurrences for non-repeatable labels.
         </documentation>
       </element>
@@ -7596,9 +7596,9 @@ occurrences for non-repeatable labels.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the NPR.Z.UI.tmp.tcell.obj.seq number for the query response if there is 
-only one response for this query (e.g., Comment).  For queries associated with 
-multiple responses (e.g., Several, Group, Y/N), the object sequence number for 
+        <documentation>This is the NPR.Z.UI.tmp.tcell.obj.seq number for the query response if there is
+only one response for this query (e.g., Comment).  For queries associated with
+multiple responses (e.g., Several, Group, Y/N), the object sequence number for
 each response is stored in @nur.qry.rsp.object.
         </documentation>
       </element>
@@ -7625,10 +7625,10 @@ each response is stored in @nur.qry.rsp.object.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Occurrence number.  This number is zero for non-repeatable labels.  Note that 
-this number is internal only, and may or may not correspond with the external 
-occurrence number.  If users discontinue occurrences, this can cause 
-discrepancies between this internal number, and the true external occurrence 
+        <documentation>Occurrence number.  This number is zero for non-repeatable labels.  Note that
+this number is internal only, and may or may not correspond with the external
+occurrence number.  If users discontinue occurrences, this can cause
+discrepancies between this internal number, and the true external occurrence
 number.
         </documentation>
       </element>
@@ -7655,9 +7655,9 @@ number.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the external occurrence number which is displayed to the user.  This 
-does not necessarily match the internal occurrence subscript 
-(nur.occ.occurrence).  This value will be &lt;nil&gt; for any occurrence which has 
+        <documentation>This is the external occurrence number which is displayed to the user.  This
+does not necessarily match the internal occurrence subscript
+(nur.occ.occurrence).  This value will be &lt;nil&gt; for any occurrence which has
 been discontinued.
         </documentation>
       </element>
@@ -7671,7 +7671,7 @@ been discontinued.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the cell sequence number (NPR.Z.UI.tmp.tcell.seq) for the occurrence 
+        <documentation>This is the cell sequence number (NPR.Z.UI.tmp.tcell.seq) for the occurrence
 (label) header for this particular occurrence.
         </documentation>
       </element>
@@ -7794,8 +7794,8 @@ been discontinued.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This can be any possible response for this query.  For Several, Group, and 
-Optional queries, this value will be the MIS.GROUP.RESP.element.mnemonic.  For 
+        <documentation>This can be any possible response for this query.  For Several, Group, and
+Optional queries, this value will be the MIS.GROUP.RESP.element.mnemonic.  For
 Yes/No queries, this will be "Y" or "N".  Etc.
         </documentation>
       </element>
@@ -7822,7 +7822,7 @@ Yes/No queries, this will be "Y" or "N".  Etc.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is set to "Y" if this particular response is selected for this query in 
+        <documentation>This is set to "Y" if this particular response is selected for this query in
 this occurrence.  This is nil if this response is not selected.
         </documentation>
       </element>
@@ -7888,7 +7888,7 @@ this occurrence.  This is nil if this response is not selected.
         <length>90</length>
         <attributes></attributes>
         <description></description>
-        <documentation>If this query has a rule associated with it in the MIS Assessment Dictionary, 
+        <documentation>If this query has a rule associated with it in the MIS Assessment Dictionary,
 this value will be the name of the rule program which must be executed.
         </documentation>
       </element>
@@ -7902,8 +7902,8 @@ this value will be the name of the rule program which must be executed.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the value of @MIS.ASSMNT.query.hide.  In certain programs, the value of 
-MIS.ASSMNT.query.q is not available, therefore we store this value here for 
+        <documentation>This is the value of @MIS.ASSMNT.query.hide.  In certain programs, the value of
+MIS.ASSMNT.query.q is not available, therefore we store this value here for
 quick reference.
         </documentation>
       </element>
@@ -7940,7 +7940,7 @@ quick reference.
         <attributes>VAL=18
         </attributes>
         <description></description>
-        <documentation>This is the width (in pixels) of the NPR Picture, "UI BOX CHECKED", and all of 
+        <documentation>This is the width (in pixels) of the NPR Picture, "UI BOX CHECKED", and all of
 its derivatives.
         </documentation>
       </element>
@@ -7955,7 +7955,7 @@ its derivatives.
         <attributes>VAL=12
         </attributes>
         <description></description>
-        <documentation>This is the width (in pixels) of the NPR Picture, "UI BTN RADIO SEL", and all of 
+        <documentation>This is the width (in pixels) of the NPR Picture, "UI BTN RADIO SEL", and all of
 its derivatives.
         </documentation>
       </element>
@@ -7970,7 +7970,7 @@ its derivatives.
         <attributes>VAL=175
         </attributes>
         <description></description>
-        <documentation>This is the length (in pixels) of the query text column (i.e., column #1) on the 
+        <documentation>This is the length (in pixels) of the query text column (i.e., column #1) on the
 doc assessment table.
         </documentation>
       </element>
@@ -7985,7 +7985,7 @@ doc assessment table.
         <attributes>VAL=18
         </attributes>
         <description></description>
-        <documentation>This is the height (in pixels) of the table row which contains the Assessment 
+        <documentation>This is the height (in pixels) of the table row which contains the Assessment
 label text.
         </documentation>
       </element>
@@ -8000,8 +8000,8 @@ label text.
         <attributes>VAL=14
         </attributes>
         <description></description>
-        <documentation>This is the height (in pixels) of a row of data for a query and its responses.  
-If there are multiple physical rows in a single logical row (e.g., a Group type 
+        <documentation>This is the height (in pixels) of a row of data for a query and its responses.
+If there are multiple physical rows in a single logical row (e.g., a Group type
 query with many responses), then each physical row will be 16 pixels in height.
         </documentation>
       </element>
@@ -8016,9 +8016,9 @@ query with many responses), then each physical row will be 16 pixels in height.
         <attributes>VAL=(@EDM.UI.main.body.width-23)
         </attributes>
         <description></description>
-        <documentation>This is the pixel width of the table which displays in the body while 
-documenting an assessment.  We subtract 23 pixels from the body width because 
-that is the pixel width of the vertical scrollbar which can appear for a table 
+        <documentation>This is the pixel width of the table which displays in the body while
+documenting an assessment.  We subtract 23 pixels from the body width because
+that is the pixel width of the vertical scrollbar which can appear for a table
 with many rows.
         </documentation>
       </element>
@@ -8033,8 +8033,8 @@ with many rows.
         <attributes>VAL=100
         </attributes>
         <description></description>
-        <documentation>This is the minimum width of a column of group responses in the Assessment 
-Documentation table.  This minimum width will help to align the columns of 
+        <documentation>This is the minimum width of a column of group responses in the Assessment
+Documentation table.  This minimum width will help to align the columns of
 different queries.
         </documentation>
       </element>
@@ -8049,8 +8049,8 @@ different queries.
         <attributes>VAL=3
         </attributes>
         <description></description>
-        <documentation>This is the pixel height of the buffer which is placed above AND below each 
-logical row in the Assessment Documentation table.  This helps space out the 
+        <documentation>This is the pixel height of the buffer which is placed above AND below each
+logical row in the Assessment Documentation table.  This helps space out the
 queries vertically.
         </documentation>
       </element>
@@ -8065,7 +8065,7 @@ queries vertically.
         <attributes>VAL="UI BTN RADIO SEL"
         </attributes>
         <description></description>
-        <documentation>This is the mnemonic from the NPR.PICTURE dictionary for a selected radio 
+        <documentation>This is the mnemonic from the NPR.PICTURE dictionary for a selected radio
 button.
         </documentation>
       </element>
@@ -8080,7 +8080,7 @@ button.
         <attributes>VAL="UI BTN RADIO UNSEL"
         </attributes>
         <description></description>
-        <documentation>This is the mnemonic from the NPR.PICTURE dictionary for an unselected radio 
+        <documentation>This is the mnemonic from the NPR.PICTURE dictionary for an unselected radio
 button.
         </documentation>
       </element>
@@ -8123,7 +8123,7 @@ button.
         <attributes>VAL="RCL"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Recall Values" button located 
+        <documentation>This is the button application identifier for the "Recall Values" button located
 in the footer.
         </documentation>
       </element>
@@ -8138,7 +8138,7 @@ in the footer.
         <attributes>VAL="INS"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Insert Occurrence" button 
+        <documentation>This is the button application identifier for the "Insert Occurrence" button
 located in the footer.
         </documentation>
       </element>
@@ -8153,7 +8153,7 @@ located in the footer.
         <attributes>VAL="DIS"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Discontinue Occurrence" 
+        <documentation>This is the button application identifier for the "Discontinue Occurrence"
 button located in the footer.
         </documentation>
       </element>
@@ -8168,7 +8168,7 @@ button located in the footer.
         <attributes>VAL="GOTO"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Go to" button located in the 
+        <documentation>This is the button application identifier for the "Go to" button located in the
 footer.
         </documentation>
       </element>
@@ -8183,7 +8183,7 @@ footer.
         <attributes>VAL="NEWC"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Insert Column" button located 
+        <documentation>This is the button application identifier for the "Insert Column" button located
 in the spreadsheet footer.
         </documentation>
       </element>
@@ -8198,7 +8198,7 @@ in the spreadsheet footer.
         <attributes>VAL="DELC"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Delete Column" button located 
+        <documentation>This is the button application identifier for the "Delete Column" button located
 in the spreadsheet footer.
         </documentation>
       </element>
@@ -8213,7 +8213,7 @@ in the spreadsheet footer.
         <attributes>VAL="COPY"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Copy" button located in the 
+        <documentation>This is the button application identifier for the "Copy" button located in the
 spreadsheet footer.
         </documentation>
       </element>
@@ -8228,7 +8228,7 @@ spreadsheet footer.
         <attributes>VAL="PASTE"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Paste" button located in the 
+        <documentation>This is the button application identifier for the "Paste" button located in the
 spreadsheet footer.
         </documentation>
       </element>
@@ -8243,7 +8243,7 @@ spreadsheet footer.
         <attributes>VAL="CLR"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Clear" button located in the 
+        <documentation>This is the button application identifier for the "Clear" button located in the
 spreadsheet footer.
         </documentation>
       </element>
@@ -8258,7 +8258,7 @@ spreadsheet footer.
         <attributes>VAL="EDDTTM"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Edit Date Time" button 
+        <documentation>This is the button application identifier for the "Edit Date Time" button
 located in the spreadsheet footer.
         </documentation>
       </element>
@@ -8273,7 +8273,7 @@ located in the spreadsheet footer.
         <attributes>VAL="VIEWHX"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "View Hx" button located in 
+        <documentation>This is the button application identifier for the "View Hx" button located in
 the spreadsheet footer.
         </documentation>
       </element>
@@ -8288,11 +8288,11 @@ the spreadsheet footer.
         <attributes>VAL=99999999999
         </attributes>
         <description></description>
-        <documentation>This value uniquely identifies an "other" response for Optional type queries.  
-Note that this value is 11 characters in length - this is very important.  The 
-length of MIS.GROUP.RESP.element.mnemonic is 10 characters, therefore by setting 
-this value to a string which is greater than 10 characters in length, it is 
-impossible for this value to exactly match a value from the Group Response 
+        <documentation>This value uniquely identifies an "other" response for Optional type queries.
+Note that this value is 11 characters in length - this is very important.  The
+length of MIS.GROUP.RESP.element.mnemonic is 10 characters, therefore by setting
+this value to a string which is greater than 10 characters in length, it is
+impossible for this value to exactly match a value from the Group Response
 dictionary, thus making this value entirely unique.
         </documentation>
       </element>
@@ -8307,7 +8307,7 @@ dictionary, thus making this value entirely unique.
         <attributes>VAL="EDUS"
         </attributes>
         <description></description>
-        <documentation>This is the button application identifier for the "Edit User" button located in 
+        <documentation>This is the button application identifier for the "Edit User" button located in
 the documentation footer.
         </documentation>
       </element>
@@ -8512,15 +8512,15 @@ the documentation footer.
         <attributes>CH=AD,CA,CO,CM,CU,DE,DX,FO,LA,PT,RE,RX,TA
         </attributes>
         <description></description>
-        <documentation>AD= Additional Instructions       LA= Pt Language  
-CA= Reminders                     PT= Patient Instructions  
-CO= Condition                     RE= Referrals  
-CM= Comment                       RX= Rx/Monographs  
-CU= CDS                           TA= Take Home Meds  
-DE= Departure Info                  
-DI= Disposition  
-DX= Diagnosis  
-FO= Forms                           
+        <documentation>AD= Additional Instructions       LA= Pt Language
+CA= Reminders                     PT= Patient Instructions
+CO= Condition                     RE= Referrals
+CM= Comment                       RX= Rx/Monographs
+CU= CDS                           TA= Take Home Meds
+DE= Departure Info
+DI= Disposition
+DX= Diagnosis
+FO= Forms
         </documentation>
       </element>
       <element>
@@ -8648,9 +8648,9 @@ FO= Forms
         <length>67</length>
         <attributes></attributes>
         <description></description>
-        <documentation>this element's purpose is to hold a different value to be printed on a depart  
-rpt than displays on the depart process screen.  
-  
+        <documentation>this element's purpose is to hold a different value to be printed on a depart
+rpt than displays on the depart process screen.
+
 it is currently only used for Prescriptions and Monographs
         </documentation>
       </element>
@@ -8665,9 +8665,9 @@ it is currently only used for Prescriptions and Monographs
         <attributes>CH=MIS,PIC
         </attributes>
         <description></description>
-        <documentation>Indicates whether pt instructions are from PIC or from MIS.  This is setup based 
-on the value in MRI.PAT.pic.instr.source.  This is used to determine which rpt 
-to call when printing instructs via departure.  
+        <documentation>Indicates whether pt instructions are from PIC or from MIS.  This is setup based
+on the value in MRI.PAT.pic.instr.source.  This is used to determine which rpt
+to call when printing instructs via departure.
         </documentation>
       </element>
       <element>
@@ -8681,11 +8681,11 @@ to call when printing instructs via departure.
         <attributes>CH=M,R,U
         </attributes>
         <description></description>
-        <documentation>For meds,  
-     this flag indicates whether the med is a Script (flag="R")  
-                                         or a Monograph (flag="M")  
-  
-For assessments,  
+        <documentation>For meds,
+     this flag indicates whether the med is a Script (flag="R")
+                                         or a Monograph (flag="M")
+
+For assessments,
      this flag indicates is the assessment has been undone (flag="U")
         </documentation>
       </element>
@@ -8699,9 +8699,9 @@ For assessments,
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>For scripts and monographs, if Print Monograph (RXM.RX.pd.print.mono) exists, 
-set this to "Y".  If Monograph is not checked to be printed, this value will be 
-nil.  
+        <documentation>For scripts and monographs, if Print Monograph (RXM.RX.pd.print.mono) exists,
+set this to "Y".  If Monograph is not checked to be printed, this value will be
+nil.
         </documentation>
       </element>
       <element>
@@ -8726,8 +8726,8 @@ nil.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This flag is set to Y if the Pt Instruct has been checked.  N if it is just 
-Suggested. 
+        <documentation>This flag is set to Y if the Pt Instruct has been checked.  N if it is just
+Suggested.
         </documentation>
       </element>
       <element>
@@ -8753,7 +8753,7 @@ Suggested.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Saved value of pdl.entry.seq to be used when this segment is stored in a temp 
+        <documentation>Saved value of pdl.entry.seq to be used when this segment is stored in a temp
 file
         </documentation>
       </element>
@@ -8885,8 +8885,8 @@ file
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Flags Referral Providers from the Specialty list.  This is needed to separate 
-them from Providers added from the complete list. 
+        <documentation>Flags Referral Providers from the Specialty list.  This is needed to separate
+them from Providers added from the complete list.
         </documentation>
       </element>
       <element>
@@ -8899,7 +8899,7 @@ them from Providers added from the complete list.
         <length>30</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Additional notes for the Depart screen  
+        <documentation>Additional notes for the Depart screen
         </documentation>
       </element>
       <element>
@@ -8912,8 +8912,8 @@ them from Providers added from the complete list.
         <length>75</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Designates this entry as being defaulted due to a Clinical Response.  This 
-allows us to easily remove Clin Response defaults if the user unchecks it 
+        <documentation>Designates this entry as being defaulted due to a Clinical Response.  This
+allows us to easily remove Clin Response defaults if the user unchecks it
 without filing.
         </documentation>
       </element>
@@ -9174,7 +9174,7 @@ without filing.
         <attributes>CH=R,L
         </attributes>
         <description></description>
-        <documentation>Should only be used if there is text associated with the icon.  Determines 
+        <documentation>Should only be used if there is text associated with the icon.  Determines
 whether the icon is to the Right or Left of the text.
         </documentation>
       </element>
@@ -9449,13 +9449,13 @@ whether the icon is to the Right or Left of the text.
         <attributes>CH=A,T,N,D,P,S,AL,M
         </attributes>
         <description></description>
-        <documentation>(A)ssessments  
-(T)reatments  
-(N)otes  
-(D)iagnoses  
-(P)riority  
-(S)tatus Event  
-(AL) Allergies/Adverse Reactions  
+        <documentation>(A)ssessments
+(T)reatments
+(N)otes
+(D)iagnoses
+(P)riority
+(S)tatus Event
+(AL) Allergies/Adverse Reactions
 (M) Active Prescriptions and Historical Meds
         </documentation>
       </element>
@@ -9563,7 +9563,7 @@ This does not include buttons which are always available.
         </attributes>
         <description></description>
         <documentation>Indicates whether the entry should be flagged as Edited, Amended or Undone.
- 
+
 Edited and Undone have a leading space so that they are all aligned properly on
 the process screen.
         </documentation>
@@ -9579,10 +9579,10 @@ the process screen.
         <attributes></attributes>
         <description></description>
         <documentation>This is a packed piece containing the subscripts of the originating data
-structure.  
- 
+structure.
+
 For example, for Assessments this would look like this:
- 
+
 {@ta.date,@ta.time,@ta.ctr}
         </documentation>
       </element>
@@ -9711,13 +9711,13 @@ This does not include buttons which are always available.
         <length>13</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is used to flag various entries on the process screen.  This value is 
-always displayed right-justified in a 13 character field.  This flag is used 
-variably in different sections as follows:  
-  
-Assessments - Undone, Edited  
-Treatments - Undone  
-Active Prescriptions/Hx Meds - Hx Med, &lt;Start date or Rx&gt;, Profile  
+        <documentation>This is used to flag various entries on the process screen.  This value is
+always displayed right-justified in a 13 character field.  This flag is used
+variably in different sections as follows:
+
+Assessments - Undone, Edited
+Treatments - Undone
+Active Prescriptions/Hx Meds - Hx Med, &lt;Start date or Rx&gt;, Profile
         </documentation>
       </element>
       <element>
@@ -9743,13 +9743,13 @@ Active Prescriptions/Hx Meds - Hx Med, &lt;Start date or Rx&gt;, Profile
         <length>20</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is a packed piece containing the subscripts of the originating 
-datastructure. For example, for assessments this would look like this: 
-{ta.intervention}.  
-  
-For coded allergies, this is {"C",MRI.ALLERGY.allergy}, and for uncoded 
-allergies, this is {"U",MRI.ALLERGY.uallergy}.  
-  
+        <documentation>This is a packed piece containing the subscripts of the originating
+datastructure. For example, for assessments this would look like this:
+{ta.intervention}.
+
+For coded allergies, this is {"C",MRI.ALLERGY.allergy}, and for uncoded
+allergies, this is {"U",MRI.ALLERGY.uallergy}.
+
 For Active Prescriptions/Hx Meds, this is {RXM.RX.urn}.
         </documentation>
       </element>
@@ -9763,8 +9763,8 @@ For Active Prescriptions/Hx Meds, this is {RXM.RX.urn}.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Used to indicate if a list entry is required to be documented.  (Currently used 
-only for treatments and assessments.)  If "Y" the list entry is displayed in 
+        <documentation>Used to indicate if a list entry is required to be documented.  (Currently used
+only for treatments and assessments.)  If "Y" the list entry is displayed in
 green.
         </documentation>
       </element>
@@ -9778,7 +9778,7 @@ green.
         <length>12</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Used to display the Source of an intervention 
+        <documentation>Used to display the Source of an intervention
         </documentation>
       </element>
       <element>
@@ -9854,8 +9854,8 @@ green.
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>this field was used in the EP.  
-It is not needed here because of the use of Z.sel.scrn  
+        <documentation>this field was used in the EP.
+It is not needed here because of the use of Z.sel.scrn
         </documentation>
       </element>
       <element>
@@ -9894,10 +9894,10 @@ It is not needed here because of the use of Z.sel.scrn
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is a list of buttons which are Always On regardless of what the current 
-item is.  Examples  C Expand/Collapse   
-                    M RXM   
-                    N Get NUR Data 
+        <documentation>This is a list of buttons which are Always On regardless of what the current
+item is.  Examples  C Expand/Collapse
+                    M RXM
+                    N Get NUR Data
         </documentation>
       </element>
       <element>
@@ -9923,7 +9923,7 @@ item is.  Examples  C Expand/Collapse
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Indicates how many lists or headers are displayed.This is useful in determining 
+        <documentation>Indicates how many lists or headers are displayed.This is useful in determining
 if all of the entries are collapsed or not.
         </documentation>
       </element>
@@ -10022,9 +10022,9 @@ if all of the entries are collapsed or not.
         <length>67</length>
         <attributes></attributes>
         <description></description>
-        <documentation>this element's purpose is to hold a different value to be printed on a depart  
-rpt than displays on the depart process screen.  
-  
+        <documentation>this element's purpose is to hold a different value to be printed on a depart
+rpt than displays on the depart process screen.
+
 it is currently only used for Prescriptions and Monographs
         </documentation>
       </element>
@@ -10039,8 +10039,8 @@ it is currently only used for Prescriptions and Monographs
         <attributes>CH=MIS,PIC
         </attributes>
         <description></description>
-        <documentation>Indicates whether pt instructions are from PIC or from MIS.  This is setup based 
-on the value in MRI.PAT.pic.instr.source.  This is used to determine which rpt 
+        <documentation>Indicates whether pt instructions are from PIC or from MIS.  This is setup based
+on the value in MRI.PAT.pic.instr.source.  This is used to determine which rpt
 to call when printing instructs via departure.
         </documentation>
       </element>
@@ -10055,11 +10055,11 @@ to call when printing instructs via departure.
         <attributes>CH=M,R,U
         </attributes>
         <description></description>
-        <documentation>For meds,  
-     this flag indicates whether the med is a Script (flag="R")  
-                                         or a Monograph (flag="M")  
-  
-For assessments,  
+        <documentation>For meds,
+     this flag indicates whether the med is a Script (flag="R")
+                                         or a Monograph (flag="M")
+
+For assessments,
      this flag indicates is the assessment has been undone (flag="U")
         </documentation>
       </element>
@@ -10073,8 +10073,8 @@ For assessments,
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>For scripts and monographs, if Print Monograph (RXM.RX.pd.print.mono) exists, 
-set this to "Y".  If Monograph is not checked to be printed, this value will be 
+        <documentation>For scripts and monographs, if Print Monograph (RXM.RX.pd.print.mono) exists,
+set this to "Y".  If Monograph is not checked to be printed, this value will be
 nil.
         </documentation>
       </element>
@@ -10100,8 +10100,8 @@ nil.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This flag is set to Y if the Pt Instruct has been checked.  N if it is just 
-Suggested. 
+        <documentation>This flag is set to Y if the Pt Instruct has been checked.  N if it is just
+Suggested.
         </documentation>
       </element>
     </elements>
@@ -10153,9 +10153,9 @@ This also includes any @Set.attr commands which are used for different colors.
         <attributes>CH=+,-
         </attributes>
         <description></description>
-        <documentation>The mark which appears on the left side of the multiple indicating whether 
+        <documentation>The mark which appears on the left side of the multiple indicating whether
 an entry can be expanded or collapsed.
- 
+
 This also includes any @Set.attr commands which are used for different colors.
         </documentation>
       </element>
@@ -10420,7 +10420,7 @@ HLP=Last,first rest
         </attributes>
         <description></description>
         <documentation>The following field check for this data def was taken from @ADM.PAT.name:
- 
+
       @.new#0'?1A!(@.new#"1,"#0_"A"'?2A)!(@.new#L(@.new$3%0)?1N)
         </documentation>
       </element>
@@ -10596,7 +10596,7 @@ REQI=Y
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Set to "Y" if this patient is a transfer from ADM, i.e. a /A lookup was  
+        <documentation>Set to "Y" if this patient is a transfer from ADM, i.e. a /A lookup was
 performed in the reception routine.
         </documentation>
       </element>
@@ -10699,8 +10699,8 @@ PRE09=@.new@Tr.l2u^@.new^@.new.ext
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Indicates how many patients are currently occupying the room.  This is the total 
-of patients in permanent beds and of patients in temporary beds. 
+        <documentation>Indicates how many patients are currently occupying the room.  This is the total
+of patients in permanent beds and of patients in temporary beds.
         </documentation>
       </element>
       <element>
@@ -10713,7 +10713,7 @@ of patients in permanent beds and of patients in temporary beds.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Indicates how many available beds there are in the room.  This is the number of 
+        <documentation>Indicates how many available beds there are in the room.  This is the number of
 permanent beds minus dirty, blocked, in use, and reserved.
         </documentation>
       </element>
@@ -10991,7 +10991,7 @@ permanent beds minus dirty, blocked, in use, and reserved.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the value which is passed to @UI.table.create for the calls table (i.e., 
+        <documentation>This is the value which is passed to @UI.table.create for the calls table (i.e.,
 @NPR.UI.tmp.tdef.app.id).
         </documentation>
       </element>
@@ -11005,7 +11005,7 @@ permanent beds minus dirty, blocked, in use, and reserved.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is used to indicate whether or not the user is entering a new call, or 
+        <documentation>This is used to indicate whether or not the user is entering a new call, or
 whether they are editing an existing call (set to "Y" if entering a new call).
         </documentation>
       </element>
@@ -11019,9 +11019,9 @@ whether they are editing an existing call (set to "Y" if entering a new call).
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is used when displaying the calls table.  If this value is set, then we 
-will highlight this call after displaying the table.  This value should be set 
-to the value of EDM.PAT.call.q which corresponds to the call which we wish to 
+        <documentation>This is used when displaying the calls table.  If this value is set, then we
+will highlight this call after displaying the table.  This value should be set
+to the value of EDM.PAT.call.q which corresponds to the call which we wish to
 highlight.
         </documentation>
       </element>
@@ -11184,7 +11184,7 @@ highlight.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>set to "Y" when printing departure sections (not packet) and Instructs data is  
+        <documentation>set to "Y" when printing departure sections (not packet) and Instructs data is
 selected to print
         </documentation>
       </element>
@@ -11198,7 +11198,7 @@ selected to print
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>set to "Y" when printing departure sections (not packet) and RX data is selected  
+        <documentation>set to "Y" when printing departure sections (not packet) and RX data is selected
 to print
         </documentation>
       </element>
@@ -11749,7 +11749,7 @@ FCL2A=@W.err("Can not be prior to arrival time.")
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the value which is passed to @UI.table.create for the notes table (i.e., 
+        <documentation>This is the value which is passed to @UI.table.create for the notes table (i.e.,
 @NPR.UI.tmp.tdef.app.id).
         </documentation>
       </element>
@@ -11763,7 +11763,7 @@ FCL2A=@W.err("Can not be prior to arrival time.")
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the number of pixels to indent each cell (@NPR.Z.UI.tmp.tcell.left) in 
+        <documentation>This is the number of pixels to indent each cell (@NPR.Z.UI.tmp.tcell.left) in
 the table which displays a patient's notes and addenda.
         </documentation>
       </element>
@@ -11777,8 +11777,8 @@ the table which displays a patient's notes and addenda.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the number of pixels which should be added to each column of data in the 
-table which displays a patient's notes.  This allows a buffer between the last 
+        <documentation>This is the number of pixels which should be added to each column of data in the
+table which displays a patient's notes.  This allows a buffer between the last
 character in the column, and the vertical line which separates each column.
         </documentation>
       </element>
@@ -11792,7 +11792,7 @@ character in the column, and the vertical line which separates each column.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the width in pixels of the space which is allocated for the 
+        <documentation>This is the width in pixels of the space which is allocated for the
 expand/collapse icon which appears in the table that is used for notes.
         </documentation>
       </element>
@@ -11806,9 +11806,9 @@ expand/collapse icon which appears in the table that is used for notes.
         <length>30</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the current screen which is displayed beneath the note table (i.e., the 
-value passed to @UI.screen.create).  If you need to display a different table 
-than what is currently stored here, then you should perform a @UI.screen.remove 
+        <documentation>This is the current screen which is displayed beneath the note table (i.e., the
+value passed to @UI.screen.create).  If you need to display a different table
+than what is currently stored here, then you should perform a @UI.screen.remove
 for this screen before displaying the new screen.
         </documentation>
       </element>
@@ -11822,9 +11822,9 @@ for this screen before displaying the new screen.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is used when displaying the notes table.  If this value is set, then we 
-will highlight this note after displaying the table.  This value should be set 
-to the value of EDM.PAT.note.q which corresponds to the note which we wish to 
+        <documentation>This is used when displaying the notes table.  If this value is set, then we
+will highlight this note after displaying the table.  This value should be set
+to the value of EDM.PAT.note.q which corresponds to the note which we wish to
 highlight.
         </documentation>
       </element>
@@ -12034,10 +12034,10 @@ highlight.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Contains the number of times that the current cursor position was "pushed" onto 
-the printer stack.  Incremented by one each time the current cursor position is 
-pushed, and decremented by one each time the current cursor position is popped 
-from the stack.  The "PUSH" and "POP" commands are executed via PCL escape 
+        <documentation>Contains the number of times that the current cursor position was "pushed" onto
+the printer stack.  Incremented by one each time the current cursor position is
+pushed, and decremented by one each time the current cursor position is popped
+from the stack.  The "PUSH" and "POP" commands are executed via PCL escape
 sequences.
         </documentation>
       </element>
@@ -12051,15 +12051,15 @@ sequences.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This contains the current column when printing in Landscape orientation.  When 
-printing in Landscape orientation, there are two columns (1 and 2).  This 
-variable will indicate which column we are currently printing.  Thus, when we 
-get to the bottom of the page of column 1, we simply begin printing at the top 
-of column 2; when we get to the bottom of the page of column 2, we eject the 
-current page, and begin printing a new page.  
-  
-***NOTE - The existence of this slash variable indicates Landscape orientation 
-in several programs, therefore this should always be nil when printing in 
+        <documentation>This contains the current column when printing in Landscape orientation.  When
+printing in Landscape orientation, there are two columns (1 and 2).  This
+variable will indicate which column we are currently printing.  Thus, when we
+get to the bottom of the page of column 1, we simply begin printing at the top
+of column 2; when we get to the bottom of the page of column 2, we eject the
+current page, and begin printing a new page.
+
+***NOTE - The existence of this slash variable indicates Landscape orientation
+in several programs, therefore this should always be nil when printing in
 Portrait orientation.
         </documentation>
       </element>
@@ -12073,8 +12073,8 @@ Portrait orientation.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is set to the value of (@EDM.RPT.trailer.lines+1).  This is used by the 
-EDM.PAT.print.patient.rpt.M.line.print macro to determine when it is time to go 
+        <documentation>This is set to the value of (@EDM.RPT.trailer.lines+1).  This is used by the
+EDM.PAT.print.patient.rpt.M.line.print macro to determine when it is time to go
 to a new page.
         </documentation>
       </element>
@@ -12088,9 +12088,9 @@ to a new page.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the value of @.lines.left after the header region has printed and before 
-the detail region begins to print.  We save this so that the value of 
-@.lines.left can be restored when we move from the bottom of column 1 to the top 
+        <documentation>This is the value of @.lines.left after the header region has printed and before
+the detail region begins to print.  We save this so that the value of
+@.lines.left can be restored when we move from the bottom of column 1 to the top
 of column 2 (Landscape printing).
         </documentation>
       </element>
@@ -12104,10 +12104,10 @@ of column 2 (Landscape printing).
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This contains the number of characters per line for the report.  Note that we 
-can not refer to @Z.rpt.cpl for this value, because if we are printing the 
-Landscape version of the report, @Z.rpt.cpl is set to the entire width, which is 
-189, and we only want our CPL to be set to 92 for both portrait and landscape 
+        <documentation>This contains the number of characters per line for the report.  Note that we
+can not refer to @Z.rpt.cpl for this value, because if we are printing the
+Landscape version of the report, @Z.rpt.cpl is set to the entire width, which is
+189, and we only want our CPL to be set to 92 for both portrait and landscape
 printing.
         </documentation>
       </element>
@@ -12122,9 +12122,9 @@ printing.
         <attributes>VAL=92
         </attributes>
         <description></description>
-        <documentation>This is the value which is assigned to @tmp.prt.cpl, and which is also 
-referenced in some of the dictionary (EDM.RPT) routines.  This is the number of 
-characters per line for portrait printing, or the number of characters per 
+        <documentation>This is the value which is assigned to @tmp.prt.cpl, and which is also
+referenced in some of the dictionary (EDM.RPT) routines.  This is the number of
+characters per line for portrait printing, or the number of characters per
 column for landscape printing.
         </documentation>
       </element>
@@ -12215,7 +12215,7 @@ column for landscape printing.
         <length>255</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the line which should printed as part of the continued header on the 
+        <documentation>This is the line which should printed as part of the continued header on the
 patient report.  This can contain escape sequences as well as printable text.
         </documentation>
       </element>
@@ -12229,7 +12229,7 @@ patient report.  This can contain escape sequences as well as printable text.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the value which is assinged to local 'CR.LF' in macro M.line.print.  
+        <documentation>This is the value which is assinged to local 'CR.LF' in macro M.line.print.
 This indicates whether or not a CRLF should be issued after the text is printed.
         </documentation>
       </element>
@@ -12243,8 +12243,8 @@ This indicates whether or not a CRLF should be issued after the text is printed.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the value which is assinged to local 'MOVE.CURSOR' in macro 
-M.line.print.  This indicates whether or not the cursor should be moved to the 
+        <documentation>This is the value which is assinged to local 'MOVE.CURSOR' in macro
+M.line.print.  This indicates whether or not the cursor should be moved to the
 start of the second column in landscape printing.
         </documentation>
       </element>
@@ -12271,17 +12271,17 @@ start of the second column in landscape printing.
         <attributes>CH=B,b,I,i,U,u,R,r,BI,bi,BU,bu,IU,iu,BIU,biu,BR,br,IR,ir,BIR,bir
         </attributes>
         <description></description>
-        <documentation>There are 4 basic font commands which we can turn on or off.  They are:  
-  
-  B = Bold  
-  I = Italics  
-  U = Underline  
-  R = Reverse (white on black)  
-  
-The lowercase letter turns the respective command "off".  For example, "b" means 
-turn bolding off.  Various combinations are available (e.g., BI, BIU, etc).  
-Note that these font commands are very specific in relation to the font commands 
-which exist in @Z.rpt.fonts.  These are typically used in special circumstances 
+        <documentation>There are 4 basic font commands which we can turn on or off.  They are:
+
+  B = Bold
+  I = Italics
+  U = Underline
+  R = Reverse (white on black)
+
+The lowercase letter turns the respective command "off".  For example, "b" means
+turn bolding off.  Various combinations are available (e.g., BI, BIU, etc).
+Note that these font commands are very specific in relation to the font commands
+which exist in @Z.rpt.fonts.  These are typically used in special circumstances
 when we have a wide variety of fonts on a single line.
         </documentation>
       </element>
@@ -12295,7 +12295,7 @@ when we have a wide variety of fonts on a single line.
         <length>20</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the Hewlett Packard PCL5 escape sequence necessary to invoke various 
+        <documentation>This is the Hewlett Packard PCL5 escape sequence necessary to invoke various
 print characteristics (e.g., bolding).
         </documentation>
       </element>
@@ -12321,10 +12321,10 @@ print characteristics (e.g., bolding).
         <attributes>CH=0,1,2
         </attributes>
         <description></description>
-        <documentation>This is argument 'A' for EDM.PAT.print.patient.rpt.M.graphics.  
-  
-0 = Black border  
-1 = Grey box  
+        <documentation>This is argument 'A' for EDM.PAT.print.patient.rpt.M.graphics.
+
+0 = Black border
+1 = Grey box
 2 = Grey box and black border
         </documentation>
       </element>
@@ -12454,7 +12454,7 @@ print characteristics (e.g., bolding).
         <length>255</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the data which is output by the report fragment.  It can consist of 
+        <documentation>This is the data which is output by the report fragment.  It can consist of
 control codes (such as PCL5 escape sequences) and printable characters.
         </documentation>
       </element>
@@ -12981,8 +12981,8 @@ ID.DISP={CD,@p.UNV.USER.name[CD]}
         <length>15</length>
         <attributes></attributes>
         <description></description>
-        <documentation>MIS Assessment   
-  
+        <documentation>MIS Assessment
+
 This will be the sub-assessment for group type assessments.
         </documentation>
       </element>
@@ -12996,8 +12996,8 @@ This will be the sub-assessment for group type assessments.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is set to "Y" if the user either discontinues or inserts an occurrence 
-under any label on the assessment.  Once this value is set to "Y", the "Recall" 
+        <documentation>This is set to "Y" if the user either discontinues or inserts an occurrence
+under any label on the assessment.  Once this value is set to "Y", the "Recall"
 option will no longer appear in the drop down menu.
         </documentation>
       </element>
@@ -13011,9 +13011,9 @@ option will no longer appear in the drop down menu.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This keeps track of the number of new responses on a particular assessment.  
-When entering a new documentation (i.e., not an "edit"), the value stored here 
-is used to determine whether or not a user can use the "Recall" function.  If 
+        <documentation>This keeps track of the number of new responses on a particular assessment.
+When entering a new documentation (i.e., not an "edit"), the value stored here
+is used to determine whether or not a user can use the "Recall" function.  If
 this number is greater than zero, then recall is not allowed.
         </documentation>
       </element>
@@ -13052,8 +13052,8 @@ this number is greater than zero, then recall is not allowed.
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>When advancing to a new query, this is the value of 'tmp.ta.qry.row' for that 
-query.  If the query is in a repeatable label, this will be for the first 
+        <documentation>When advancing to a new query, this is the value of 'tmp.ta.qry.row' for that
+query.  If the query is in a repeatable label, this will be for the first
 occurrence regardless of the number of occurrences which may exist.
         </documentation>
       </element>
@@ -13067,9 +13067,9 @@ occurrence regardless of the number of occurrences which may exist.
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>In the CONTROL loop, we do not want to perform a read (%Z.scrn.read) if we need 
-to skip to a new query.  This value is assigned to local variable 'KEY' so that 
-the CONTROL loop knows what to do (e.g, scroll the screen, or pop up an input 
+        <documentation>In the CONTROL loop, we do not want to perform a read (%Z.scrn.read) if we need
+to skip to a new query.  This value is assigned to local variable 'KEY' so that
+the CONTROL loop knows what to do (e.g, scroll the screen, or pop up an input
 box such as the numeric keypad, etc.).
         </documentation>
       </element>
@@ -13109,7 +13109,7 @@ box such as the numeric keypad, etc.).
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The local of this data def must be the same as @tmp.ta.rcl.src.qry (program 
+        <documentation>The local of this data def must be the same as @tmp.ta.rcl.src.qry (program
 %EDM.PAT.triage.doc.assmnt.guts relies on this equality).
         </documentation>
       </element>
@@ -13123,7 +13123,7 @@ box such as the numeric keypad, etc.).
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The local of this data def must be the same as @tmp.ta.rcl.target.qry (program 
+        <documentation>The local of this data def must be the same as @tmp.ta.rcl.target.qry (program
 %EDM.PAT.triage.doc.assmnt.guts relies on this equality).
         </documentation>
       </element>
@@ -13187,7 +13187,7 @@ box such as the numeric keypad, etc.).
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Occurrence # of this label.  Note that this is the internal occurrence number 
+        <documentation>Occurrence # of this label.  Note that this is the internal occurrence number
 (i.e., @tmp.ta.rpt.occ), NOT the external occurrence number.
         </documentation>
       </element>
@@ -13279,7 +13279,7 @@ box such as the numeric keypad, etc.).
         <length>90</length>
         <attributes></attributes>
         <description></description>
-        <documentation>If this query has a rule filed on it in the MIS Assmnt Dictionary, then this 
+        <documentation>If this query has a rule filed on it in the MIS Assmnt Dictionary, then this
 value will be the name of the rule program which needs to be executed.
         </documentation>
       </element>
@@ -13293,7 +13293,7 @@ value will be the name of the rule program which needs to be executed.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the query "q" number from the MIS Assmnt Dictionary (i.e., 
+        <documentation>This is the query "q" number from the MIS Assmnt Dictionary (i.e.,
 MIS.ASSMNT.query.q).
         </documentation>
       </element>
@@ -13410,7 +13410,7 @@ MIS.ASSMNT.query.q).
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Indicates (along with @tmp.ta.rbtn.col) where the current response (if there is 
+        <documentation>Indicates (along with @tmp.ta.rbtn.col) where the current response (if there is
 one) for this query is on the screen.
         </documentation>
       </element>
@@ -13424,7 +13424,7 @@ one) for this query is on the screen.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Indicates (along with @tmp.ta.rbtn.row) where the current response (if there is 
+        <documentation>Indicates (along with @tmp.ta.rbtn.row) where the current response (if there is
 one) for this query is on the screen.
         </documentation>
       </element>
@@ -13451,7 +13451,7 @@ one) for this query is on the screen.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The local of this data def must be the same as @tmp.ta.eec.src.qry (program 
+        <documentation>The local of this data def must be the same as @tmp.ta.eec.src.qry (program
 %EDM.PAT.triage.doc.assmnt.guts relies on this equality).
         </documentation>
       </element>
@@ -13465,7 +13465,7 @@ one) for this query is on the screen.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The local of this data def must be the same as @tmp.ta.eec.target.qry (program 
+        <documentation>The local of this data def must be the same as @tmp.ta.eec.target.qry (program
 %EDM.PAT.triage.doc.assmnt.guts relies on this equality).
         </documentation>
       </element>
@@ -13531,15 +13531,15 @@ one) for this query is on the screen.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is the total number of occurrences for this label.  The total number of 
-occurrences could be found very easily with some simple computations, however 
-this value is stored for quick reference (especially in the Calculation and Rule 
-programs).  
-  
-For example, here are some ways to compute this value:  
-  
-   1) DO{@Next(tmp.ta.rpt.occ) @Add(1,NUM.OCCURRENCES)}  
-  
+        <documentation>This is the total number of occurrences for this label.  The total number of
+occurrences could be found very easily with some simple computations, however
+this value is stored for quick reference (especially in the Calculation and Rule
+programs).
+
+For example, here are some ways to compute this value:
+
+   1) DO{@Next(tmp.ta.rpt.occ) @Add(1,NUM.OCCURRENCES)}
+
    2) @Last(tmp.ta.rpt.occ),@tmp.ta.rpt.occ.ext.num^NUM.OCCURRENCES
         </documentation>
       </element>
@@ -13591,8 +13591,8 @@ For example, here are some ways to compute this value:
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Group Response mnemonic of the key query, as defined in either the MIS.ASSMNT. 
-dictionary or the MIS.QUERY dictionary.  
+        <documentation>Group Response mnemonic of the key query, as defined in either the MIS.ASSMNT.
+dictionary or the MIS.QUERY dictionary.
         </documentation>
       </element>
     </elements>
@@ -13617,11 +13617,11 @@ dictionary or the MIS.QUERY dictionary.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Internal occurrence #.  
-  
-Note that this can be different than the "external" occurrence #.  For example, 
-if an earlier occurrence is discontinued, this subscript is not decremented 
-after the earlier occurrence is deleted.  This will result in "holes" in the 
+        <documentation>Internal occurrence #.
+
+Note that this can be different than the "external" occurrence #.  For example,
+if an earlier occurrence is discontinued, this subscript is not decremented
+after the earlier occurrence is deleted.  This will result in "holes" in the
 sequencing of this subscript, but that is harmless.
         </documentation>
       </element>
@@ -13636,7 +13636,7 @@ sequencing of this subscript, but that is harmless.
         <attributes>CH=K,D
         </attributes>
         <description></description>
-        <documentation>"K" if predefined key version  
+        <documentation>"K" if predefined key version
 "D" if dictionary version
         </documentation>
       </element>
@@ -13650,11 +13650,11 @@ sequencing of this subscript, but that is harmless.
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>External Occurrence #.  
-  
-Note that this can be different than the "internal" occurrence number.  The 
-sequencing of this number never contains "holes".  The internal occurrence 
-number (which is the subscript for this data segment) can contain "holes" 
+        <documentation>External Occurrence #.
+
+Note that this can be different than the "internal" occurrence number.  The
+sequencing of this number never contains "holes".  The internal occurrence
+number (which is the subscript for this data segment) can contain "holes"
 whenever an occurrence is discontinued.
         </documentation>
       </element>
@@ -13719,13 +13719,13 @@ whenever an occurrence is discontinued.
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The possible values for this are:  
-  
-1) Query Type (e.g., Q, N, C, S, etc.)  
-2) "YC" = Yes/No comment checkbox  
-3) "QRY" = Query text  
-4) "QRYS" = "Select all that apply" text  
-5) "QRYD" = Query descriptor text  
+        <documentation>The possible values for this are:
+
+1) Query Type (e.g., Q, N, C, S, etc.)
+2) "YC" = Yes/No comment checkbox
+3) "QRY" = Query text
+4) "QRYS" = "Select all that apply" text
+5) "QRYD" = Query descriptor text
 6) "LAB" = Label text
         </documentation>
       </element>
@@ -13799,7 +13799,7 @@ whenever an occurrence is discontinued.
         <length>25</length>
         <attributes></attributes>
         <description></description>
-        <documentation>The unit for Result type queries is appended to the result during display.  The 
+        <documentation>The unit for Result type queries is appended to the result during display.  The
 unit is derived from the MIS Query dictionary (@MIS.QUERY.hh.units).
         </documentation>
       </element>
@@ -13886,8 +13886,8 @@ unit is derived from the MIS Query dictionary (@MIS.QUERY.hh.units).
         <attributes>VAL=25
         </attributes>
         <description></description>
-        <documentation>This is the starting column for all responses on the Documentation screen.  
-Regardless of query type, all response fields begin in column 25 (e.g., cutout 
+        <documentation>This is the starting column for all responses on the Documentation screen.
+Regardless of query type, all response fields begin in column 25 (e.g., cutout
 boxes, checkboxes, etc.).
         </documentation>
       </element>
@@ -14327,8 +14327,8 @@ boxes, checkboxes, etc.).
         <length>2</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This indicates the internal occurrence based on the /INTSORT file sent from ADM. 
-This may or may not be equal to @nur.occ.occurrence, as not all occurrences in 
+        <documentation>This indicates the internal occurrence based on the /INTSORT file sent from ADM.
+This may or may not be equal to @nur.occ.occurrence, as not all occurrences in
 /INTSORT will be on a particular documentation.
         </documentation>
       </element>
@@ -14624,10 +14624,10 @@ This may or may not be equal to @nur.occ.occurrence, as not all occurrences in
         <length>8</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Tracks the number of queries the user has documented on a particular 
-documentation.  
-Used to determine whether the documentation should be filed. If this number is 0 
-,and ss.ta.chgd.occs is 0, the documentation will be skipped upon filing since 
+        <documentation>Tracks the number of queries the user has documented on a particular
+documentation.
+Used to determine whether the documentation should be filed. If this number is 0
+,and ss.ta.chgd.occs is 0, the documentation will be skipped upon filing since
 no data was entered.
         </documentation>
       </element>
@@ -14641,10 +14641,10 @@ no data was entered.
         <length>4</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Tracks the number of occurrences the user has either inserted or discontinued 
-for a particular documentation.  
-Used to determine whether the documentation should be filed. If this number is 
-0, and ss.ta.new.values is 0, the documentation will be skipped upon filing 
+        <documentation>Tracks the number of occurrences the user has either inserted or discontinued
+for a particular documentation.
+Used to determine whether the documentation should be filed. If this number is
+0, and ss.ta.new.values is 0, the documentation will be skipped upon filing
 since no data was entered.
         </documentation>
       </element>
@@ -14685,9 +14685,9 @@ since no data was entered.
         <attributes>CH=OLD,DC,INS
         </attributes>
         <description></description>
-        <documentation>Tracks whether an occurrence was newly inserted or discontinued.  
-DC = Newly Discontinued  
-INS = Newly inserted  
+        <documentation>Tracks whether an occurrence was newly inserted or discontinued.
+DC = Newly Discontinued
+INS = Newly inserted
 OLD = Previously Discontinued
         </documentation>
       </element>
@@ -14701,8 +14701,8 @@ OLD = Previously Discontinued
         <length>3</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Keeps track of response lengths for each occurrence. The total length of all 
-responses on all keys for the occurrence cannot exceed approximately 230 
+        <documentation>Keeps track of response lengths for each occurrence. The total length of all
+responses on all keys for the occurrence cannot exceed approximately 230
 characters or we will crash when filing to EMR.
         </documentation>
       </element>
@@ -15334,8 +15334,8 @@ characters or we will crash when filing to EMR.
         <length>6</length>
         <attributes></attributes>
         <description></description>
-        <documentation>Non-nil if patient has been waiting too long, thus display in red color.  
-Thenon-nil value is equal to the amount of time for which the patient is overdue 
+        <documentation>Non-nil if patient has been waiting too long, thus display in red color.
+Thenon-nil value is equal to the amount of time for which the patient is overdue
 inthe following format:  Xh YYm (e.g., 1h 22m).
         </documentation>
       </element>
@@ -15349,7 +15349,7 @@ inthe following format:  Xh YYm (e.g., 1h 22m).
         <length>1</length>
         <attributes></attributes>
         <description></description>
-        <documentation>"Y" if the patient has been waiting longer at a status event than their priority 
+        <documentation>"Y" if the patient has been waiting longer at a status event than their priority
 allows.
         </documentation>
       </element>
@@ -15914,7 +15914,7 @@ allows.
         <length>10</length>
         <attributes></attributes>
         <description></description>
-        <documentation>This is needed so that @ADM.PAT.last.edit.user can be set up properly.     
+        <documentation>This is needed so that @ADM.PAT.last.edit.user can be set up properly.
         </documentation>
       </element>
       <element>
@@ -15928,10 +15928,10 @@ allows.
         <attributes>CH=CEN,TRG
         </attributes>
         <description></description>
-        <documentation>CEN = Simple edit of data such as ER doctor, Location, Triage Date/Time, etc.    
-TRG = Triage/Date Time from Triage/Doc Routine  
-Additional types can be added for use in EDM.PAT.xfer.queue and      
-EDM.PAT.xfer.queue.process       
+        <documentation>CEN = Simple edit of data such as ER doctor, Location, Triage Date/Time, etc.
+TRG = Triage/Date Time from Triage/Doc Routine
+Additional types can be added for use in EDM.PAT.xfer.queue and
+EDM.PAT.xfer.queue.process
         </documentation>
       </element>
     </elements>

@@ -2,11 +2,11 @@
 ;//:Doc Features Affected
 ;//     Integrations {Billing}
 ;//:Doc Purpose
-;//     This program calculates a patients acuity and then enters the appropriate Care 
+;//     This program calculates a patients acuity and then enters the appropriate Care
 ;//     Level charge.
 ;//:Doc Arguments
 ;//     A  - urn (aa)
-;//:Doc Local Variables 
+;//:Doc Local Variables
 ;//     ACU - acuity for each documentation of an intervention
 ;//     CRU - Credit user
 ;//     REV - revenue site
@@ -209,7 +209,7 @@ TTL^@acuity,
 IF{ECL=bill.txn.care.level;
    IF{ECL @CREDIT.EXISTING.CARE.LEVEL},
    ; bill.txn.care.level may have been nilled out if the existing care care level
-   ; could not be credited properly. (or it may have never been setup if there was not  
+   ; could not be credited properly. (or it may have never been setup if there was not
    ; a level defined for the patient's acuity)
    IF{bill.txn.care.level @FILE.CARE.LEVEL.CHARGE}},
 ""^ECL
@@ -235,14 +235,14 @@ ALREADY.CREDITED
 @bill.txn.credit.user^CRU
 
 DONT.CREATE.TXNS
-; If the original acuity charge was manually credited, EDM will NOT re-credit it OR 
+; If the original acuity charge was manually credited, EDM will NOT re-credit it OR
 ; generate a new charge txn because it is assumed the person who credited the original txn
 ; probably also entered the new charge txn.
 ""^bill.txn.care.level,
 @ALERT.USER.WHO.CREDITED.TXN.IF.POSSIBLE
 
 ALERT.USER.WHO.CREDITED.TXN.IF.POSSIBLE
-; ED will notify the user who credited the original txn via email. 
+; ED will notify the user who credited the original txn via email.
 IF{@Pgm.trans("%MIS.OA.MSG.auto") 1^/USER[CRU],
                                   "ED Acuity Charge NOT Sent to Billing"^SUBJECT,
                                   @CREATE.MSG,
