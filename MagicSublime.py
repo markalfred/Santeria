@@ -94,6 +94,7 @@ def local(cursor):
     found."""
 
     def findDoc(item):
+        """Locate the top-of-procedure documentation for item."""
         i = 0
         while i < V.size():
             location = V.find(' %s *(-|=)' % item, i)
@@ -102,7 +103,7 @@ def local(cursor):
             else:
                 i = location.end()
                 if V.substr(V.line(location).begin()) == ';':
-                    location = V.find(item, location)
+                    location = V.find(item, location.begin())
                     return location
 
     def generateTitle(item, location):
@@ -125,18 +126,21 @@ def local(cursor):
         return title
 
     def generateContent(item, location):
+        """Arrange and show all lines of documentation."""
+        print item, location
         pos = location.begin()
         row, col = V.rowcol(pos)
-        indent = col
+        content = ""
         while pos < V.size():
-            content = ';//     %s\n' % V.substr(V.line(pos))[indent:]
+            content += ';//     %s\n' % V.substr(V.line(pos))[col:]
             row += 1
-            col = indent
             pos = V.text_point(row, col)
-            if V.substr(pos) == ' ' or V.substr(V.line(pos)).find(item, col) == 0:
+            if V.substr(pos) == ' ':
+                pass
+            elif V.substr(V.line(pos)).find(item) == col:
                 pass
             else:
-                break
+                return content
 
     item = V.substr(V.word(cursor))
     msg = ""
@@ -347,7 +351,7 @@ def procedure(cursor):
 functions = {
     'entity.name.section.macro.title': macroTitle,
     'entity.name.function.macro.call': macroCall,
-    # 'variable.other.local': local,
+    'variable.other.local': local,
     'storage.temp.data.def': dataDef,
     'support.constant.data.def': dataDef,
     'variable.other.local.data.def': dataDef,
