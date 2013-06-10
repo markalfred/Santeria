@@ -125,15 +125,24 @@ IF{@First(NPR.SEG.ele.tech.doc.index) @DOCUMENTATION;
 
 ATTRIBUTES
 " ":/INDENT_"<attributes>"@OUT,
-DO{@Next(NPR.SEG.ele.attribute.index) @FIX(NPR.SEG.ele.attribute.index_"="_@NPR.SEG.ele.attribute)_@EOL},
+DO{@Next(NPR.SEG.ele.attribute.index) NPR.SEG.ele.attribute.index@OUT,
+                                      "="@OUT,
+                                      @NPR.SEG.ele.attribute^X,
+                                      DO{X @FIX(X$50)@OUT,
+                                           X'$50^X},
+                                      @EOL},
 " ":/INDENT_"</attributes>"@OUT
 
 DESCRIPTION
 " ":/INDENT_"<description>"@OUT,
-DO{@Next(NPR.SEG.description.index) @FIX(@NPR.SEG.text)@OUT},
+DO{@Next(NPR.SEG.description.index) @NPR.SEG.text^X,
+                                    DO{X @FIX(X$50)@OUT,
+                                         X'$50^X}},
 "</description>"@OUT
 
 DOCUMENTATION
 " ":/INDENT_"<documentation>"@OUT,
-DO{@Next(NPR.SEG.ele.tech.doc.index) @FIX(@NPR.SEG.ele.tech.doc.text)@OUT},
+DO{@Next(NPR.SEG.ele.tech.doc.index) @NPR.SEG.ele.tech.doc.text^X,
+                                     DO{X @FIX(X$50)@OUT,
+                                          X'$50^X}},
 "</documentation>"@OUT

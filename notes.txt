@@ -127,3 +127,9 @@ need to change layout of xml file: don't use attributes, tags only.
 in seg doc: link to parent?
 in xml: <child> nodes with a physical attached. easier and faster than finding the physicals during documentation compile
 
+
+
+attribute of ADM.PARAM.by.facility - rcr.create.new.desc
+
+
+def est bufs. shit is slow.
