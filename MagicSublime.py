@@ -45,7 +45,7 @@ def macroTitle(cursor):
         jump = V.find('@' + item + '[^.]', 0)
         # Find a macro call (@) with a non-period char following it
         if jump is None:
-            sublime.status_message("@%s not found") % item
+            sublime.status_message("@%s not found" % item)
         else:
             jump = V.find(item, jump.begin())
 
@@ -189,8 +189,6 @@ def dataDef(cursor):
 
     def generateEleDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        msg = attributes = description = documentation = ""
-
         try:
             element = dpm + '.' + root.find('name').text
             local = root.find('local').text
@@ -199,16 +197,13 @@ def dataDef(cursor):
             pointer = root.find('pointer').text
             dataType = root.find('type').text
             length = root.find('length').text
-            for i in root.findall('attributes'):
-                attributes += '\n  %s' % i.text
-            for i in root.findall('description'):
-                description += '\n  %s' % i.text
-            for i in root.findall('documentation'):
-                documentation += '\n  %s' % i.text
+            attributes = root.find('attributes').text
+            description = root.find('description').text
+            documentation = root.find('documentation').text
         except(AttributeError):
             print('Warning: Missing values in XML file.')
 
-        msg += "Element        %s\n" % element
+        msg = "Element        %s\n" % element
         msg += "Local          %s\n" % local
         msg += "Physical       %s\n" % physical
         msg += '\n'
@@ -217,21 +212,25 @@ def dataDef(cursor):
         msg += "Data Type      %s\n" % dataType
         msg += "Length         %s\n" % length
         msg += '\n'
-        msg += "Attributes %s\n" % attributes
-        msg += "Description %s\n" % description
-        msg += "Technical Documentation %s" % documentation
+        if attributes is not None:
+            msg += "Attributes\n%s\n\n" % attributes
+        if description is not None:
+            msg += "Description\n%s\n\n" % description
+        if documentation is not None:
+            msg += "Technical Documentation\n%s" % documentation
 
         return msg.rstrip()
 
     def generateSegDoc(root):
         """Grab all elements under root and make into pretty documentation."""
-        msg = segment = physical = children = elements = ""
+        msg = segment = physical = children = elements = subscripts = ""
 
         try:
             segment = dpm + '.' + root.find('name').text
             physical = root.find('physical').text
+            value = root.find('value').text
 
-            for i in root.findall('child'):
+            for i in root.find('children').findall('child'):
                 children += '\n  %s' % i.text
             for i in root.find('elements').findall('element'):
                 elementName = str(i.find('name').text)
@@ -243,6 +242,8 @@ def dataDef(cursor):
                              elementLocal +
                              ' ' * (10 - len(elementLocal)) +
                              elementPhysical)
+            for i in root.find('subscripts').findall('subscript'):
+                subscripts += '\n  %s' % i.text
 
         except(AttributeError):
             print('Warning: Missing values in XML file.')
@@ -251,9 +252,13 @@ def dataDef(cursor):
         msg += "Physical       %s\n" % physical
         msg += "Children %s\n" % children
         msg += '\n'
-        msg += "Element                       Local     Physical"
-        msg += '\n'
-        msg += str(elements)
+        if elements != "":
+            msg += "Element                       Local     Physical"
+            msg += '\n'
+            msg += str(elements)
+        elif subscripts != "":
+            msg += "Subscripts %s\n\n" % subscripts
+            msg += "Value %s" % value
 
         return msg
 
@@ -274,18 +279,17 @@ def dataDef(cursor):
     seg = findInXML(segments, item)
     if seg is not None:
         msg = generateSegDoc(seg)
+        MS.show_output(msg)
     else:
         for s in segments:
             elements = s.find('elements')
             ele = findInXML(elements, item)
             if ele is not None:
                 msg = generateEleDoc(ele)
+                MS.show_output(msg)
                 break
-
-    if msg is not None:
-        MS.show_output(msg, 'Packages/Text/Plain text.tmLanguage')
-    else:
-        sublime.status_message("%s not found" % item)
+        else:
+            sublime.status_message("%s not found" % item)
 
 
 def nprMacro(cursor):
@@ -335,7 +339,7 @@ def nprMacro(cursor):
     macro = findInXML(root, item)
     if macro is not None:
         msg = generateNprDoc(macro)
-        MS.show_output(msg, 'Packages/Text/Plain text.tmLanguage')
+        MS.show_output(msg)
     else:
         sublime.status_message("@%s not found" % item)
 

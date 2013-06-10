@@ -40,12 +40,14 @@ IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
 #CLOSE
 ;//Closes a tag.
 @Sub(2,/INDENT),
+" ":/INDENT@OUT,
 "</"_A_">"@OUT,
 @EOL;
 
 #TAG
 ;//Opens a tag A, inserts its value B, and closes the tag.
 ;  @TAG(name,@NPR.ELE.name)
+" ":/INDENT@OUT,
 "<"_A_IF{B ">"_B_"</"_A_">";"/>"}_@EOL;
 
 OUT
@@ -56,10 +58,9 @@ D(13,10)@OUT
 
 #FIX
 D(34)_"'<>&"^CHARS,
-`&quot;,&apos;,&lt;,&gt;,&ampl;'^ESCAPE,
+`&quot;,&apos;,&lt;,&gt;,&amp;'^ESCAPE,
 L(A)^X,
-DO{X-1^X'<0 IF{L(CHARS,A#X)^Y=L(CHARS);
-               (A$X)_(ESCAPE|Y)_(A%X)^A}},
+DO{X-1^X'<0 IF{L(CHARS,A#X)^Y=L(CHARS);(A$X)_(ESCAPE|Y)_(A%X)^A}},
 A;
 
 ; #####################
@@ -114,7 +115,25 @@ ELEMENT
 @TAG("type",@NPR.SEG.ele.data.type),
 @TAG("offset",@NPR.SEG.ele.offset),
 @TAG("length",@NPR.SEG.ele.length),
-DO{@Next(NPR.SEG.ele.attribute.index) @TAG("attribute",@FIX(NPR.SEG.ele.attribute.index_"="_@NPR.SEG.ele.attribute))},
-DO{@Next(NPR.SEG.description.index) @TAG("description",@FIX(@NPR.SEG.text))},
-DO{@Next(NPR.SEG.ele.tech.doc.index) @TAG("documentation",@FIX(@NPR.SEG.ele.tech.doc.text))},
+IF{@First(NPR.SEG.ele.attribute.index) @ATTRIBUTES;
+                                       " ":/INDENT_"<attributes/>"@OUT},@EOL,
+IF{@First(NPR.SEG.description.index) @DESCRIPTION;
+                                     " ":/INDENT_"<description/>"@OUT},@EOL,
+IF{@First(NPR.SEG.ele.tech.doc.index) @DOCUMENTATION;
+                                      " ":/INDENT_"<documentation/>"@OUT},@EOL,
 @CLOSE("element")
+
+ATTRIBUTES
+" ":/INDENT_"<attributes>"@OUT,
+DO{@Next(NPR.SEG.ele.attribute.index) @FIX(NPR.SEG.ele.attribute.index_"="_@NPR.SEG.ele.attribute)_@EOL},
+" ":/INDENT_"</attributes>"@OUT
+
+DESCRIPTION
+" ":/INDENT_"<description>"@OUT,
+DO{@Next(NPR.SEG.description.index) @FIX(@NPR.SEG.text)@OUT},
+"</description>"@OUT
+
+DOCUMENTATION
+" ":/INDENT_"<documentation>"@OUT,
+DO{@Next(NPR.SEG.ele.tech.doc.index) @FIX(@NPR.SEG.ele.tech.doc.text)@OUT},
+"</documentation>"@OUT
