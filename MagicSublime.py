@@ -86,8 +86,68 @@ def local(cursor):
     """Show top-of-procedure documentation associated with a local variable.
 
     If there is documentation for the variable in the procedure header, it
-    will be displayed in the footer window frame."""
-    pass
+    will be displayed in the footer window frame.
+
+    This assumes that the variable has (1) a space before its name and (2) is
+    followed by spaces and a hypen/equal. This appears to be true of all
+    recent documentation, but if it isn't true, documentation will not be
+    found."""
+
+    def findDoc(item):
+        i = 0
+        while i < V.size():
+            location = V.find(' %s *(-|=)' % item, i)
+            if location is None:
+                break
+            else:
+                i = location.end()
+                if V.substr(V.line(location).begin()) == ';':
+                    location = V.find(item, location)
+                    return location
+
+    def generateTitle(item, location):
+        """Find or generate the variable's section header."""
+        pos = location.begin()
+        while pos > 0:
+            row, col = V.rowcol(pos)
+            row -= 1
+            col = 0
+            pos = V.text_point(row, col)
+            line = V.substr(V.line(pos))
+            if line.find(':Doc') is not -1:
+                title = line
+                break
+        else:
+            if len(item) == 1 and 'ABCDEFGHIJK'.find(item) != -1:
+                title = ';//:Doc Arguments'
+            else:
+                title = ';//:Doc Local Variables'
+        return title
+
+    def generateContent(item, location):
+        pos = location.begin()
+        row, col = V.rowcol(pos)
+        indent = col
+        while pos < V.size():
+            content = ';//     %s\n' % V.substr(V.line(pos))[indent:]
+            row += 1
+            col = indent
+            pos = V.text_point(row, col)
+            if V.substr(pos) == ' ' or V.substr(V.line(pos)).find(item, col) == 0:
+                pass
+            else:
+                break
+
+    item = V.substr(V.word(cursor))
+    msg = ""
+    location = findDoc(item)
+    if location is not None:
+        msg += generateTitle(item, location)
+        msg += '\n'
+        msg += generateContent(item, location)
+        MS.show_output(msg)
+    else:
+        sublime.status_message('%s has no documentation.' % item)
 
 
 def dataDef(cursor):

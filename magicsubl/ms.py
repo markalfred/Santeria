@@ -4,7 +4,7 @@ import sublime
 import sublime_plugin
 
 
-def show_output(msg, syntax):
+def show_output(msg, syntax='Packages/Text/Plain text.tmLanguage'):
     win = sublime.active_window()
     if win:
         panel = win.get_output_panel('ms_doc')
