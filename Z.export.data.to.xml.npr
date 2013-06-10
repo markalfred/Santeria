@@ -2,9 +2,6 @@
 ;
 ;// /INDENT = number of spaces to indent a line
 ;
-; might want to handle empty tags differently. <local/> will save on file
-; size over <local></local>.
-;
 @INIT,
 IF{@Memory.store.file(/MH,/PATH) /PATH_" cannot be opened/edited!"^ERR;
    @COMPILE,
@@ -49,6 +46,18 @@ IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
 ;  @TAG(name,@NPR.ELE.name)
 " ":/INDENT@OUT,
 "<"_A_IF{B ">"_B_"</"_A_">";"/>"}_@EOL;
+
+#MULTI.TAG
+;//Opens a multi-line tag (A), loops on its segment ([B]) and inserts its values,
+;  then closes.
+" ":/INDENT@OUT,
+"<"_A@OUT,
+IF{+[B,""]_.=. "/>"@OUT;
+   ">"@OUT,
+   DO{+([B,X],Y)^X DO{Y @FIX(Y$50)@OUT,
+                        Y'$50^Y},
+   "</"_A_">"@OUT},
+@EOL;
 
 OUT
 ^@Memory.write(/MH)
@@ -115,34 +124,7 @@ ELEMENT
 @TAG("type",@NPR.SEG.ele.data.type),
 @TAG("offset",@NPR.SEG.ele.offset),
 @TAG("length",@NPR.SEG.ele.length),
-IF{@First(NPR.SEG.ele.attribute.index) @ATTRIBUTES;
-                                       " ":/INDENT_"<attributes/>"@OUT},@EOL,
-IF{@First(NPR.SEG.description.index) @DESCRIPTION;
-                                     " ":/INDENT_"<description/>"@OUT},@EOL,
-IF{@First(NPR.SEG.ele.tech.doc.index) @DOCUMENTATION;
-                                      " ":/INDENT_"<documentation/>"@OUT},@EOL,
+@MULTI.TAG("attributes",^@NPR.SEG.ele.attributes),    ;//may need to be root
+@MULTI.TAG("description",^@NPR.SEG.ele.description),    ;//may need to be root
+@MULTI.TAG("documentation",^@NPR.SEG.ele.documentation),    ;//may need to be root
 @CLOSE("element")
-
-ATTRIBUTES
-" ":/INDENT_"<attributes>"@OUT,
-DO{@Next(NPR.SEG.ele.attribute.index) NPR.SEG.ele.attribute.index@OUT,
-                                      "="@OUT,
-                                      @NPR.SEG.ele.attribute^X,
-                                      DO{X @FIX(X$50)@OUT,
-                                           X'$50^X},
-                                      @EOL},
-" ":/INDENT_"</attributes>"@OUT
-
-DESCRIPTION
-" ":/INDENT_"<description>"@OUT,
-DO{@Next(NPR.SEG.description.index) @NPR.SEG.text^X,
-                                    DO{X @FIX(X$50)@OUT,
-                                         X'$50^X}},
-"</description>"@OUT
-
-DOCUMENTATION
-" ":/INDENT_"<documentation>"@OUT,
-DO{@Next(NPR.SEG.ele.tech.doc.index) @NPR.SEG.ele.tech.doc.text^X,
-                                     DO{X @FIX(X$50)@OUT,
-                                          X'$50^X}},
-"</documentation>"@OUT
