@@ -4,8 +4,11 @@
 
 *.sublime-project
 *.sublime-workspace
-
-
+*.tmLanguage.cache
+Package Control.last-run
+notes.txt
+tests/
+lib/Data Definitions/
 
 #################
 ## Eclipse
