@@ -26,6 +26,29 @@ def findInXML(root, item):
             print('Warning: Unexpected values in XML file.')
 
 
+def getDpm(item):
+    """Pull the DPM from the item, or infer it from the file path.
+
+    If the selected item doesn't include the DPM, the DPM is the same as
+    that of the procedure. This can be pulled from the filepath,
+    ie. '/EDM/PAT/depart/depart.npr' should return 'EDM.PAT'
+
+    The only exception to this is the 'Z' DPM, which is the only one that
+    doesn't have two parts (...I think)"""
+    dpm = re.sub('[a-z]*', '', item).rstrip('.')  # Better way to do this?
+    if dpm == '':
+        if sublime.platform() == 'windows':
+            d = '\\'
+        else:
+            d = '/'
+        f = str(V.file_name()).split(d)
+        if f[len(f) - 3] == 'Z':
+            dpm = 'Z'
+        else:
+            dpm = f[len(f) - 4] + '.' + f[len(f) - 3]
+    return dpm
+
+
 def macroTitle(cursor):
     """Jump to an equivalent macro call.
 
@@ -164,28 +187,6 @@ def dataDef(cursor):
 
     This documentation should be searchable, so that any element or segment
     in it can lead to more documentation."""
-
-    def getDpm(item):
-        """Pull the DPM from the item, or infer it from the file path.
-
-        If the selected item doesn't include the DPM, the DPM is the same as
-        that of the procedure. This can be pulled from the filepath,
-        ie. '/EDM/PAT/depart/depart.npr' should return 'EDM.PAT'
-
-        The only exception to this is the 'Z' DPM, which is the only one that
-        doesn't have two parts (...I think)"""
-        dpm = re.sub('[a-z]*', '', item).rstrip('.')  # Better way to do this?
-        if dpm == '':
-            if sublime.platform() == 'windows':
-                d = '\\'
-            else:
-                d = '/'
-            f = str(V.file_name()).split(d)
-            if f[len(f) - 3] == 'Z':
-                dpm = 'Z'
-            else:
-                dpm = f[len(f) - 4] + '.' + f[len(f) - 3]
-        return dpm
 
     def generateEleDoc(root):
         """Grab all elements under root and make into pretty documentation."""
@@ -345,10 +346,32 @@ def nprMacro(cursor):
 
 
 def procedure(cursor):
-    """Open the selected procedure in a new tab / Show documentation for
-    procedure.
+    """Open the selected procedure in a new tab."""
+    item = V.substr(V.word(cursor))
+    filepath = procedure = ""
 
-    ...Not sure which yet."""
+    if sublime.platform() == 'windows':
+        d = '\\'
+    else:
+        d = '/'
+    f = str(V.file_name()).split(d)
+
+    if f[len(f) - 3] == 'Z':
+        e = len(f) - 3
+    else:
+        e = len(f) - 4
+
+    for i in f[:e]:
+        filepath += i + d
+
+    for i in item.split('.'):
+        if i.upper() == i:
+            filepath += i + d
+        else:
+            procedure += i + '.'
+    filepath += procedure.rstrip('.') + d + procedure + 'npr'
+
+    V.window().open_file(filepath)
 
 
 # Global maps
@@ -360,7 +383,7 @@ functions = {
     'support.constant.data.def': dataDef,
     'variable.other.local.data.def': dataDef,
     'support.function.npr.macro': nprMacro,
-    # 'entity.function.program.call': procedure
+    'entity.function.program.call': procedure
 }
 
 

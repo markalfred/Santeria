@@ -59,7 +59,6 @@ END;
 ; A = Name
 ; B = Root of structure to loop on
 " ":/INDENT@OUT,
-
 IF{+[B,""]_.=. "<"_A_"/>"@OUT;
    "<"_A_">"@OUT,
    DO{+([B,C],VAL)^C @SEND.VALUE},
