@@ -48,21 +48,20 @@ IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
 ; B = Value
 B^VAL,
 " ":/INDENT@OUT,
-IF{'VAL "<"_A_"/>"@OUT,
-      @EOL@OUT;
+IF{'VAL "<"_A_"/>"@OUT;
    "<"_A_">"@OUT,
    @SEND.VALUE,
-   "</"_A_">"@OUT,
-   @EOL@OUT},
+   "</"_A_">"@OUT},
+@EOL@OUT,
 END;
 
 #MULTI.TAG
 ; A = Name
 ; B = Root of structure to loop on
 " ":/INDENT@OUT,
-"<"_A@OUT,
-IF{+[B,""]_.=. "/>"@OUT;
-   ">"@OUT,
+
+IF{+[B,""]_.=. "<"_A_"/>"@OUT;
+   "<"_A_">"@OUT,
    DO{+([B,C],VAL)^C @SEND.VALUE},
    "</"_A_">"@OUT},
 @EOL@OUT;
@@ -74,8 +73,7 @@ DO{X<Z IF{L(/CHARS,VAL#X)^Y=L(/CHARS) VAL#X@OUT;
           @Add(1,X)}
 
 OUT
-^@Memory.write(/MH),
-@Memory.store.file(/MH,/PATH)
+^@Memory.write(/MH)
 
 EOL
 D(13,10)
@@ -132,15 +130,15 @@ ELEMENT
 @TAG("type",@NPR.SEG.ele.data.type),
 @TAG("offset",@NPR.SEG.ele.offset),
 @TAG("length",@NPR.SEG.ele.length),
-@COMPILE.ATTRIBUTES,@MULTI.TAG("attributes",^/ATTRIB),
+@COMPILE.ATTRIBUTES,@MULTI.TAG("attributes",^/ATTRIBUTES),
 @MULTI.TAG("description",^@Root(@NPR.SEG.description)),
 @MULTI.TAG("documentation",^@Root(@NPR.SEG.ele.tech.doc)),
 @CLOSE("element")
 
 COMPILE.ATTRIBUTES
-K(/ATTRIB),
-""^Q,
-@Last(NPR.SEG.ele.attribute.index)^L,
+K(/ATTRIBUTES),
+""^Q^EOL,
+; Don't send an EOL before the first, or after the last item.
 DO{@Next.get(NPR.SEG.ele.attribute.index,Y)^X @Add(1,Q),
-                                              X_"="_Y_IF{X=L "";
-                                                         @EOL}^/ATTRIB[Q]}
+                                              EOL_X_"="_Y^/ATTRIBUTES[Q],
+                                              @EOL^EOL}
