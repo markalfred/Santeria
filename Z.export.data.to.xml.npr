@@ -17,6 +17,8 @@ ROOT@Directory.create,
 ROOT_"\"_APP@Directory.create,
 ROOT_"\"_APP_"\"_DPM_".xml"^/PATH,
 ""^ROOT^APP^DPM,
+D(34)_"'<>&"^/CHARS,
+{"&quot;","&apos;","&lt;","&gt;","&amp;"}^/ESCAPE,
 @Memory.allocate("")^/MH
 
 SAVE
@@ -32,45 +34,51 @@ IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
 " ":/INDENT@OUT,
 @Add(2,/INDENT),
 "<"_A_">"@OUT,
-@EOL;
+@EOL@OUT;
 
 #CLOSE
 ;//Closes a tag.
 @Sub(2,/INDENT),
 " ":/INDENT@OUT,
 "</"_A_">"@OUT,
-@EOL;
+@EOL@OUT;
 
 #TAG
-;//Opens a tag A, inserts its value B, and closes the tag.
-;  @TAG(name,@NPR.ELE.name)
+; A = Name
+; B = Value
+B^VAL,
 " ":/INDENT@OUT,
-"<"_A_IF{B ">"_B_"</"_A_">";"/>"}_@EOL;
+IF{'VAL "<"_A_"/>"@OUT,
+      @EOL@OUT;
+   "<"_A_">"@OUT,
+   @SEND.VALUE,
+   "</"_A_">"@OUT,
+   @EOL@OUT},
+END;
 
 #MULTI.TAG
-;//Opens a multi-line tag (A), loops on its segment ([B]) and inserts its values,
-;  then closes.
+; A = Name
+; B = Root of structure to loop on
 " ":/INDENT@OUT,
 "<"_A@OUT,
 IF{+[B,""]_.=. "/>"@OUT;
    ">"@OUT,
-   DO{+([B,X],Y)^X DO{Y @FIX(Y$50)@OUT,
-                        Y'$50^Y},
+   DO{+([B,C],VAL)^C @SEND.VALUE},
    "</"_A_">"@OUT},
-@EOL;
+@EOL@OUT;
+
+SEND.VALUE
+L(VAL)^Z,0^X,
+DO{X<Z IF{L(/CHARS,VAL#X)^Y=L(/CHARS) VAL#X@OUT;
+          /ESCAPE|Y@OUT},
+          @Add(1,X)}
 
 OUT
-^@Memory.write(/MH)
+^@Memory.write(/MH),
+@Memory.store.file(/MH,/PATH)
 
 EOL
-D(13,10)@OUT
-
-#FIX
-D(34)_"'<>&"^CHARS,
-`&quot;,&apos;,&lt;,&gt;,&amp;'^ESCAPE,
-L(A)^X,
-DO{X-1^X'<0 IF{L(CHARS,A#X)^Y=L(CHARS);(A$X)_(ESCAPE|Y)_(A%X)^A}},
-A;
+D(13,10)
 
 ; #####################
 ; ## Compile Section ##
@@ -88,8 +96,8 @@ DO{@Next(NPR.SEG.name) @SEGMENT},
 SEGMENT
 @OPEN("segment"),
 @TAG("name",NPR.SEG.name),
-@TAG("physical",@FIX(@NPR.SEG.phy.base)),
-@TAG("value",@FIX(@NPR.SEG.phy.val.ele)),
+@TAG("physical",@NPR.SEG.phy.base),
+@TAG("value",@NPR.SEG.phy.val.ele),
 @SEGMENT.CHILDREN,
 @SEGMENT.SUBSCRIPTS,
 @SEGMENT.ELEMENTS,
@@ -118,13 +126,21 @@ ELEMENT
 @OPEN("element"),
 @TAG("name",NPR.SEG.ele.name),
 @TAG("local",@NPR.SEG.ele.local),
-@TAG("physical",@FIX(@NPR.SEG.ele.phy.address)),
+@TAG("physical",@NPR.SEG.ele.phy.address),
 @TAG("segment",@NPR.SEG.ele.seg),
 @TAG("pointer",@NPR.SEG.ele.pointer),
 @TAG("type",@NPR.SEG.ele.data.type),
 @TAG("offset",@NPR.SEG.ele.offset),
 @TAG("length",@NPR.SEG.ele.length),
-@MULTI.TAG("attributes",^@NPR.SEG.ele.attributes),    ;//may need to be root
-@MULTI.TAG("description",^@NPR.SEG.ele.description),    ;//may need to be root
-@MULTI.TAG("documentation",^@NPR.SEG.ele.documentation),    ;//may need to be root
+@COMPILE.ATTRIBUTES,@MULTI.TAG("attributes",^/ATTRIB),
+@MULTI.TAG("description",^@Root(@NPR.SEG.description)),
+@MULTI.TAG("documentation",^@Root(@NPR.SEG.ele.tech.doc)),
 @CLOSE("element")
+
+COMPILE.ATTRIBUTES
+K(/ATTRIB),
+""^Q,
+@Last(NPR.SEG.ele.attribute.index)^L,
+DO{@Next.get(NPR.SEG.ele.attribute.index,Y)^X @Add(1,Q),
+                                              X_"="_Y_IF{X=L "";
+                                                         @EOL}^/ATTRIB[Q]}
