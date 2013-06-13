@@ -95,14 +95,14 @@ COMPILE
 @Add(2,/INDENT),
 "<segments"@OUT,
 @SETUP.METADATA,
+">"@OUT,@EOL@OUT,
 DO{@Next(NPR.SEG.name) @SEGMENT},
 @CLOSE("segments")
 
 SETUP.METADATA
 IF{@.ring @ATTRIBUTE("ring",@.ring)},
 IF{@NPR.APPL.release["NPR"] @ATTRIBUTE("release",@NPR.APPL.release["NPR"])},
-IF{@.update.today @ATTRIBUTE("date",@.today)},
-@EOL@OUT
+IF{@.update.today @ATTRIBUTE("date",@.today)}
 
 ; #####################
 ; ## Segment Section ##
