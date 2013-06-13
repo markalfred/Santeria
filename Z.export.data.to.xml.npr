@@ -16,10 +16,15 @@ A#"0."^APP^NPR.APPL.mnemonic,
 ROOT@Directory.create,
 ROOT_"\"_APP@Directory.create,
 ROOT_"\"_APP_"\"_DPM_".xml"^/PATH,
-""^ROOT^APP^DPM,
+""^ROOT,
 D(34)_"'<>&"^/CHARS,
 {"&quot;","&apos;","&lt;","&gt;","&amp;"}^/ESCAPE,
+@SETUP.BUFFERS,
 @Memory.allocate("")^/MH
+
+SETUP.BUFFERS
+IF{O(/(.TS));@Est.t.rec(S,@Root(@NPR.SEG.main))},
+IF{O(/(.TE));@Est.t.rec(E,@Root(@NPR.SEG.elements))}
 
 SAVE
 IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
@@ -35,6 +40,11 @@ IF{@Memory.store.file(/MH,/PATH) "Couldn't write data!"^ERR},
 @Add(2,/INDENT),
 "<"_A_">"@OUT,
 @EOL@OUT;
+
+#ATTRIBUTE
+; A = name
+; B = value
+" "_A_"="_D(34)_B_D(34)@OUT;
 
 #CLOSE
 ;//Closes a tag.
@@ -82,9 +92,17 @@ D(13,10)
 ; #####################
 
 COMPILE
-@OPEN("segments"),
+@Add(2,/INDENT),
+"<segments"@OUT,
+@SETUP.METADATA,
 DO{@Next(NPR.SEG.name) @SEGMENT},
 @CLOSE("segments")
+
+SETUP.METADATA
+IF{@.ring @ATTRIBUTE("ring",@.ring)},
+IF{@NPR.APPL.release["NPR"] @ATTRIBUTE("release",@NPR.APPL.release["NPR"])},
+IF{@.update.today @ATTRIBUTE("date",@.today)},
+@EOL@OUT
 
 ; #####################
 ; ## Segment Section ##
@@ -139,5 +157,7 @@ K(/ATTRIBUTES),
 ""^Q^EOL,
 ; Don't send an EOL before the first, or after the last item.
 DO{@Next.get(NPR.SEG.ele.attribute.index,Y)^X @Add(1,Q),
-                                              EOL_X_"="_Y^/ATTRIBUTES[Q],
+                                              EOL_X_"="^/ATTRIBUTES[Q],
+                                              @Add(1,Q),
+                                              Y^/ATTRIBUTES[Q],
                                               @EOL^EOL}

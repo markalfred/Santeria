@@ -133,3 +133,18 @@ attribute of ADM.PARAM.by.facility - rcr.create.new.desc
 
 
 def est bufs. shit is slow.
+
+"MIS"^X_D(127)^E,DO{+&IE[X]^X<E N(X)^#,%(Z)zcus.export.data.to.xml(X)}
+""^X,DO{+&IE[X]^X N(X)^#,%(Z)zcus.export.data.to.xml(X)}
+
+maybe include ring, release, etc metadata in xml
+
+
+
+finding the release: .../5.6.5/Source/EDM/.settings/com.meditech.ide.npr.prefs:
+
+eclipse.preferences.version=1
+npr_project_appl=EDM
+npr_project_ring=S5.6.5
+npr_project_unv=MTUNV
+
