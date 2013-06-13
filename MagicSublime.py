@@ -35,7 +35,7 @@ def getDpm(item):
 
     The only exception to this is the 'Z' DPM, which is the only one that
     doesn't have two parts (...I think)"""
-    dpm = re.sub('[a-z]*', '', item).rstrip('.')  # Better way to do this?
+    dpm = re.sub('[a-z]*', '', item).rstrip('.')
     if dpm == '':
         if sublime.platform() == 'windows':
             d = '\\'
@@ -264,6 +264,8 @@ def dataDef(cursor):
         return msg
 
     item = V.substr(V.word(cursor))
+    if item[:2] == 't.' or item[:2] == 'c.' or item[:2] == 'p.':
+        item = item[2:]
     dpm = getDpm(item)
     app = dpm.split('.')[0]
     item = item.lstrip(dpm)  # If the item contained the DPM, remove it.
