@@ -57,7 +57,7 @@ def macroTitle(cursor):
     that saved macro call, jump back to that call. If they didn't jump to this
     title from a call, jump to the first macro call in the procedure."""
 
-    item = V.substr(V.word(cursor))    # The item on which Magic was invoked
+    item = V.substr(V.word(cursor))
     settings = sublime.load_settings('MagicSublime.sublime-settings')
 
     lastMacro = settings.get('last_macro', sublime.Region(-1))
@@ -150,7 +150,6 @@ def local(cursor):
 
     def generateContent(item, location):
         """Arrange and show all lines of documentation."""
-        print item, location
         pos = location.begin()
         row, col = V.rowcol(pos)
         content = ""
@@ -163,7 +162,7 @@ def local(cursor):
             elif V.substr(V.line(pos)).find(item) == col:
                 pass
             else:
-                return content
+                return content.rstrip()
 
     item = V.substr(V.word(cursor))
     msg = ""
@@ -277,6 +276,8 @@ def dataDef(cursor):
     except(IOError):
         sublime.status_message('"%s" definitions not found!!' % dpm)
         raise
+    except:
+        sublime.status_message('Issue with "%s" definitions!!' % dpm)
 
     # Try first to find a segment with the name item
     seg = findInXML(segments, item)
@@ -321,7 +322,6 @@ def nprMacro(cursor):
         except(AttributeError):
             print('Warning: Missing values in XML file.')
 
-        print(syntax, name)
         # Syntax will contain the name and more. Use if it exists, else name
         if syntax is None:
             syntax = '@%s' % name
@@ -329,10 +329,11 @@ def nprMacro(cursor):
         msg += "Syntax         %s\n" % syntax  # content at col 16
         msg += "Description    %s\n" % description
         msg += "Code           %s\n" % code
-        msg += "Notes\n"
-        comment = comment.splitlines()
-        for line in comment:
-            msg += "  %s\n" % line.rstrip()
+        if comment is not None:
+            msg += "Notes\n"
+            comment = comment.splitlines()
+            for line in comment:
+                msg += "  %s\n" % line.rstrip()
         return msg.rstrip()
 
     item = V.substr(V.word(cursor))
@@ -356,7 +357,7 @@ def procedure(cursor):
         d = '\\'
     else:
         d = '/'
-    f = str(V.file_name()).split(d)
+    f = V.file_name().split(d)
 
     if f[len(f) - 3] == 'Z':
         e = len(f) - 3
@@ -365,13 +366,6 @@ def procedure(cursor):
 
     for i in f[:e]:
         filepath += i + d
-
-    for i in item.split('.'):
-        if i.upper() == i:
-            filepath += i + d
-        else:
-            procedure += i + '.'
-    filepath += procedure.rstrip('.') + d + procedure + 'npr'
 
     V.window().open_file(filepath)
 
@@ -401,9 +395,20 @@ class MagicCommand(sublime_plugin.TextCommand):
 
         V = self.view
         cursor = V.sel()[0].begin()
+
+        # If the cursor is in front of an @, move it to the actual item.
+        if V.substr(cursor) == '@':
+            cursor += 1
+
+        # If the selected item isn't valid, the cursor might be just following
+        # the intended item.
         scope = MS.scope(self, cursor)
+        if scope not in functions:
+            cursor -= 1
+            scope = MS.scope(self, cursor)
 
         if scope in functions:
             functions[scope](cursor)
+
         else:
-            sublime.status_message('"%s" function not yet written.' % scope)
+            sublime.status_message('No action available for this item.')
