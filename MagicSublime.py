@@ -1,6 +1,7 @@
 from magicsubl import ms as MS
 import xml.etree.ElementTree as ET
 import re
+import os.path
 import sublime
 import sublime_plugin
 
@@ -26,27 +27,47 @@ def findInXML(root, item):
             print('Warning: Unexpected values in XML file.')
 
 
-def getDpm(item):
-    """Pull the DPM from the item, or infer it from the file path.
+def parse(item):
+    """Find DPM, base element, suffix type and name if applicable.
 
-    If the selected item doesn't include the DPM, the DPM is the same as
-    that of the procedure. This can be pulled from the filepath,
-    ie. '/EDM/PAT/depart/depart.npr' should return 'EDM.PAT'
+    For @EDM.PAT.depart.date:
+        dpm = ['EDM', 'PAT']
+        base = ['depart', 'date']
 
-    The only exception to this is the 'Z' DPM, which is the only one that
-    doesn't have two parts (...I think)"""
-    dpm = re.sub('[a-z]*', '', item).rstrip('.')
-    if dpm == '':
-        if sublime.platform() == 'windows':
-            d = '\\'
+    For %EDM.PAT.depart.M.btn.depart.pt:
+        dpm = ['EDM', 'PAT']
+        base = ['depart']
+        suffixType = ['M']
+        suffixName = ['btn', 'depart', 'pt']
+    """
+    item = item.split('.')
+    ret = [[], [], [], []]
+    x = 0
+
+    for i in item:
+        if i.isupper():
+            if x % 2 != 0:
+                x += 1
+            ret[x].append(i)
         else:
-            d = '/'
-        f = str(V.file_name()).split(d)
-        if f[len(f) - 3] == 'Z':
-            dpm = 'Z'
-        else:
-            dpm = f[len(f) - 4] + '.' + f[len(f) - 3]
-    return dpm
+            if x % 2 == 0:
+                x += 1
+            ret[x].append(i)
+
+    # If no DPM was found for an element, assume it from the
+    # current filepath. ie. /ADM/PAT/ee/ee.npr
+    if not ret[0]:
+        directory = V.file_name()
+        directory = os.path.split(directory)[0]
+        directory = os.path.split(directory)[0]
+
+        directory, i = os.path.split(directory)
+        ret[0].insert(0, i)
+        if i is not 'Z':
+            directory, i = os.path.split(directory)
+            ret[0].insert(0, i)
+
+    return(ret)
 
 
 def macroTitle(cursor):
@@ -265,12 +286,12 @@ def dataDef(cursor):
     item = V.substr(V.word(cursor))
     if item[:2] == 't.' or item[:2] == 'c.' or item[:2] == 'p.':
         item = item[2:]
-    dpm = getDpm(item)
-    app = dpm.split('.')[0]
+    app, dpm = parse(item)[0]
+    dpm = '.'.join([app, dpm])
     item = item.lstrip(dpm)  # If the item contained the DPM, remove it.
-    filepath = (sublime.packages_path() +
-                '/MagicSublime/lib/Data Definitions/' +
-                app + '/' + dpm + '.xml')
+    filepath = os.path.join(sublime.packages_path(),
+                            'MagicSublime/lib/Data Definitions/',
+                            app, dpm + '.xml')
     try:
         segments = ET.parse(filepath).getroot()
     except(IOError):
@@ -351,21 +372,26 @@ def nprMacro(cursor):
 def procedure(cursor):
     """Open the selected procedure in a new tab."""
     item = V.substr(V.word(cursor))
-    filepath = procedure = ""
 
-    if sublime.platform() == 'windows':
-        d = '\\'
-    else:
-        d = '/'
-    f = V.file_name().split(d)
+    app = dpm = base = suffixType = suffixName = ""
+    [app, dpm], base, suffixType, suffixName = parse(item)
+    base = '.'.join(base)
+    suffixType = '.'.join(suffixType)
+    suffixName = '.'.join(suffixName)
 
-    if f[len(f) - 3] == 'Z':
-        e = len(f) - 3
-    else:
-        e = len(f) - 4
+    root = V.file_name()
+    root = os.path.split(root)[0]
+    root = os.path.split(root)[0]
+    root, i = os.path.split(root)
+    if i is not 'Z':
+        root = os.path.split(root)[0]
 
-    for i in f[:e]:
-        filepath += i + d
+    filename = '.'.join([base, suffixType, suffixName, 'npr'])
+    filepath = os.path.join(root,
+                            app,
+                            dpm,
+                            base,
+                            filename)
 
     V.window().open_file(filepath)
 
