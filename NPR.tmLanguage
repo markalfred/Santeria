@@ -48,7 +48,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>@([A-Z][a-z]|[A-Z][A-Z]+[.]|[.])[a-z0-9.]+</string>
+			<string>@([A-Z][a-z]|[A-Y][A-Z]*[.]|[.])[a-z0-9.]+</string>
 			<key>name</key>
 			<string>support.function.npr.macro</string>
 		</dict>
