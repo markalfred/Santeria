@@ -17,7 +17,8 @@ ROOT@Directory.create,
 ROOT_"\"_APP@Directory.create,
 ROOT_"\"_APP_"\"_DPM_".xml"^/PATH,
 ""^ROOT,
-D(34)_"'<>&"^/CHARS,
+; Convertable XML characters in the beginning, unconvertables after the break.
+D(34)_"'<>&   ---   ±"^/CHARS,
 {"&quot;","&apos;","&lt;","&gt;","&amp;"}^/ESCAPE,
 @SETUP.BUFFERS,
 @Memory.allocate("")^/MH
