@@ -28,46 +28,64 @@ def findInXML(root, item):
 
 
 def parse(item):
-    """Find DPM, base element, suffix type and name if applicable.
+    """Find app, DPM, and base element. Guess from filename if necessary.
 
     For @EDM.PAT.depart.date:
-        dpm = ['EDM', 'PAT']
-        base = ['depart', 'date']
+        app = 'EDM'
+        dpm = 'PAT'
+        base = 'depart.date'
 
     For %EDM.PAT.depart.M.btn.depart.pt:
-        dpm = ['EDM', 'PAT']
-        base = ['depart']
-        suffixType = ['M']
-        suffixName = ['btn', 'depart', 'pt']
-    """
+        app = 'EDM'
+        dpm = 'PAT'
+        base = 'depart'
+        full = 'depart.M.btn.depart.pt'  """
+
     item = item.split('.')
-    ret = [[], [], [], []]
-    x = 0
 
-    for i in item:
-        if i.isupper():
-            if x % 2 != 0:
-                x += 1
-            ret[x].append(i)
+    if item[0] == 't.' or item[0] == 'c.' or item[0] == 'p.':
+        del item[0]
+
+    i = 0
+    while i < len(item):
+        if item[i].isupper():
+            i += 1
         else:
-            if x % 2 == 0:
-                x += 1
-            ret[x].append(i)
+            break
 
-    # If no DPM was found for an element, assume it from the
-    # current filepath. ie. /ADM/PAT/ee/ee.npr
-    if not ret[0]:
+    app = item[0]
+    if app == 'Z':
+        dpm = 'Z'
+    else:
+        dpm = '.'.join(item[1:i])
+    full = '.'.join(item[i:])
+    print(app, dpm)
+
+    item = item[i:]
+    i = 0
+    while i < len(item):
+        if item[i].islower():
+            i += 1
+        else:
+            break
+    base = '.'.join(item[:i])
+
+    if not dpm:
+        # Assume app and DPM from current file. Step backwards through path,
+        # remove unnecessary data, and save what is needed.
         directory = V.file_name()
         directory = os.path.split(directory)[0]
         directory = os.path.split(directory)[0]
 
         directory, i = os.path.split(directory)
-        ret[0].insert(0, i)
-        if i is not 'Z':
+        dpm = i
+        if dpm == 'Z':
+            app = 'Z'
+        else:
             directory, i = os.path.split(directory)
-            ret[0].insert(0, i)
+            app = i
 
-    return(ret)
+    return(app, dpm, base, full)
 
 
 def macroTitle(cursor):
@@ -284,11 +302,10 @@ def dataDef(cursor):
         return msg
 
     item = V.substr(V.word(cursor))
-    if item[:2] == 't.' or item[:2] == 'c.' or item[:2] == 'p.':
-        item = item[2:]
-    app, dpm = parse(item)[0]
-    dpm = '.'.join([app, dpm])
-    item = item.lstrip(dpm)  # If the item contained the DPM, remove it.
+    app, dpm, base, _ = parse(item)
+    print(app, dpm, base)
+    if app != 'Z':
+        dpm = '.'.join([app, dpm])
     filepath = os.path.join(sublime.packages_path(),
                             'MagicSublime/lib/Data Definitions/',
                             app, dpm + '.xml')
@@ -300,21 +317,21 @@ def dataDef(cursor):
     except:
         sublime.status_message('Issue with "%s" definitions!!' % dpm)
 
-    # Try first to find a segment with the name item
-    seg = findInXML(segments, item)
+    # Try first to find a segment with the name base
+    seg = findInXML(segments, base)
     if seg is not None:
         msg = generateSegDoc(seg)
         MS.show_output(msg)
     else:
         for s in segments:
             elements = s.find('elements')
-            ele = findInXML(elements, item)
+            ele = findInXML(elements, base)
             if ele is not None:
                 msg = generateEleDoc(ele)
                 MS.show_output(msg)
                 break
         else:
-            sublime.status_message("%s not found" % item)
+            sublime.status_message("%s not found" % dpm)
 
 
 def nprMacro(cursor):
@@ -372,12 +389,7 @@ def nprMacro(cursor):
 def procedure(cursor):
     """Open the selected procedure in a new tab."""
     item = V.substr(V.word(cursor))
-
-    app = dpm = base = suffixType = suffixName = ""
-    [app, dpm], base, suffixType, suffixName = parse(item)
-    base = '.'.join(base)
-    suffixType = '.'.join(suffixType)
-    suffixName = '.'.join(suffixName)
+    app, dpm, base, full = parse(item)
 
     root = V.file_name()
     root = os.path.split(root)[0]
@@ -386,12 +398,14 @@ def procedure(cursor):
     if i is not 'Z':
         root = os.path.split(root)[0]
 
-    filename = '.'.join([base, suffixType, suffixName, 'npr'])
+    if dpm == 'Z':
+        dpm = ''
+
     filepath = os.path.join(root,
                             app,
                             dpm,
                             base,
-                            filename)
+                            '.'.join([full, 'npr']))
 
     V.window().open_file(filepath)
 
