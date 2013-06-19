@@ -48,7 +48,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>@([A-Z][a-z]|[A-Y][A-Z]*[.]|[.])[a-z0-9.]+</string>
+			<string>@((API|AT|FS|IOCP\.|IPC|MAPI|MGUI|MSO\.|RTF|SSL|UI|VS|[0-9])?([A-Y]|\.))[a-z0-9.]+</string>
 			<key>name</key>
 			<string>support.function.npr.macro</string>
 		</dict>
@@ -72,7 +72,7 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>@[A-Z.]+</string>
+			<string>@[A-Z0-9.]+</string>
 			<key>name</key>
 			<string>entity.name.function.macro.call</string>
 		</dict>
