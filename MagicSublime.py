@@ -14,18 +14,26 @@ import sublime_plugin
 #   settings = a pointer to the MagicSublime settings file
 
 
-def show_output(msg, syntax='Packages/Text/Plain text.tmLanguage'):
+def show_output(msg,
+                syntax='Packages/Text/Plain text.tmLanguage',
+                rulers=[],
+                gutter=False,
+                wordWrap=True,
+                wrapWidth=0,
+                lineNumbers=False,
+                scrollPastEnd=False):
     win = sublime.active_window()
     if win:
         panel = win.get_output_panel('ms_doc')
         panel.set_read_only(False)
         edit = panel.begin_edit()
         panel.set_syntax_file(syntax)
-        panel.settings().set('gutter', False)
-        panel.settings().set('line_numbers', False)
-        panel.settings().set('word_wrap', True)
-        panel.settings().set('wrap_width', 0)
-        panel.settings().set('scroll_past_end', False)
+        panel.settings().set('rulers', rulers)
+        panel.settings().set('gutter', gutter)
+        panel.settings().set('word_wrap', wordWrap)
+        panel.settings().set('wrap_width', wrapWidth)
+        panel.settings().set('line_numbers', lineNumbers)
+        panel.settings().set('scroll_past_end', scrollPastEnd)
         panel.insert(edit, 0, msg + '\n')
         panel.end_edit(edit)
         panel.set_read_only(True)
