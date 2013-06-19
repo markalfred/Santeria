@@ -1,6 +1,4 @@
-from magicsubl import ms as MS
 import xml.etree.ElementTree as ET
-import re
 import os.path
 import sublime
 import sublime_plugin
@@ -14,6 +12,29 @@ import sublime_plugin
 #   V = shorthand for self.view, a pointer to the currently active file
 #   item = region containing the entity on which the user invoked Magic command
 #   settings = a pointer to the MagicSublime settings file
+
+
+def show_output(msg, syntax='Packages/Text/Plain text.tmLanguage'):
+    win = sublime.active_window()
+    if win:
+        panel = win.get_output_panel('ms_doc')
+        panel.set_read_only(False)
+        edit = panel.begin_edit()
+        panel.set_syntax_file(syntax)
+        panel.settings().set('gutter', False)
+        panel.settings().set('line_numbers', False)
+        panel.settings().set('word_wrap', True)
+        panel.settings().set('wrap_width', 0)
+        panel.settings().set('scroll_past_end', False)
+        panel.insert(edit, 0, msg + '\n')
+        panel.end_edit(edit)
+        panel.set_read_only(True)
+        win.run_command('show_panel',
+                        {'panel': 'output.ms_doc'})
+
+
+def getScope(cursor):
+    return V.scope_name(cursor).split(' ')[1]
 
 
 def findInXML(root, item):
@@ -210,7 +231,7 @@ def local(cursor):
         msg += generateTitle(item, location)
         msg += '\n'
         msg += generateContent(item, location)
-        MS.show_output(msg)
+        show_output(msg)
     else:
         sublime.status_message('%s has no documentation.' % item)
 
@@ -321,14 +342,14 @@ def dataDef(cursor):
     seg = findInXML(segments, base)
     if seg is not None:
         msg = generateSegDoc(seg)
-        MS.show_output(msg)
+        show_output(msg)
     else:
         for s in segments:
             elements = s.find('elements')
             ele = findInXML(elements, base)
             if ele is not None:
                 msg = generateEleDoc(ele)
-                MS.show_output(msg)
+                show_output(msg)
                 break
         else:
             sublime.status_message("%s not found" % dpm)
@@ -381,7 +402,7 @@ def nprMacro(cursor):
     macro = findInXML(root, item)
     if macro is not None:
         msg = generateNprDoc(macro)
-        MS.show_output(msg)
+        show_output(msg)
     else:
         sublime.status_message("@%s not found" % item)
 
@@ -442,10 +463,10 @@ class MagicCommand(sublime_plugin.TextCommand):
 
         # If the selected item isn't valid, the cursor might be just following
         # the intended item.
-        scope = MS.scope(self, cursor)
+        scope = getScope(cursor)
         if scope not in functions:
             cursor -= 1
-            scope = MS.scope(self, cursor)
+            scope = getScope(cursor)
 
         if scope in functions:
             functions[scope](cursor)
