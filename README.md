@@ -1,11 +1,11 @@
-Santeria
+Santería
 ===
 
 A Sublime Text 2 plugin for MEDITECH's Magic programming languages. Designed with the needs of Client/Service programmers in mind.
 
 ### Getting Started
 
-Santeria is meant to be used alongside SVN. With SVN, you can download your entire application's latest code to your client.
+Santería is meant to be used alongside SVN. With SVN, you can download your entire application's latest code to your client.
 
 * Install [Sublime SVN](http://wbond.net/sublime_packages/svn)
 
@@ -14,7 +14,7 @@ Santeria is meant to be used alongside SVN. With SVN, you can download your enti
   - Select `SVN: Checkout`
   - Example Repository URL: `https://vcfs01.meditech.com/svn/CS-NPR/5.6.5/Source/ADM/`
 
-* Install Santeria
+* Install Santería
 
 ### Usage
 
@@ -28,7 +28,7 @@ In a Magic source file, place your cursor on a bit of code and press F1. What oc
 
 - - -
 
-The Santeria command can be mapped to any key.
+The `santeria` command can be mapped to any key.
 
 ```
 { "keys": ["f1"], "command": "santeria" }
