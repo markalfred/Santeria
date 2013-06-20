@@ -3,15 +3,15 @@ import os.path
 import sublime
 import sublime_plugin
 
-# MagicSublime  by Mark Battersby
+# Santeria  by Mark Battersby
 
 # Sublime Text API can be found at:
 #  http://www.sublimetext.com/docs/2/api_reference.html
 
 # Frequently used and global variables:
 #   V = shorthand for self.view, a pointer to the currently active file
-#   item = region containing the entity on which the user invoked Magic command
-#   settings = a pointer to the MagicSublime settings file
+#   item = name of the entity on which Santeria was invoked
+#   settings = a pointer to the Santeria settings file
 
 
 def show_output(msg,
@@ -90,7 +90,6 @@ def parse(item):
     else:
         dpm = '.'.join(item[1:i])
     full = '.'.join(item[i:])
-    print(app, dpm)
 
     item = item[i:]
     i = 0
@@ -122,13 +121,13 @@ def parse(item):
 def macroTitle(cursor):
     """Jump to an equivalent macro call.
 
-    When the user invokes the Magic command from a macro call, its position is
-    saved in the settings file. If the user jumped to this macro title from
+    When the user invokes the Santeria command from a macro call, its position
+    is saved in the settings file. If the user jumped to this macro title from
     that saved macro call, jump back to that call. If they didn't jump to this
     title from a call, jump to the first macro call in the procedure."""
 
     item = V.substr(V.word(cursor))
-    settings = sublime.load_settings('MagicSublime.sublime-settings')
+    settings = sublime.load_settings('Santeria.sublime-settings')
 
     lastMacro = settings.get('last_macro', sublime.Region(-1))
     if item == V.substr(V.word(lastMacro)):
@@ -151,13 +150,13 @@ def macroTitle(cursor):
 def macroCall(cursor):
     """Jump to the macro definition.
 
-    When the user invokes the Magic command from a macro call, its position is
-    saved in the settings file (see: macroTitle). This allows it to be quickly
-    jumped-back-to once the macro has been reviewed. The macro definition is
-    then found and its header highlighted."""
+    When the user invokes the Santeria command from a macro call, its position
+    is saved in the settings file (see: macroTitle). This allows it to be
+    quickly jumped-back-to once the macro has been reviewed. The macro
+    definition is then found and its header highlighted."""
 
     item = V.substr(V.word(cursor))
-    settings = sublime.load_settings('MagicSublime.sublime-settings')
+    settings = sublime.load_settings('Santeria.sublime-settings')
     settings.set('last_macro', int(V.word(cursor).begin()))  # Note pos of call
 
     try:
@@ -169,7 +168,7 @@ def macroCall(cursor):
         V.sel().clear()
         V.sel().add(jump)
         V.show_at_center(jump)
-        sublime.save_settings('MagicSublime.sublime-settings')
+        sublime.save_settings('Santeria.sublime-settings')
         # If successful, save the macro call position
     except(AttributeError):
         sublime.status_message("@%s not found" % item)
@@ -249,8 +248,9 @@ def local(cursor):
 def dataDef(cursor):
     """Show the ELE documentation for a given data element or segment.
 
-    The source of the documentation is
-    MagicSublime/lib/Data Definitions/[app]/[dpm].xml.
+    The source of the documentation is:
+    Santeria/lib/Data Definitions/[app]/[dpm].xml.
+
     This file is generated via the Z.zcus.export.data.to.xml procedure which
     can be found in the CUS2/IMPPROG56 directory.
 
@@ -339,11 +339,10 @@ def dataDef(cursor):
 
     item = V.substr(V.word(cursor))
     app, dpm, base, _ = parse(item)
-    print(app, dpm, base)
     if app != 'Z':
         dpm = '.'.join([app, dpm])
     filepath = os.path.join(sublime.packages_path(),
-                            'MagicSublime/lib/Data Definitions/',
+                            'Santeria/lib/Data Definitions/',
                             app, dpm + '.xml')
     try:
         segments = ET.parse(filepath).getroot()
@@ -373,7 +372,7 @@ def dataDef(cursor):
 def nprMacro(cursor):
     """Show NPR Macro documentation.
 
-    The source of the documentation is MagicSublime/lib/npr_macros.xml.
+    The source of the documentation is Santeria/lib/npr_macros.xml.
 
     Its format:
     <macrodb>
@@ -412,7 +411,7 @@ def nprMacro(cursor):
 
     item = V.substr(V.word(cursor))
     filepath = (sublime.packages_path() +
-                '/MagicSublime/lib/npr_macros.xml')
+                '/Santeria/lib/npr_macros.xml')
     root = ET.parse(filepath).getroot()
     macro = findInXML(root, item)
     if macro is not None:
@@ -459,10 +458,10 @@ functions = {
 }
 
 
-class MagicCommand(sublime_plugin.TextCommand):
+class SanteriaCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
-        """Dispatch of the MagicSublime master hotkey.
+        """Dispatch of the Santeria master hotkey.
 
         This takes the scope, according to the NPR syntax definition, and
         performs the action specified in the global maps above."""

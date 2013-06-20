@@ -1,11 +1,11 @@
-MagicSublime
+Santeria
 ===
 
 A Sublime Text 2 plugin for MEDITECH's Magic programming languages. Designed with the needs of Client/Service programmers in mind.
 
 ### Getting Started
 
-MagicSublime is meant to be used alongside SVN. With SVN, you can download your entire application's latest code to your client.
+Santeria is meant to be used alongside SVN. With SVN, you can download your entire application's latest code to your client.
 
 * Install [Sublime SVN](http://wbond.net/sublime_packages/svn)
 
@@ -14,7 +14,7 @@ MagicSublime is meant to be used alongside SVN. With SVN, you can download your 
   - Select `SVN: Checkout`
   - Example Repository URL: `https://vcfs01.meditech.com/svn/CS-NPR/5.6.5/Source/ADM/`
 
-* Install MagicSublime
+* Install Santeria
 
 ### Usage
 
@@ -28,8 +28,8 @@ In a Magic source file, place your cursor on a bit of code and press F1. What oc
 
 - - -
 
-The Magic command can be mapped to any key.
+The Santeria command can be mapped to any key.
 
 ```
-{ "keys": ["f1"], "command": "magic" }
+{ "keys": ["f1"], "command": "santeria" }
 ```

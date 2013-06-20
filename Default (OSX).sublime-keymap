@@ -1,3 +1,3 @@
 [
-	{ "keys": ["f1"], "command": "magic", "context":[ { "key": "selector", "operator": "equal", "operand": "source.npr" } ] }
+	{ "keys": ["f1"], "command": "santeria", "context":[ { "key": "selector", "operator": "equal", "operand": "source.npr" } ] }
 ]
