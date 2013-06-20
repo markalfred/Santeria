@@ -313,22 +313,27 @@ def dataDef(cursor):
                              ' ' * (10 - len(elementLocal)) +
                              elementPhysical)
             for i in root.find('subscripts').findall('subscript'):
-                subscripts += '\n  %s' % i.text
+                subscripts += '%s, ' % i.text
+            subscripts = subscripts.rstrip(', ')
 
         except(AttributeError):
             print('Warning: Missing values in XML file.')
 
         msg += "Segment        %s\n" % segment
-        msg += "Physical       %s\n" % physical
-        msg += "Children %s\n" % children
+        msg += "Physical       %s" % physical
+        if value:
+            msg += " = %s" % value
+        msg += '\n\n'
+        if subscripts:
+            msg += "Subscripts     [%s]\n" % subscripts
+            msg += "Value          %s\n" % value
+        if children:
+            msg += "Children %s\n" % children
         msg += '\n'
-        if elements != "":
+        if elements:
             msg += "Element                       Local     Physical"
             msg += '\n'
             msg += str(elements)
-        elif subscripts != "":
-            msg += "Subscripts %s\n\n" % subscripts
-            msg += "Value %s" % value
 
         return msg
 
