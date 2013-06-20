@@ -22,6 +22,7 @@ def show_output(msg,
                 wrapWidth=0,
                 lineNumbers=False,
                 scrollPastEnd=False):
+    """Show msg in bottom panel."""
     win = sublime.active_window()
     if win:
         panel = win.get_output_panel('ms_doc')
@@ -42,6 +43,7 @@ def show_output(msg,
 
 
 def getScope(cursor):
+    """Find the syntax-defined scope of the item under cursor1."""
     return V.scope_name(cursor).split(' ')[1]
 
 
@@ -72,7 +74,7 @@ def parse(item):
 
     item = item.split('.')
 
-    if item[0] == 't.' or item[0] == 'c.' or item[0] == 'p.':
+    if item[0] == 't' or item[0] == 'c' or item[0] == 'p':
         del item[0]
 
     i = 0
@@ -360,7 +362,7 @@ def dataDef(cursor):
                 show_output(msg)
                 break
         else:
-            sublime.status_message("%s not found" % dpm)
+            sublime.status_message("%s not found" % base)
 
 
 def nprMacro(cursor):
