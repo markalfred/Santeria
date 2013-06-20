@@ -326,6 +326,7 @@ def dataDef(cursor):
         msg += '\n\n'
         if subscripts:
             msg += "Subscripts     [%s]\n" % subscripts
+        if value:
             msg += "Value          %s\n" % value
         if children:
             msg += "Children %s\n" % children
@@ -354,16 +355,17 @@ def dataDef(cursor):
 
     # Try first to find a segment with the name base
     seg = findInXML(segments, base)
+    syntax = 'Packages/Santeria/Santeria Documentation.tmLanguage'
     if seg is not None:
         msg = generateSegDoc(seg)
-        show_output(msg)
+        show_output(msg, syntax, [], True)
     else:
         for s in segments:
             elements = s.find('elements')
             ele = findInXML(elements, base)
             if ele is not None:
                 msg = generateEleDoc(ele)
-                show_output(msg)
+                show_output(msg, syntax)
                 break
         else:
             sublime.status_message("%s not found" % base)
@@ -414,9 +416,10 @@ def nprMacro(cursor):
                 '/Santeria/lib/npr_macros.xml')
     root = ET.parse(filepath).getroot()
     macro = findInXML(root, item)
+    syntax = 'Packages/Santeria/Santeria Documentation.tmLanguage'
     if macro is not None:
         msg = generateNprDoc(macro)
-        show_output(msg)
+        show_output(msg, syntax)
     else:
         sublime.status_message("@%s not found" % item)
 
@@ -471,8 +474,8 @@ class SanteriaCommand(sublime_plugin.TextCommand):
         V = self.view
         cursor = V.sel()[0].begin()
 
-        # If the cursor is in front of an @, move it to the actual item.
-        if V.substr(cursor) == '@':
+        # If the cursor is in front of @, %, or #, move it to the actual item.
+        if V.substr(cursor) in '@%#':
             cursor += 1
 
         # If the selected item isn't valid, the cursor might be just following

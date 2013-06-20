@@ -1,0 +1,10 @@
+{ "name": "Santeria Documentation",
+  "scopeName": "source.santeria",
+  "fileTypes": [""],
+  "patterns": [
+      {  "name": "comment.documentation.label",
+         "match": "(Element|Local|Physical|Segment|Subscripts|Children|Pointer|Data Type|Length|Attributes|Description|Technical Documentation|Syntax|Code|Notes)"
+      }
+  ],
+  "uuid": "c0a0a86f-9009-43fc-ac90-4af35a4709da"
+}

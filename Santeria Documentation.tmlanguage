@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string></string>
+	</array>
+	<key>name</key>
+	<string>Santeria Documentation</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>match</key>
+			<string>(Element|Local|Physical|Segment|Subscripts|Children|Pointer|Data Type|Length|Attributes|Description|Technical Documentation|Syntax|Code|Notes)</string>
+			<key>name</key>
+			<string>comment.documentation.label</string>
+		</dict>
+	</array>
+	<key>scopeName</key>
+	<string>source.santeria</string>
+	<key>uuid</key>
+	<string>c0a0a86f-9009-43fc-ac90-4af35a4709da</string>
+</dict>
+</plist>
