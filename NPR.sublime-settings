@@ -1,0 +1,6 @@
+{
+    "word_separators": "/\\()\"'-:,;<>~!@#$%^&*|+=[]{}`~?_",
+    "tab_size": [3],
+    "detect_indentation": false,
+    "rulers": [80]
+}
